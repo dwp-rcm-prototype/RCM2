@@ -16,16 +16,16 @@ module.exports = {
     });
 
     // add your routes here
-    app.get('/rcm2', function (req, res) {
+    app.get('/rcm', function (req, res) {
       res.render('rcm/index');
     });
-    app.get('/rcm2/dummy', function (req, res) {
+    app.get('/rcm/dummy', function (req, res) {
       res.render('rcm/dummy');
     });
-    app.get('/rcm2/form', function (req, res) {
+    app.get('/rcm/form', function (req, res) {
       res.render('rcm/form');
     });
-    app.post('/rcm2/complete', function (req, res) {
+    app.post('/rcm/complete', function (req, res) {
       res.render('rcm/complete');
     });
 
