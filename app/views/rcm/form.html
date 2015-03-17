@@ -1,0 +1,51 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: What type of fraud
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Reporting benefit fraud</span>
+        What type of fraud?
+    </h1>
+
+    <form method="post" action="complete" id="form-fraud-type">
+        <div class="form-group">
+            <fieldset class="fieldset-fraud-type">
+                <legend class="form-label-bold heading-large">Which type of fraud do you want to report?</legend>
+                <p>Please select all that apply</p>
+
+                <label class="block-label" for="cb1">
+                    <input id="cb1" name="fraud-type" class="input-fraud-type" type="checkbox" value="workEarning">
+                    Not telling us about earnings
+                </label>
+                <label class="block-label" for="cb2">
+                    <input id="cb2" class="input-fraud-type" type="checkbox" value="livingWithPartner">
+                    Living with a partner while claiming to be living alone
+                </label>
+                <label class="block-label" for="cb3">
+                    <input id="cb3" class="input-fraud-type" type="checkbox" value="disabilityCarers">
+                    Dishonestly claiming a disability or carers benefit
+                </label>
+            </fieldset>
+        </div>
+
+        <input type="submit" id="complete" class="button" value="Continue" />
+    </form>
+
+</main>
+
+{{/content}}
+
+{{/layout}}
