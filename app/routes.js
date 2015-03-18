@@ -23,7 +23,7 @@ module.exports = {
       res.render('rcm/dummy');
     });
     app.get('/rcm/form', function (req, res) {
-      res.render('rcm/form');
+      res.render('rcm/form', {'previousPage': 'index'});
     });
     app.post('/rcm/complete', function (req, res) {
       res.render('rcm/complete');
