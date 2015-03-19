@@ -29,6 +29,16 @@ module.exports = {
       res.render('rcm/complete');
     });
 
+    /* SHOWCASE ROUTES. These must be removed before going live */
+    app.get('/rcm/showcase', function (req, res) {
+      res.render('rcm/showcase/index', {'previousPage': '/rcm/index'});
+    });
+    app.get('/rcm/showcase/checkboxes', function (req, res) {
+      res.render('rcm/showcase/checkboxes', {'previousPage': '/rcm/showcase'});
+    });
+
+
+
   }
 };
 

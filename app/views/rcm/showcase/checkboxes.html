@@ -21,7 +21,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
     </h1>
 
 
-    <form method="post" action="complete" id="form-fraud-type" class="crm-check-form">
+    <form method="post" action="../complete" id="form-fraud-type" class="crm-check-form">
         <div class="form-group">
             <fieldset id="fieldset-fraud-type" data-error-message="Please select at least one type of fraud.">
                 <legend class="form-label-bold heading-large">Which type of fraud do you want to report?</legend>
@@ -39,19 +39,37 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     <input id="cb3" name="fraud-type" class="input-fraud-type required--one-or-more" type="checkbox" value="disabilityCarers">
                     Dishonestly claiming a disability or carers benefit
                 </label>
+            </fieldset>
 
-                <label class="block-label" for="cb4">
-                    <input id="cb4" name="fraud-type" class="input-fraud-type required--one-or-more" type="checkbox" value="abroad">
-                    The person claiming is no longer in the United Kingdom
+            <fieldset id="fieldset-fraud-type2" data-error-message="Please select at least one type of fraud type 2.">
+                <legend class="form-label-bold heading-large">What type of fraud 2 do you want to report?</legend>
+                <p>Please select at least one</p>
+
+                <label class="block-label" for="cb21">
+                    <input id="cb21" name="fraud-type2" class="input-fraud-type required--one-or-more" type="checkbox" value="workEarning">
+                    Not telling us about earrings, wristbands and knee-high socks
                 </label>
-                <label class="block-label" for="cb5">
-                    <input id="cb5" name="fraud-type" class="input-fraud-type required--one-or-more" type="checkbox" value="idFraud">
-                    Identity Fraud
+                <label class="block-label" for="cb22">
+                    <input id="cb22" name="fraud-type2" class="input-fraud-type required--one-or-more" type="checkbox" value="livingWithPartner">
+                    Living alone
                 </label>
-                <label class="block-label" for="cb6">
-                    <input id="cb6" name="fraud-type" class="input-fraud-type required--one-or-more" type="checkbox" value="savingsCapital">
-                    Not telling us about savings or other income
+                <label class="block-label" for="cb23">
+                    <input id="cb23" name="fraud-type2" class="input-fraud-type required--one-or-more" type="checkbox" value="disabilityCarers">
+                    Dishonestly claiming a blahblah or careers benefit
                 </label>
+
+            </fieldset>
+
+            <fieldset id="fieldset-fraud-type3" data-error-message="Please click fraud type 3 (the hat tax one).">
+                <legend class="form-label-bold heading-large">Please tick the following box.</legend>
+                <p>(It's the law)</p>
+
+
+                <label class="block-label" for="cb31">
+                    <input id="cb31" name="fraud-type3" class="input-fraud-type required--one-or-more" type="checkbox" value="workEarning">
+                    Not paying hat tax
+                </label>
+
 
             </fieldset>
 

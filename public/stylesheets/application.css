@@ -1064,6 +1064,8 @@ fieldset.invalid {
   border-left: 4px solid #df3034;
   color: #df3034;
   font-weight: bold; }
+  .validation-message .list-bullet {
+    margin-bottom: 0; }
 
 @media (min-width: 641px) {
   .validation-message {

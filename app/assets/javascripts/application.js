@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('a.previousPage').each(function() {
         $(this).on('click', function() {
-            if (!confirm('Are you sure you want to go back? You may lose form data./n/nNB: We need to assess the need and functionality of this link')) {
+            if (!confirm('Are you sure you want to go back? You may lose form data.\n\nNB: We need to assess the need and functionality of this link')) {
                 return false;
             }
         });
@@ -38,7 +38,7 @@ $(document).ready(function() {
             };
 
             form.find('div.validation-message').remove();
-            form.find('input[type="submit"]').before('<div class="validation-message">' + errorMessage + '</div>');
+            form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessage + '</ul></div>');
 
             return false
         }
