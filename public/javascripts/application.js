@@ -44,13 +44,3 @@ $(document).ready(function() {
         }
     });
 });
-
-
-
-
-/*
-1. jQuery
-2. html5 validation - disabled by javascript: setAttribute("novalidate")
-3. server-side validation
-
- */
