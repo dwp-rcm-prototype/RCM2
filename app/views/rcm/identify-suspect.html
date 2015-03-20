@@ -1,0 +1,150 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: What type of fraud
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Reporting benefit fraud</span>
+        Who do you suspect is committing benefit fraud?
+    </h1>
+
+    <form method="post" action="complete" id="form-identify" class="crm-check-form">
+
+       <!-- National Insurance Number -->
+
+        <fieldset class="inline">
+            <legend class="form-label">Do you know the national insurance number for this person?</legend>
+            <div class="form-group form-group-compound" data-target="section--nino">
+                <label class="block-label" for="nino_yes">
+                    <input id="nino_yes" type="radio" class="toggle-section" name="helper-nino" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="nino_no">
+                    <input id="nino_no" type="radio" class="toggle-section" name="helper-nino" value="No">
+                    No
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="section--nino section--nino__yes display-none-js">
+
+            <div class="panel-indent margin-top-0px">
+                <fieldset>
+                    <legend>Please enter their national insurance number</legend>
+                    <div class="form-group">
+
+                        <input class="form-control required" id="nino" type="text" required>
+                        <label for="nino" class="form-hint display-block">For example, QQ 12 34 56 C</label>
+                    </div>
+                </fieldset>
+            </div>
+
+            <h2 class="heading-medium">Please enter information for at least one of the following four sections</h2>
+
+
+        </div>
+
+        <div class="section--nino section--nino__no display-none-js">
+
+            <h2 class="heading-medium">Please enter information for the following three sections</h2>
+
+        </div>
+
+        <ol class="list-number list-number-outside section--nino section--nino__yes section--nino__no display-none-js">
+            <!-- name -->
+            <li class="panel-indent margin-top-0px">
+                <div class="form-group float-none">
+                    <label class="form-label" for="first-name">First name(s)</label>
+                    <div class="validation-wrapper">
+                        <input class="form-control required--one-or-more" id="first-name" name="first-name" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="last-name">And/ or last name</label>
+                    <div class="validation-wrapper">
+                        <input class="form-control required--one-or-more" id="last-name" name="last-name" type="text">
+                    </div>
+                </div>
+            </li>
+
+            <!-- Age or date of birth -->
+            <li class="panel-indent">
+
+
+                <fieldset class="inline fieldset-dob">
+                    <legend class="form-label">Do you know the date of birth for this person?</legend>
+                    <div class="form-group form-group-compound" data-target="section--dob">
+                        <label class="block-label" data-target="example-ni-number" for="radio1">
+                            <input id="radio1" class="toggle-section" type="radio" name="helper-dob" value="Yes">
+                            Yes
+                        </label>
+                        <label class="block-label" for="radio2">
+                            <input id="radio2" class="toggle-section" type="radio" name="helper-dob" value="No">
+                            No
+                        </label>
+                    </div>
+
+
+
+                    <div class="section--dob section--dob__yes display-none-js">
+                        <div class="form-date">
+                            <p class="form-hint">For example, 31 3 1980</p>
+                            <div class="form-group form-group-day">
+                                <label for="dob-day">Day</label>
+                                <input class="form-control" id="dob-day" type="number" pattern="[0-9]*" min="0" max="31">
+                            </div>
+
+                            <div class="form-group form-group-month">
+                                <label for="dob-month">Month</label>
+                                <input class="form-control" id="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
+                            </div>
+
+                            <div class="form-group form-group-year">
+                                <label for="dob-year">Year</label>
+                                <input class="form-control" id="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section--dob section--dob__no display-none-js">
+                        <div class=form-group>
+                            <label class="form-label" for="dob-approx">Enter their approximate age</label>
+                            <input class="form-control" id="dob-approx" type="number" pattern="[0-9]*" min="0" max="150">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <p>P.s. do we need the yes/ no selector? I propose it's easier to just have "enter either DOB or approx age"</p>
+
+            </li>
+
+            <li class="panel-indent">
+                Address <span class="section--nino section--nino__no display-none-js">and other info (for nino no)</li>
+            </li>
+            <li class="panel-indent section--nino section--nino__yes display-none-js">
+                Other info for nino-yes
+            </li>
+
+        </ol>
+
+        <input type="submit" id="complete" class="button" value="Continue" />
+    </form>
+
+    <a href="{{previousPage}}" class="previousPage">Back</a>
+
+</main>
+
+{{/content}}
+
+{{/layout}}

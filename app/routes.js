@@ -22,8 +22,11 @@ module.exports = {
     app.get('/rcm/dummy', function (req, res) {
       res.render('rcm/dummy');
     });
-    app.get('/rcm/form', function (req, res) {
-      res.render('rcm/form', {'previousPage': 'index'});
+    app.get('/rcm/type-of-fraud', function (req, res) {
+      res.render('rcm/type-of-fraud', {'previousPage': 'index'});
+    });
+    app.post('/rcm/identify-suspect', function (req, res) {
+      res.render('rcm/identify-suspect', {'previousPage': 'type-of-fraud'});
     });
     app.post('/rcm/complete', function (req, res) {
       res.render('rcm/complete');

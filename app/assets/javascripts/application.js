@@ -8,6 +8,18 @@ $(document).ready(function() {
 
     });
 
+
+    /* display-none-js is a class that should only work to hide information when javascript is enabled */
+    $('.display-none-js').hide();
+
+    /* generic toggle functionality */
+    $('.toggle-section').on('click', function() {
+        var sections = $(this).parents('.form-group').attr('data-target');
+        var sectionOn = $(this).parents('.form-group').attr('data-target') + '__' + $(this).val().toLowerCase();
+        $('.' + sections).hide();
+        $('.' + sectionOn).show();
+    });
+
     $('form.crm-check-form').on('submit', function() {
 
         // check (groups of) checkboxes where (at least) one must be checked
