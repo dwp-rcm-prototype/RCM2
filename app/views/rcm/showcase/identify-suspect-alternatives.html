@@ -1,0 +1,399 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: What type of fraud
+{{/pageTitle}}
+
+{{$content}}
+<script>
+    $(document).ready(function() {
+        $('a.previousPage').each(function() {
+            $(this).on('click', function() {
+                if (!confirm('Are you sure you want to go back? You may lose form data.\n\nNB: We need to assess the need and functionality of this link')) {
+                    return false;
+                }
+            });
+
+        });
+
+
+        /* display-none-js is a class that should only work to hide information when javascript is enabled */
+        $('.display-none-js').hide();
+
+        /* generic toggle functionality */
+        $('.toggle-section').on('click', function() {
+            var sections = $(this).parents('.form-group').attr('data-target');
+            var sectionOn = $(this).parents('.form-group').attr('data-target') + '__' + $(this).val().toLowerCase();
+            $('.' + sections).hide();
+            $('.' + sectionOn).show();
+        });
+
+        $('form.crm-check-form').on('submit', function(e) {
+
+
+
+            var form = $(this), errorMessage = '';
+
+
+            // check (groups of) checkboxes where (at least) one must be checked
+            var ids = $.unique(form.find('.fieldset').removeClass('invalid').find('input[type="checkbox"].required--one-or-more').map(function() {
+                return this.name;
+            }).get());
+            if (ids.length > 0) {
+                var idsChecked = $.unique(form.find('input[type="checkbox"].required--one-or-more:checked').map(function () {
+                    return (this.name);
+                }).get());
+
+                if (idsChecked.length < ids.length) { // not all groups of checkboxes have at least one checked
+                    // report the issue. Filter out the checked IDs
+                    ids = $.grep(ids, function (n) {
+                        return ( idsChecked.indexOf(n) == -1 );
+                    });
+
+
+                    for (var i = 0, il = ids.length; i < il; i++) {
+                        form.find('#fieldset--' + ids[i]).each(function () {
+                            $(this).addClass('invalid');
+                            errorMessage += '<li>' + $(this).attr('data-error-message') + '</li>';
+
+                        });
+                    };
+                }
+            }
+
+
+            if (errorMessage != '') {
+                form.find('div.validation-message').remove();
+                form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessage + '</ul></div>');
+
+                return false
+            }
+
+
+
+            // MANUAL OVERRIDES HERE
+            if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
+                var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+                var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
+                    return this.value;
+                }).get();
+                var redirectsSelected = $.grep(selected, function(n) {
+                    return ( redirects.indexOf(n) != -1 );
+                });
+                if (redirectsSelected.length > 0) {
+                    e.preventDefault();
+                    document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
+                }
+            }
+        });
+    });
+</script>
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Reporting benefit fraud</span>
+        Who do you suspect is committing benefit fraud?
+    </h1>
+
+    <form method="post" action="complete" id="form-identify" class="crm-check-form">
+
+        <!-- National Insurance Number -->
+
+        <fieldset class="inline">
+            <legend class="form-label">Do you know the national insurance number for this person?</legend>
+            <div class="form-group form-group-compound" data-target="section--nino">
+                <label class="block-label" for="nino_yes">
+                    <input id="nino_yes" type="radio" class="toggle-section" name="helper-nino" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="nino_no">
+                    <input id="nino_no" type="radio" class="toggle-section" name="helper-nino" value="No">
+                    No
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="section--nino section--nino__yes display-none-js">
+
+            <div class="panel-indent margin-top-0">
+                <fieldset>
+                    <legend>Please enter their national insurance number</legend>
+                    <div class="form-group">
+
+                        <input class="form-control required" id="nino" type="text" required>
+                        <label for="nino" class="form-hint display-block">For example, QQ 12 34 56 C</label>
+                    </div>
+                </fieldset>
+            </div>
+
+            <h2 class="heading-medium">Please enter information for at least one of the following four sections</h2>
+
+
+        </div>
+
+        <div class="section--nino section--nino__no display-none-js">
+
+            <h2 class="heading-medium">Please enter information for the following three sections</h2>
+
+        </div>
+
+        <ol class="list-number list-number-outside section--nino section--nino__yes section--nino__no display-none-js">
+
+            <!-- name -->
+
+            <li class="panel-indent margin-top-0">
+                <fieldset>
+                    <div class="form-group float-none">
+                        <label class="form-label" for="first-name">First name(s)</label>
+                        <div class="validation-wrapper">
+                            <input class="form-control required--one-or-more" id="first-name" name="first-name" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="last-name">And/ or last name</label>
+                        <div class="validation-wrapper">
+                            <input class="form-control required--one-or-more" id="last-name" name="last-name" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-group inline">
+
+                        <!--
+                        <legend class="form-label">Do you know this person by another name?</legend>
+                        <div class="form-group form-group-compound" data-target="section--alternative-name">
+                            <label class="block-label" for="nino_yes">
+                                <input id="nino_yes" type="radio" class="toggle-section" name="helper-other-name" value="Yes">
+                                Yes
+                            </label>
+                            <label class="block-label" for="nino_no">
+                                <input id="nino_no" type="radio" class="toggle-section" name="helper-other-name" value="No">
+                                No
+                            </label>
+                        </div>
+                        -->
+                        <details>
+                            <summary><span class="summary">I know this person by a different name</span></summary>
+                            <div class="panel-indent">
+                                <div class="form-group float-none">
+                                    <label class="form-label" for="alternative-first-name">First name(s)</label>
+                                    <div class="validation-wrapper">
+                                        <input class="form-control required--one-or-more" id="alternative-first-name" name="alternative-first-name" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="alternative-last-name">And/ or last name</label>
+                                    <div class="validation-wrapper">
+                                        <input class="form-control required--one-or-more" id="alternative-last-name" name="alternative-last-name" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+
+
+                    </div>
+                </fieldset>
+            </li>
+
+            <!-- Alternative name --
+
+
+
+
+
+            -->
+            <!-- Age or date of birth -->
+
+            <li class="panel-indent">
+
+
+                <fieldset class="inline fieldset-dob">
+                    <legend>Do you know the date of birth for this person?</legend>
+                    <!--
+                                       <div class="form-group form-group-compound" data-target="section--dob">
+                                           <label class="block-label" data-target="example-ni-number" for="radio1">
+                                               <input id="radio1" class="toggle-section" type="radio" name="helper-dob" value="Yes">
+                                               Yes
+                                           </label>
+                                           <label class="block-label" for="radio2">
+                                               <input id="radio2" class="toggle-section" type="radio" name="helper-dob" value="No">
+                                               No
+                                           </label>
+                                       </div>
+
+
+
+
+                                       <div class="section--dob section--dob__yes display-none-js">
+                                           <div class="form-date">
+
+                                               <div class="form-group form-group-day">
+                                                   <label for="dob-day">Day</label>
+                                                   <input class="form-control" id="dob-day" type="number" pattern="[0-9]*" min="0" max="31">
+                                               </div>
+
+                                               <div class="form-group form-group-month">
+                                                   <label for="dob-month">Month</label>
+                                                   <input class="form-control" id="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
+                                               </div>
+
+                                               <div class="form-group form-group-year">
+                                                   <label for="dob-year">Year</label>
+                                                   <input class="form-control" id="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
+                                               </div>
+                                               <p class="form-hint clear-both">For example, 31 3 1980</p>
+                                           </div>
+                                       </div>
+                                       <div class="section--dob section--dob__no display-none-js">
+                                           <div class=form-group>
+                                               <label class="form-label" for="dob-approx">Enter their approximate age</label>
+                                               <input class="form-control" id="dob-approx" type="number" pattern="[0-9]*" min="0" max="150">
+                                           </div>
+                                       </div>
+
+                    -->
+                    <ul class="fieldset-labels">
+                        <li><span>Yes</span>
+                            <div class="form-date">
+                                <p class="margin-top-0">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
+
+                                <div class="form-group form-group-day">
+
+                                    <input class="form-control" id="dob-day" type="number" pattern="[0-9]*" min="0" max="31">
+                                    <label for="dob-day" class="form-hint">Day</label>
+                                </div>
+
+                                <div class="form-group form-group-month">
+
+                                    <input class="form-control" id="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
+                                    <label for="dob-month" class="form-hint">Month</label>
+
+                                </div>
+
+                                <div class="form-group form-group-year">
+
+                                    <input class="form-control" id="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
+                                    <label for="dob-year" class="form-hint">Year</label>
+
+                                </div>
+
+                            </div>
+                        </li>
+                        <li><span>No</span>
+                            <div class="">
+                                <div class="form-group">
+                                    <label class="form-label" for="dob-approx">Please enter their approximate age</label>
+                                    <input class="form-control" id="dob-approx" type="number" pattern="[0-9]*" min="0" max="150">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </fieldset>
+
+
+            </li>
+
+            <!-- address -->
+
+            <li class="panel-indent">
+                <fieldset>
+                    <legend>Where does the suspect live?</legend>
+                    <div class="form-group">
+                        <label class="form-label" for="address">Address</label>
+                        <input class="form-control" id="address" type="text">
+                        <input class="form-control" id="address-line-2" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="town">Town or city</label>
+                        <input class="form-control" id="town" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="postcode">Postcode</label>
+                        <input class="form-control" id="postcode" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="county">County</label>
+                        <input class="form-control" id="county" type="text">
+                    </div>
+                </fieldset>
+                <div class="section--nino section--nino__no display-none-js">
+                    <details>
+                        <summary><span class="summary">Do you have additional contact details for the suspect?</span></summary>
+                        <div class="panel-indent">
+
+                            <div class="form-group float-none">
+                                <div class="form-group">
+                                    <label class="form-label" for="telephone-number__home">Home telephone number</label>
+                                    <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="telephone-number__mobile">Mobile telephone number</label>
+                                    <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="telephone-number__other">Any other telephone numbers</label>
+                                    <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="email-address">Email address </label>
+                                    <input class="form-control" name="email-address" id="email-address" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="social-media">Any social media details</label>
+                                    <textarea class="form-control" name="social-media" id="social-media"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </li>
+            <li class="panel-indent section--nino section--nino__yes display-none-js">
+                <fieldset>
+                    <legend>Additional contact details for this suspect</legend>
+                    <div class="form-group float-none">
+                        <div class="form-group">
+                            <label class="form-label" for="telephone-number__home">Home telephone number</label>
+                            <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telephone-number__mobile">Mobile telephone number</label>
+                            <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telephone-number__other">Any other telephone numbers</label>
+                            <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-address">Email address </label>
+                            <input class="form-control" name="email-address" id="email-address" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="social-media">Any social media details</label>
+                            <textarea class="form-control" name="social-media" id="social-media"></textarea>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </li>
+
+        </ol>
+
+        <input type="submit" id="complete" class="button" value="Continue" />
+    </form>
+
+    <a href="{{previousPage}}" class="previousPage">Back</a>
+
+</main>
+
+{{/content}}
+
+{{/layout}}
+

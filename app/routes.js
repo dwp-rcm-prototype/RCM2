@@ -39,6 +39,12 @@ module.exports = {
     app.get('/rcm/showcase/checkboxes', function (req, res) {
       res.render('rcm/showcase/checkboxes', {'previousPage': '/rcm/showcase'});
     });
+    app.get('/rcm/showcase/identify-suspect-alternatives', function (req, res) {
+      res.render('rcm/showcase/identify-suspect-alternatives', {'previousPage': '/rcm/showcase'});
+    });
+
+
+
 
 
 
