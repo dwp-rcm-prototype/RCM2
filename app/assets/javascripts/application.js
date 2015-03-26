@@ -61,7 +61,7 @@
         $('form.crm-check').on('submit', function(e) {
 
 
-            e.preventDefault();
+//            e.preventDefault();
             var form = $(this),
                 validationMessage = '',
                 errorMessages = '',
@@ -109,6 +109,21 @@
             if (errorMessages != '') {
                 form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
                 return false;
+            }
+
+            // MANUAL OVERRIDES HERE
+            if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
+                var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+                var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
+                    return this.value;
+                }).get();
+                var redirectsSelected = $.grep(selected, function(n) {
+                    return ( redirects.indexOf(n) != -1 );
+                });
+                if (redirectsSelected.length > 0) {
+                    e.preventDefault();
+                    document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
+                }
             }
 
         });
@@ -246,19 +261,6 @@ console.log(idsValid);
 
 return false;
 
-        // MANUAL OVERRIDES HERE
-        if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
-            var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
-            var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
-                return this.value;
-            }).get();
-            var redirectsSelected = $.grep(selected, function(n) {
-                return ( redirects.indexOf(n) != -1 );
-            });
-            if (redirectsSelected.length > 0) {
-                e.preventDefault();
-                document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
-            }
-        }
+
     });
     */
