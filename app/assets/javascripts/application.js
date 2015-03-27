@@ -3,7 +3,6 @@
     var formCheckValid = function(el) {
         var inputType = (el.tagName.toLowerCase() == 'textarea') ? 'textarea' : $(el).attr('type');
 
-
         switch (inputType) {
             case 'radio':
             case 'checkbox':
@@ -17,21 +16,7 @@
             default:
                 return null;
         }
-    }
-    var formCheckInvalid = function(el) {
-
-        switch ($(el).attr('type')) {
-            //case 'radio':
-            case 'checkbox':
-                return (!el.checked) ? el.name : null;
-                break;
-            case 'text':
-                return ($(el).val() == '') ? el.name : null;
-                break;
-            default:
-                return null;
-        }
-    }
+    };
 
     $(document).ready(function() {
         $('a.previousPage').each(function() {
@@ -54,8 +39,6 @@
             $('.' + sections).hide();
             $('.' + sectionOn).show();
         });
-
-
 
 
         $('form.crm-check').on('submit', function(e) {
@@ -125,6 +108,7 @@
                     document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
                 }
             }
+            return true;
 
         });
     });
