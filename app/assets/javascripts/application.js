@@ -11,7 +11,13 @@
             case 'text':
             case 'number':
             case 'textarea':
-                return ($(el).val() != '') ? el.name : null;
+                var pattern = $(el).attr('data-pattern');
+                if (pattern != null) {
+                    var result = $(el).val().match(new RegExp(pattern,"gi"));
+                    return (result!= null && result.length > 0 && result[0] != '') ?el.name : null;
+                } else {
+                    return ($(el).val() != '') ? el.name : null;
+                }
                 break;
             default:
                 return null;
@@ -44,7 +50,7 @@
         $('form.crm-check').on('submit', function(e) {
 
 
-//            e.preventDefault();
+            e.preventDefault();
             var form = $(this),
                 validationMessage = '',
                 errorMessages = '',
