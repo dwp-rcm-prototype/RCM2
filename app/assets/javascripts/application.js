@@ -51,6 +51,7 @@
 
 
             //e.preventDefault();
+            /*
             var form = $(this),
                 validationMessage = '',
                 errorMessages = '',
@@ -127,7 +128,7 @@
                 form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
                 return false;
             }
-
+            */
 
             /* Not ready yet
             // all the validate-groups have been checked - now check the form
