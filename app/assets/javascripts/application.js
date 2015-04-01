@@ -61,10 +61,10 @@
                 fields;
 
 
-            var msg = form.find('div.validation-message').get(0);
-            if (msg != null) {
-                $(msg).remove();
-            }
+            //var msg = form.find('div.validation-message').get(0);
+            //if (msg != null) {
+            //    $(msg).remove();
+            //}
 
             // loop each validation-group
 /*
