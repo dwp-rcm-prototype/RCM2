@@ -62,9 +62,9 @@
 
 
             var msg = form.find('div.validation-message').get(0);
-            //if (msg) {
-            //    $(msg).remove();
-            //}
+            if (msg != null) {
+                $(msg).remove();
+            }
 
             // loop each validation-group
 /*
