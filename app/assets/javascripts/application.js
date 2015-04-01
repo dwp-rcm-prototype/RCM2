@@ -249,9 +249,9 @@
 
 
             // MANUAL OVERRIDES HERE
+            e.preventDefault();
+            if (form.attr('id') == 'form__fraud-type4') {
 
-            if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
-                e.preventDefault();
                 var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
                 console.log(redirects);
                 var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
@@ -269,6 +269,7 @@
                     document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
                 }*/
             }
+            console.log('the end');
 
 
         });
