@@ -47,8 +47,8 @@
         });
 
 
-        $('form.crm-check').on('submit', function(e) {
-
+        $('form.crm-checkxxx').on('submit', function(e) {
+            /*
 
             //e.preventDefault();
 
@@ -60,14 +60,10 @@
                 fieldsWithValidValue,
                 fields;
 
-
-            //var msg = form.find('div.validation-message').get(0);
-            //if (msg != null) {
-            //    $(msg).remove();
-            //}
+            form.find('div.validation-message').remove();
 
             // loop each validation-group
-/*
+
             form.find('.validation-group:visible').each(function() {
 
                 validationType = $(this).attr('data-validation-type');
@@ -133,7 +129,7 @@
                 form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
                 return false;
             }
-*/
+            */
 
             /* Not ready yet
             // all the validate-groups have been checked - now check the form
@@ -189,7 +185,7 @@
 
             }
              */
-            return true;
+            //return true;
 
         });
     });
