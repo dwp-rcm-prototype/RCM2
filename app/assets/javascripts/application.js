@@ -167,21 +167,22 @@
             */
 
             // MANUAL OVERRIDES HERE
+            /*
             if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
                 var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
                 var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
                     return this.value;
                 }).get();
-                /*var redirectsSelected = [];/*$.grep(selected, function(n) {
+                var redirectsSelected = [];/*$.grep(selected, function(n) {
                     return ( redirects.indexOf(n) != -1 );
                 });
                 if (redirectsSelected.length > 0) {
                     e.preventDefault();
                     document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
                 }
-                 */
-            }
 
+            }
+             */
             return true;
 
         });
