@@ -48,7 +48,7 @@
 
 
         $('form.crm-check').on('submit', function(e) {
-            /*
+
 
             //e.preventDefault();
 
@@ -59,7 +59,7 @@
                 inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
                 fieldsWithValidValue,
                 fields;
-
+/*
             form.find('div.validation-message').remove();
 
             // loop each validation-group
