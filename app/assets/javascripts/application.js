@@ -47,7 +47,7 @@
         });
 
 
-        $('form.crm-check').on('submit', function(e) {
+        $('form.crm-check input[type="submit"]').on('click', function(e) {
 
 
             //e.preventDefault();
