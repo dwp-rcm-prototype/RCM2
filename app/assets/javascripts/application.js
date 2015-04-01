@@ -47,12 +47,14 @@
         });
 
 
-        $('form.crm-check input[type="submit"]').on('click', function(e) {
+        //$('form.crm-check input[type="submit"]').on('click', function(e) {
+        var f = document.querySelector('form.crm-check');
+        f.addEventListener ('submit', function (e) {
 
 
             //e.preventDefault();
 
-            var form = $(this).parents('form'),
+            var form = $('form.crm-check') /*'$(this).parents('form')*/,
                 validationMessage = '',
                 errorMessages = '',
                 validationType = '',
