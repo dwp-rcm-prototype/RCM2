@@ -59,7 +59,7 @@
                 inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
                 fieldsWithValidValue,
                 fields;
-/*
+
             form.find('div.validation-message').remove();
 
             // loop each validation-group
@@ -129,7 +129,7 @@
                 form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
                 return false;
             }
-            */
+
 
             /* Not ready yet
             // all the validate-groups have been checked - now check the form
@@ -169,7 +169,7 @@
             */
 
             // MANUAL OVERRIDES HERE
-            /*
+
             if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
                 var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
                 var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
@@ -184,9 +184,6 @@
                 }
 
             }
-             */
-            //return true;
-
         });
     });
 })();
