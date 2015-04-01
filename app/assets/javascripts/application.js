@@ -47,14 +47,11 @@
         });
 
 
-        //$('form.crm-check input[type="submit"]').on('click', function(e) {
-        var f = document.querySelector('form.crm-check');
-        f.addEventListener ('submit', function (e) {
-
+        $('form.crm-check input[type="submit"]').on('click', function(e) {
 
             //e.preventDefault();
 
-            var form = $('form.crm-check') /*'$(this).parents('form')*/,
+            var form = $(this).parents('form'),
                 validationMessage = '',
                 errorMessages = '',
                 validationType = '',
@@ -184,8 +181,9 @@
                     e.preventDefault();
                     document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
                 }
-
             }
+
+            return true;
         });
     });
 })();
