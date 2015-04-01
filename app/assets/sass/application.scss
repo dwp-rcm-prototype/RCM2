@@ -171,3 +171,28 @@ input[type="text"]+label{
   content:'';
   display: block;
 }
+
+
+form.invalid {
+  padding-left: 10px;
+  margin-left: -14px;
+  border-left: solid 4px #DF3034;
+  outline: none;
+}
+@media (min-width: 641px) {
+  form.invalid {
+    padding-left: 14px;
+    margin-left: -18px;
+  }
+  /*
+  .optional-section div.invalid, .help-content div.invalid,
+  .optional-section-core-content .optional-section div.invalid {
+    padding-left: 30px;
+    margin-left: -34px;
+  }
+  .optional-section-core-content div.invalid {
+    padding-left: 14px;
+    margin-left: -18px;
+  }
+  */
+}

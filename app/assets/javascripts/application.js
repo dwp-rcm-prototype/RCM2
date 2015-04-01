@@ -11,7 +11,7 @@
             case 'text':
             case 'number':
             case 'textarea':
-                var pattern = $(el).attr('data-pattern');
+                var pattern = (pattern = $(el).attr('data-pattern')) ? pattern : $(el).attr('pattern');
                 if (pattern != null) {
                     var result = $(el).val().match(new RegExp(pattern,"gi"));
                     return (result!= null && result.length > 0 && result[0] != '') ?el.name : null;
@@ -50,7 +50,7 @@
         $('form.crm-check').on('submit', function(e) {
 
 
-            e.preventDefault();
+            //e.preventDefault();
             var form = $(this),
                 validationMessage = '',
                 errorMessages = '',
@@ -67,14 +67,16 @@
                 validationType = $(this).attr('data-validation-type');
                 validationMessage = $(this).attr('data-validation-message');
 
-                fieldsWithValidValue = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function() {
-                    return formCheckValid(this);
-                }).get());
+                var tmp = ['required--one-or-more', 'required--one', 'required--all']
+                if (tmp.indexOf(validationType) != -1) {
+                    fieldsWithValidValue = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function () {
+                        return formCheckValid(this);
+                    }).get());
+                }
 
                 switch (validationType) {
                     case 'required--one-or-more':
                     case 'required--one':
-
                         if (fieldsWithValidValue.length == 0) {
                             $(this).addClass('invalid');
                             errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
@@ -82,12 +84,38 @@
                         break;
 
                     case 'required--all':
-
                         fields = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function() {
                             return this.name;
                         }).get());
 
                         if (fields.length > fieldsWithValidValue.length) {
+                            $(this).addClass('invalid');
+                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                        }
+                        break;
+
+                    case 'required--set':
+
+                        var fields, setOK,
+                            setsOK = false,
+                            sets = $(this).removeClass('invalid').attr('data-validation-set').split('|');
+
+                        for (var s = 0, sl = sets.length; s < sl; s ++) {
+
+                            fields = sets[s].split(',');
+                            setOK = true;
+                            for (var f = 0, fl = fields.length; f < fl; f ++) {
+                                if (!formCheckValid($(this).find('input[name="' + fields[f] + '"]').get(0))) {
+                                    setOK = false;
+                                    break;
+                                }
+                            }
+                            if (setOK) {
+                                setsOK = true;
+                                break;
+                            }
+                        }
+                        if (!setsOK) {
                             $(this).addClass('invalid');
                             errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
                         }
@@ -99,6 +127,44 @@
                 form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
                 return false;
             }
+
+
+            /* Not ready yet
+            // all the validate-groups have been checked - now check the form
+            if (formValidationType = form.attr('data-form-validation-type')) {
+                switch (formValidationType) {
+                    case 'required--set':
+                        var groups, groupOK,
+                            setsOK = false,
+                            sets = $(form).removeClass('invalid').attr('data-form-validation-set').split('|');
+
+                        console.log(sets);
+
+                        for (var s = 0, sl = sets.length; s < sl; s ++) {
+
+                            groups = sets[s].split(',');
+                            groupOK = true;
+                            for (var f = 0, fl = groups.length; f < fl; f ++) {
+                                if (true ) {
+                                    groupOK = false;
+                                    break;
+                                }
+                            }
+                            if (groupOK) {
+                                setsOK = true;
+                                break;
+                            }
+                        }
+                        if (!setsOK) {
+                            form.addClass('invalid');
+                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                        }
+                        break;
+
+                    break;
+                }
+            }
+            */
 
             // MANUAL OVERRIDES HERE
             if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
@@ -116,6 +182,174 @@
             }
 
         });
+
+
+
+
+        /* RE 01/04/2015: testing from here onwards. To be deleted */
+
+        $('form.crm-check1').on('submit', function(e) {
+
+
+            return true
+
+        });
+
+        $('form.crm-check2').on('submit', function(e) {
+
+
+            // MANUAL OVERRIDES HERE
+            if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
+                var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+                var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
+                    return this.value;
+                }).get();
+                var redirectsSelected = $.grep(selected, function(n) {
+                    return ( redirects.indexOf(n) != -1 );
+                });
+                if (redirectsSelected.length > 0) {
+                    e.preventDefault();
+                    document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
+                }
+            }
+
+            return true
+
+        });
+
+
+
+        $('form.crm-check3').on('submit', function(e) {
+
+
+            //e.preventDefault();
+            var form = $(this),
+                validationMessage = '',
+                errorMessages = '',
+                validationType = '',
+                inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
+                fieldsWithValidValue,
+                fields;
+
+            form.find('div.validation-message').remove();
+
+            // loop each validation-group
+            form.find('.validation-group:visible').each(function() {
+
+                validationType = $(this).attr('data-validation-type');
+                validationMessage = $(this).attr('data-validation-message');
+
+                var tmp = ['required--one-or-more', 'required--one', 'required--all']
+                if (tmp.indexOf(validationType) != -1) {
+                    fieldsWithValidValue = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function () {
+                        return formCheckValid(this);
+                    }).get());
+                }
+            });
+
+            if (errorMessages != '') {
+                form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
+                return false;
+            }
+
+
+            // MANUAL OVERRIDES HERE
+            if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
+                var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+                var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
+                    return this.value;
+                }).get();
+                var redirectsSelected = $.grep(selected, function(n) {
+                    return ( redirects.indexOf(n) != -1 );
+                });
+                if (redirectsSelected.length > 0) {
+                    e.preventDefault();
+                    document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
+                }
+            }
+
+        });
+
+
+        $('form.crm-check4').on('submit', function(e) {
+
+
+            //e.preventDefault();
+            var form = $(this),
+                validationMessage = '',
+                errorMessages = '',
+                validationType = '',
+                inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
+                fieldsWithValidValue,
+                fields;
+
+            form.find('div.validation-message').remove();
+
+            // loop each validation-group
+            form.find('.validation-group:visible').each(function() {
+
+                validationType = $(this).attr('data-validation-type');
+                validationMessage = $(this).attr('data-validation-message');
+
+                var tmp = ['required--one-or-more', 'required--one', 'required--all']
+                if (tmp.indexOf(validationType) != -1) {
+                    fieldsWithValidValue = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function () {
+                        return formCheckValid(this);
+                    }).get());
+                }
+
+                switch (validationType) {
+                    case 'required--one-or-more':
+                    case 'required--one':
+                        if (fieldsWithValidValue.length == 0) {
+                            $(this).addClass('invalid');
+                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                        }
+                        break;
+
+                    case 'required--all':
+                        fields = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function() {
+                            return this.name;
+                        }).get());
+
+                        if (fields.length > fieldsWithValidValue.length) {
+                            $(this).addClass('invalid');
+                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                        }
+                        break;
+
+
+                }
+            });
+
+            if (errorMessages != '') {
+                form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
+                return false;
+            }
+
+
+
+
+            // MANUAL OVERRIDES HERE
+            if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
+                var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+                var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
+                    return this.value;
+                }).get();
+                var redirectsSelected = $.grep(selected, function(n) {
+                    return ( redirects.indexOf(n) != -1 );
+                });
+                if (redirectsSelected.length > 0) {
+                    e.preventDefault();
+                    document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
+                }
+            }
+
+        });
+
+
+
+
     });
 
 })();

@@ -27,14 +27,12 @@ GOV.UK Reporting benefit fraud: What type of fraud
         Who do you suspect is committing benefit fraud?
     </h1>
 
-    <form method="post" action="complete" id="form-identify" class="crm-check" novalidate="novalidate">
-
-<!-- Name -->
+    <form method="post" action="complete" id="form-identify" class="crm-check" data-form-validation-type="required--set" data-form-validation-set="nino,age" x="nino,name|nino,age|nino,address|name,age,address|name,age,extra-info" data-form-validation-message="$form--error-message" XXXnovalidate="novalidate">
 
         <fieldset class="fieldset">
             <legend>If you know their first and/ or last name, please enter it here:</legend>
 
-            <div class="validation-group">
+            <div class="validation-group" data-form-validate-id="name">
                 <div class="form-group">
                     <label class="form-label" for="first-name">First name(s)</label>
                     <div class="validation-wrapper">
@@ -68,13 +66,13 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     <div class="form-group">
                         <label class="form-label" for="alternative-first-name">First name(s)</label>
                         <div class="validation-wrapper">
-                            <input class="form-control required--one-or-more" id="alternative-first-name" name="alternative-first-name" type="text">
+                            <input class="form-control" id="alternative-first-name" name="alternative-first-name" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="alternative-last-name">And/ or last name</label>
                         <div class="validation-wrapper">
-                            <input class="form-control required--one-or-more" id="alternative-last-name" name="alternative-last-name" type="text">
+                            <input class="form-control" id="alternative-last-name" name="alternative-last-name" type="text">
                         </div>
                     </div>
                 </div>
@@ -100,149 +98,149 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
 
 
-            <div class="section--dob section--dob__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
-                    <div class="form-date">
-                        <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
+            <div data-form-validate-id="age">
+                <div class="section--dob section--dob__yes display-none-js">
+                    <div class="panel-indent validation-group" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
+                        <div class="form-date">
+                            <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
-                        <div class="form-group form-group-day">
-                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="[0-9]*" min="0" max="31"">
-                            <label for="dob-day" class="form-hint">Day</label>
-                        </div>
+                            <div class="form-group form-group-day">
+                                <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="[0-9]*" min="0" max="31"">
+                                <label for="dob-day" class="form-hint">Day</label>
+                            </div>
 
-                        <div class="form-group form-group-month">
-                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
-                            <label for="dob-month" class="form-hint">Month</label>
-                        </div>
+                            <div class="form-group form-group-month">
+                                <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
+                                <label for="dob-month" class="form-hint">Month</label>
+                            </div>
 
-                        <div class="form-group form-group-year">
-                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
-                            <label for="dob-year" class="form-hint">Year</label>
+                            <div class="form-group form-group-year">
+                                <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
+                                <label for="dob-year" class="form-hint">Year</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="section--dob section--dob__no display-none-js">
-                <div class="panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
-                    <div class=form-group>
-                        <label class="form-label" for="dob-approx">Enter their approximate age</label>
-                        <input class="form-control required" id="dob-approx" name="dob-approx" type="number" data-pattern="[0-9]*" min="0" max="120">
+                <div class="section--dob section--dob__no display-none-js">
+                    <div class="panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
+                        <div class=form-group>
+                            <label class="form-label" for="dob-approx">Enter their approximate age</label>
+                            <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="[0-9]*" min="0" max="120">
+                        </div>
                     </div>
                 </div>
             </div>
         </fieldset>
 
 
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's address" >
+                <div class="form-group form-group-compound" id="fieldset--address" data-target="section--address">
+                    <legend>Do you know the address for this person?</legend>
 
-                <fieldset class="fieldset inline">
-                    <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's address" >
-                        <div class="form-group form-group-compound" id="fieldset--address" data-target="section--address">
-                            <legend>Do you know the address for this person?</legend>
+                    <label class="block-label" for="address__yes">
+                        <input id="address__yes" class="toggle-section" type="radio" name="helper--address" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="address__no">
+                        <input id="address__no" class="toggle-section" type="radio" name="helper--address" value="No">
+                        No
+                    </label>
+                </div>
+            </div>
 
-                            <label class="block-label" for="address__yes">
-                                <input id="address__yes" class="toggle-section" type="radio" name="helper--address" value="Yes">
-                                Yes
-                            </label>
-                            <label class="block-label" for="address__no">
-                                <input id="address__no" class="toggle-section" type="radio" name="helper--address" value="No">
-                                No
-                            </label>
+            <div class="section--address section--address__yes display-none-js" data-form-validate-id="address">
+                <div class="panel-indent validation-group" data-validation-type="required--set" data-validation-set="address,postcode|address,address-line-2,town" data-validation-message="Please enter either number and postcode or number, street and town">
+                    <div class="form-group">
+                        <label class="form-label" for="address">Building name or number</label>
+                        <input class="form-control" id="address" name="address" type="text">
+                        <label class="form-label" for="address-line-2">Street</label>
+                        <input class="form-control" id="address-line-2" name="address-line-2" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="town">Town or city</label>
+                        <input class="form-control" id="town" name="town" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="county">County</label>
+                        <input class="form-control" id="county" name="county" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="postcode">Postcode</label>
+                        <input class="form-control width__half" id="postcode" name="postcode" type="text" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's national insurance number" >
+                <div class="form-group form-group-compound" id="fieldset--nino" data-target="section--nino">
+                <legend>Do you know the national insurance number for this person?</legend>
+                    <label class="block-label" for="nino__yes">
+                        <input id="nino__yes" type="radio" class="toggle-section" name="helper--nino" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="nino__no">
+                        <input id="nino__no" type="radio" class="toggle-section" name="helper--nino" value="No">
+                        No
+                    </label>
+                </div>
+            </div>
+
+            <div class="section--nino section--nino__yes display-none-js" data-form-validate-id="nino">
+                <div class="panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
+                    <div class="form-group">
+                        <label class="form-label" for="ni-number">Please enter their national insurance number</label>
+                        <input class="form-control" id="ni-number" name="ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$">
+                        <p class="form-hint display-block">For example, QQ 12 34 56 C</p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if have any additional contact information" >
+                <div class="form-group form-group-compound" id="fieldset--additional-info" data-target="section--additional-info">
+                    <legend>Do you have additional contact details for this person?</legend>
+                    <label class="block-label" for="additional-info__yes">
+                        <input id="additional-info__yes" type="radio" class="toggle-section" name="helper--additional-info" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="additional-info__no">
+                        <input id="additional-info__no" type="radio" class="toggle-section" name="helper--additional-info" value="No">
+                        No
+                    </label>
+                </div>
+            </div>
+            <div class="section--additional-info section--additional-info__yes display-none-js" data-form-validate-id="extra-info">
+                <div class="panel-indent validation-group" data-validation-type="required--one-or-more" data-validation-message="Please enter some additional information">
+                    <div class="form-group float-none">
+                        <div class="form-group">
+                            <label class="form-label" for="telephone-number__home">Home telephone number</label>
+                            <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telephone-number__mobile">Mobile telephone number</label>
+                            <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telephone-number__other">Any other telephone numbers</label>
+                            <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-address">Email address </label>
+                            <input class="form-control" name="email-address" id="email-address" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="social-media">Any social media details</label>
+                            <textarea class="form-control" name="social-media" id="social-media"></textarea>
                         </div>
                     </div>
-
-                    <div class="section--address section--address__yes display-none-js">
-                        <div class="panel-indent validation-group" data-validation-type="required--one-or-more" data-validation-message="Please enter some address information">
-                            <div class="form-group">
-                                <label class="form-label" for="address">Building name or number</label>
-                                <input class="form-control" id="address" type="text">
-                                <label class="form-label" for="address-line-2">Street</label>
-                                <input class="form-control" id="address-line-2" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="town">Town or city</label>
-                                <input class="form-control" id="town" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="county">County</label>
-                                <input class="form-control" id="county" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="postcode">Postcode</label>
-                                <input class="form-control width__half" id="postcode" type="text">
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-
-                <fieldset class="fieldset inline">
-                    <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's national insurance number" >
-                        <div class="form-group form-group-compound" id="fieldset--nino" data-target="section--nino">
-                        <legend>Do you know the national insurance number for this person?</legend>
-                            <label class="block-label" for="nino__yes">
-                                <input id="nino__yes" type="radio" class="toggle-section" name="helper--nino" value="Yes">
-                                Yes
-                            </label>
-                            <label class="block-label" for="nino__no">
-                                <input id="nino__no" type="radio" class="toggle-section" name="helper--nino" value="No">
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="section--nino section--nino__yes display-none-js" >
-                        <div class="panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
-                            <div class="form-group">
-                                <label class="form-label" for="ni-number">Please enter their national insurance number</label>
-                                <input class="form-control" id="ni-number" name="ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$">
-                                <p class="form-hint display-block">For example, QQ 12 34 56 C</p>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-
-                <fieldset class="fieldset inline">
-                    <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if have any additional contact information" >
-                        <div class="form-group form-group-compound" id="fieldset--additional-info" data-target="section--additional-info">
-                            <legend>Do you have additional contact details for this person?</legend>
-                            <label class="block-label" for="additional-info__yes">
-                                <input id="additional-info__yes" type="radio" class="toggle-section" name="helper--additional-info" value="Yes">
-                                Yes
-                            </label>
-                            <label class="block-label" for="additional-info__no">
-                                <input id="additional-info__no" type="radio" class="toggle-section" name="helper--additional-info" value="No">
-                                No
-                            </label>
-                        </div>
-                    </div>
-                    <div class="section--additional-info section--additional-info__yes display-none-js">
-                        <div class="panel-indent validation-group" data-validation-type="required--one-or-more" data-validation-message="Please enter some additional information">
-                            <div class="form-group float-none">
-                                <div class="form-group">
-                                    <label class="form-label" for="telephone-number__home">Home telephone number</label>
-                                    <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="telephone-number__mobile">Mobile telephone number</label>
-                                    <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="telephone-number__other">Any other telephone numbers</label>
-                                    <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="email-address">Email address </label>
-                                    <input class="form-control" name="email-address" id="email-address" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="social-media">Any social media details</label>
-                                    <textarea class="form-control" name="social-media" id="social-media"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
+                </div>
+            </div>
+        </fieldset>
 
         <input type="submit" id="complete" class="button" value="Continue" />
     </form>

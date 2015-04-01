@@ -19,12 +19,16 @@ module.exports = {
     app.get('/rcm', function (req, res) {
       res.render('rcm/index');
     });
+    app.get('/rcm/apptest1', function (req, res) {
+      res.render('rcm/apptest1');
+    });
     app.get('/rcm/dummy', function (req, res) {
       res.render('rcm/dummy');
     });
     app.get('/rcm/type-of-fraud', function (req, res) {
       res.render('rcm/type-of-fraud', {'previousPage': 'index'});
     });
+
     app.post('/rcm/identify-suspect', function (req, res) {
       res.render('rcm/identify-suspect', {'previousPage': 'type-of-fraud'});
     });
