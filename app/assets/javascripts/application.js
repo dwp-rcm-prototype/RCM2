@@ -63,7 +63,7 @@
 
         $('form.crm-check input[type="submit"]').on('click', function(e) {
 
-            e.preventDefault();
+            //e.preventDefault();
 
             var form = $(this).parents('form'),
                 validationMessage = '',
@@ -78,7 +78,7 @@
             // loop each validation-group
 
             form.find('.validation-group').removeClass('invalid valid').each(function() {
-                console.log('data-validation-id = ' + $(this).attr('data-validation-id'));
+
                 if ($(this).is(':visible')) {
                     validationType = $(this).attr('data-validation-type');
                     validationMessage = $(this).attr('data-validation-message');
@@ -171,9 +171,8 @@
                             for (var s = 0, sl = sets.length; s < sl; s++) {
                                 groups = sets[s].split(',');
                                 groupOK = true;
-                                console.log('checking sets[' + s + '] = ' + sets[s]);
+
                                 for (var f = 0, fl = groups.length; f < fl; f++) {
-                                    console.log('checking groups[' + f + '] = ' + groups[f]);
                                     if (!$('[data-validation-id="' + groups[f] + '"]').hasClass('valid')) {
                                         groupOK = false;
                                         break;
