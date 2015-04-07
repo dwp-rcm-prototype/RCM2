@@ -107,17 +107,17 @@ GOV.UK Reporting benefit fraud: What type of fraud
                         <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
                         <div class="form-group form-group-day">
-                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="[0-9]*" min="0" max="31"">
+                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="^[0-9]+$" min="0" max="31"">
                             <label for="dob-day" class="form-hint">Day</label>
                         </div>
 
                         <div class="form-group form-group-month">
-                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
+                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="^[0-9]+$" min="0" max="12">
                             <label for="dob-month" class="form-hint">Month</label>
                         </div>
 
                         <div class="form-group form-group-year">
-                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
+                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="^[0-9]+$" min="1900" max="2015">
                             <label for="dob-year" class="form-hint">Year</label>
                         </div>
                     </div>

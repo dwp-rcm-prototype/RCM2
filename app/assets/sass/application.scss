@@ -199,7 +199,7 @@ form.invalid {
 
 
 
-/* for testing purposes only */
+/* for testing purposes only
 
 .valid {
   outline: none;
@@ -217,3 +217,9 @@ form.invalid {
 }
 /*
 */
+
+input.invalid {
+  border:1px solid #DF3034;
+  outline:none;
+
+}

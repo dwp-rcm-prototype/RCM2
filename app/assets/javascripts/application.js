@@ -18,8 +18,19 @@
                 var pattern = (pattern = $(el).attr('data-pattern')) ? pattern : $(el).attr('pattern');
 
                 if (pattern != null) {
-                    var result = $(el).val().match(new RegExp(pattern,"gi"));
-                    return (result!= null && result.length > 0 && result[0] != '') ?el.name : null;
+                    $(el).removeClass('invalid');
+
+                    var regexObj = new RegExp(pattern,"gi");
+                    var result = regexObj.test($(el).val());
+                    //was match and : return (result!= null && result.length > 0 && result[0] != '') ?el.name : null;
+                    if (result) {
+                        return el.name
+                    } else {
+                        if ($(el).val() != '') {
+                            $(el).addClass('invalid');
+                        }
+                        return null
+                    }
                 } else {
                     return ($(el).val() != '') ? el.name : null;
                 }
@@ -60,6 +71,10 @@
             $('.' + sectionOn).show();
         });
 
+        // disable html5 form validation and set all new-style text fields to text so they return val() even if
+        $('form.crm-check').attr('novalidate', 'novalidate').find('input[type="number"]', 'input[type="tel"]', 'input[type="email"]').each(function() {
+            $(this).attr('type', 'text');
+        })
 
         $('form.crm-check input[type="submit"]').on('click', function(e) {
 
@@ -69,7 +84,7 @@
                 validationMessage = '',
                 errorMessages = '',
                 validationType = '',
-                inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="tel"]', 'input[type="email"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
+                inputFields = ['input[type="text"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
                 fieldsWithValidValue,
                 allFields;
 
