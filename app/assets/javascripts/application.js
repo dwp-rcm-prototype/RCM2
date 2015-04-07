@@ -1,6 +1,8 @@
 (function() {
 
     var formCheckValid = function(el) {
+        if (!$(el).is(':visible')) {return null};
+
         var inputType = (el.tagName.toLowerCase() == 'textarea') ? 'textarea' : $(el).attr('type');
 
         switch (inputType) {
@@ -10,8 +12,11 @@
                 break;
             case 'text':
             case 'number':
+            case 'email':
+            case 'tel':
             case 'textarea':
                 var pattern = (pattern = $(el).attr('data-pattern')) ? pattern : $(el).attr('pattern');
+
                 if (pattern != null) {
                     var result = $(el).val().match(new RegExp(pattern,"gi"));
                     return (result!= null && result.length > 0 && result[0] != '') ?el.name : null;
@@ -25,6 +30,15 @@
     };
 
     $(document).ready(function() {
+
+        var formErrorMessages = [];
+        formErrorMessages['fraud-suspect'] = 'Please make sure you enter at least<ol class="list-bullet">' +
+                                                '<li>A name, approximate age (or date of birth) and an address</li>' +
+                                                '<li>A name, approximate age (or date of birth) and some additional info</li>' +
+                                                '<li>A National insurance number and an approximate age (or date of birth)</li>' +
+                                                '<li>A National insurance number and an address</li>' +
+                                                '</ul>';
+
         $('a.previousPage').each(function() {
             $(this).on('click', function() {
                 if (!confirm('Are you sure you want to go back? You may lose form data.\n\nNB: We need to assess the need and functionality of this link')) {
@@ -49,123 +63,139 @@
 
         $('form.crm-check input[type="submit"]').on('click', function(e) {
 
-            //e.preventDefault();
+            e.preventDefault();
 
             var form = $(this).parents('form'),
                 validationMessage = '',
                 errorMessages = '',
                 validationType = '',
-                inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
+                inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="tel"]', 'input[type="email"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
                 fieldsWithValidValue,
-                fields;
+                allFields;
 
-            form.find('div.validation-message').remove();
+            form.removeClass('invalid').find('div.validation-message').remove();
 
             // loop each validation-group
 
-            form.find('.validation-group:visible').each(function() {
+            form.find('.validation-group').removeClass('invalid valid').each(function() {
+                console.log('data-validation-id = ' + $(this).attr('data-validation-id'));
+                if ($(this).is(':visible')) {
+                    validationType = $(this).attr('data-validation-type');
+                    validationMessage = $(this).attr('data-validation-message');
 
-                validationType = $(this).attr('data-validation-type');
-                validationMessage = $(this).attr('data-validation-message');
-
-                var tmp = ['required--one-or-more', 'required--one', 'required--all']
-                if (tmp.indexOf(validationType) != -1) {
-                    fieldsWithValidValue = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function () {
-                        return formCheckValid(this);
-                    }).get());
-                }
-
-                switch (validationType) {
-                    case 'required--one-or-more':
-                    case 'required--one':
-                        if (fieldsWithValidValue.length == 0) {
-                            $(this).addClass('invalid');
-                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
-                        }
-                        break;
-
-                    case 'required--all':
-                        fields = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function() {
-                            return this.name;
+                    var typesToCheck = ['required--one-or-more', 'required--one', 'required--all', 'not-required--one-or-more', 'not-required--one']
+                    if (typesToCheck.indexOf(validationType) != -1) {
+                        fieldsWithValidValue = $.unique($(this).find(inputFields.join(',')).map(function () {
+                            return formCheckValid(this);
                         }).get());
+                    }
 
-                        if (fields.length > fieldsWithValidValue.length) {
-                            $(this).addClass('invalid');
-                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
-                        }
-                        break;
+                    switch (validationType) {
+                        // it's not required, so don't display error messages. But when there is valid data, mark it as such
+                        case 'not-required--one-or-more':
+                        case 'not-required--one':
+                            if (fieldsWithValidValue.length > 0) {
+                                $(this).addClass('valid');
+                            }
+                            break;
+                        case 'required--one-or-more':
+                        case 'required--one':
+                            if (fieldsWithValidValue.length == 0) {
+                                $(this).addClass('invalid');
+                                errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                            } else {
+                                $(this).addClass('valid');
+                            }
+                            break;
 
-                    case 'required--set':
+                        case 'required--all':
+                            allFields = $.unique($(this).find(inputFields.join(',')).map(function () {
+                                return this.name;
+                            }).get());
 
-                        var fields, setOK,
-                            setsOK = false,
-                            sets = $(this).removeClass('invalid').attr('data-validation-set').split('|');
+                            if (allFields.length > fieldsWithValidValue.length) {
+                                $(this).addClass('invalid');
+                                errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                            } else {
+                                $(this).addClass('valid');
+                            }
+                            break;
 
-                        for (var s = 0, sl = sets.length; s < sl; s ++) {
+                        case 'required--set':
 
-                            fields = sets[s].split(',');
-                            setOK = true;
-                            for (var f = 0, fl = fields.length; f < fl; f ++) {
-                                if (!formCheckValid($(this).find('input[name="' + fields[f] + '"]').get(0))) {
-                                    setOK = false;
+                            var fields, setOK,
+                                setsOK = false,
+                                sets = $(this).attr('data-validation-set').split('|');
+
+                            for (var s = 0, sl = sets.length; s < sl; s++) {
+
+                                fields = sets[s].split(',');
+                                setOK = true;
+                                for (var f = 0, fl = fields.length; f < fl; f++) {
+                                    if (!formCheckValid($(this).find('input[name="' + fields[f] + '"]').get(0))) {
+                                        setOK = false;
+                                        break;
+                                    }
+                                }
+                                if (setOK) {
+                                    setsOK = true;
+                                    $(this).addClass('valid');
                                     break;
                                 }
                             }
-                            if (setOK) {
-                                setsOK = true;
-                                break;
+                            if (!setsOK) {
+                                $(this).addClass('invalid');
+                                errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
                             }
-                        }
-                        if (!setsOK) {
-                            $(this).addClass('invalid');
-                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
-                        }
-                        break;
+                            break;
+                    }
                 }
             });
 
             if (errorMessages != '') {
                 e.preventDefault();
                 form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
-            }
+            } else {
 
 
-            /* Not ready yet
-            // all the validate-groups have been checked - now check the form
-            if (formValidationType = form.attr('data-form-validation-type')) {
-                switch (formValidationType) {
-                    case 'required--set':
-                        var groups, groupOK,
-                            setsOK = false,
-                            sets = $(form).removeClass('invalid').attr('data-form-validation-set').split('|');
 
-                        console.log(sets);
+                // all the validate-groups have been checked - now check the form
+                var formValidationType;
+                if (formValidationType = form.attr('data-form-validation-type')) {
+                    switch (formValidationType) {
+                        case 'required--set':
+                            var groups, groupOK,
+                                setsOK = false,
+                                sets = form.removeClass('valid invalid').attr('data-form-validation-set').split('|');
 
-                        for (var s = 0, sl = sets.length; s < sl; s ++) {
-
-                            groups = sets[s].split(',');
-                            groupOK = true;
-                            for (var f = 0, fl = groups.length; f < fl; f ++) {
-                                if (true ) {
-                                    groupOK = false;
+                            for (var s = 0, sl = sets.length; s < sl; s++) {
+                                groups = sets[s].split(',');
+                                groupOK = true;
+                                console.log('checking sets[' + s + '] = ' + sets[s]);
+                                for (var f = 0, fl = groups.length; f < fl; f++) {
+                                    console.log('checking groups[' + f + '] = ' + groups[f]);
+                                    if (!$('[data-validation-id="' + groups[f] + '"]').hasClass('valid')) {
+                                        groupOK = false;
+                                        break;
+                                    }
+                                }
+                                if (groupOK) {
+                                    setsOK = true;
                                     break;
                                 }
                             }
-                            if (groupOK) {
-                                setsOK = true;
-                                break;
+                            if (!setsOK) {
+                                e.preventDefault();
+                                var formErrorMessage = formErrorMessages[form.attr('data-form-validation-message').replace('$message--', '')];
+                                form.addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
+                                return false;
                             }
-                        }
-                        if (!setsOK) {
-                            form.addClass('invalid');
-                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
-                        }
-                        break;
 
-                    break;
+                            break;
+                    }
                 }
             }
-            */
+
 
             // MANUAL OVERRIDES HERE
 
@@ -183,7 +213,6 @@
                 }
             }
 
-            return true;
         });
     });
 })();

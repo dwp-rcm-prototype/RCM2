@@ -196,3 +196,24 @@ form.invalid {
   }
   */
 }
+
+
+
+/* for testing purposes only */
+
+.valid {
+  outline: none;
+}
+.valid {
+  border-left: solid 4px green;
+  padding-left: 10px;
+  margin-left: -14px;
+}
+@media (min-width: 641px) {
+  .valid {
+    padding-left: 14px;
+    margin-left: -18px;
+  }
+}
+/*
+*/

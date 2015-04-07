@@ -27,12 +27,14 @@ GOV.UK Reporting benefit fraud: What type of fraud
         Who do you suspect is committing benefit fraud?
     </h1>
 
-    <form method="post" action="complete" id="form-identify" class="crm-check" data-form-validation-type="required--set" data-form-validation-set="nino,age" x="nino,name|nino,age|nino,address|name,age,address|name,age,extra-info" data-form-validation-message="$form--error-message" XXXnovalidate="novalidate">
+    <form method="post" action="complete" id="form-identify" class="crm-check" data-form-validation-type="required--set" data-form-validation-set="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect" XXX_novalidate="novalidate">
+
+<!-- NAME -->
 
         <fieldset class="fieldset">
             <legend>If you know their first and/ or last name, please enter it here:</legend>
 
-            <div class="validation-group" data-form-validate-id="name">
+            <div class="validation-group" data-validation-id="name" data-validation-type="not-required--one-or-more">
                 <div class="form-group">
                     <label class="form-label" for="first-name">First name(s)</label>
                     <div class="validation-wrapper">
@@ -45,7 +47,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                         <input class="form-control" id="last-name" name="last-name" type="text">
                     </div>
                 </div>
-            </fieldset>
+            </div>
 
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
                 <div class="form-group inline" id="fieldset--alternative-name" data-target="section--alternative-name">
@@ -62,7 +64,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
 
             <div class="section--alternative-name section--alternative-name__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
+                <div class="panel-indent validation-group" data-validation-id="alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
                     <div class="form-group">
                         <label class="form-label" for="alternative-first-name">First name(s)</label>
                         <div class="validation-wrapper">
@@ -79,7 +81,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
         </fieldset>
 
-
+<!-- AGE -->
 
         <fieldset class="fieldset inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's date of birth" >
@@ -98,40 +100,41 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
 
 
-            <div data-form-validate-id="age">
-                <div class="section--dob section--dob__yes display-none-js">
-                    <div class="panel-indent validation-group" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
-                        <div class="form-date">
-                            <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
-                            <div class="form-group form-group-day">
-                                <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="[0-9]*" min="0" max="31"">
-                                <label for="dob-day" class="form-hint">Day</label>
-                            </div>
+            <div class="section--dob section--dob__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="dob" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
+                    <div class="form-date">
+                        <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
-                            <div class="form-group form-group-month">
-                                <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
-                                <label for="dob-month" class="form-hint">Month</label>
-                            </div>
-
-                            <div class="form-group form-group-year">
-                                <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
-                                <label for="dob-year" class="form-hint">Year</label>
-                            </div>
+                        <div class="form-group form-group-day">
+                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="[0-9]*" min="0" max="31"">
+                            <label for="dob-day" class="form-hint">Day</label>
                         </div>
-                    </div>
-                </div>
-                <div class="section--dob section--dob__no display-none-js">
-                    <div class="panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
-                        <div class=form-group>
-                            <label class="form-label" for="dob-approx">Enter their approximate age</label>
-                            <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="[0-9]*" min="0" max="120">
+
+                        <div class="form-group form-group-month">
+                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="[0-9]*" min="0" max="12">
+                            <label for="dob-month" class="form-hint">Month</label>
+                        </div>
+
+                        <div class="form-group form-group-year">
+                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="[0-9]*" min="1900" max="2015">
+                            <label for="dob-year" class="form-hint">Year</label>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="section--dob section--dob__no display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="age" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
+                    <div class=form-group>
+                        <label class="form-label" for="dob-approx">Enter their approximate age</label>
+                        <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="[0-9]*" min="0" max="120">
+                    </div>
+                </div>
+            </div>
+
         </fieldset>
 
+<!-- ADDRESS -->
 
         <fieldset class="fieldset inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's address" >
@@ -149,8 +152,8 @@ GOV.UK Reporting benefit fraud: What type of fraud
                 </div>
             </div>
 
-            <div class="section--address section--address__yes display-none-js" data-form-validate-id="address">
-                <div class="panel-indent validation-group" data-validation-type="required--set" data-validation-set="address,postcode|address,address-line-2,town" data-validation-message="Please enter either number and postcode or number, street and town">
+            <div class="section--address section--address__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="address" data-validation-type="required--set" data-validation-set="address,postcode|address,address-line-2,town" data-validation-message="Please enter either number and postcode or number, street and town">
                     <div class="form-group">
                         <label class="form-label" for="address">Building name or number</label>
                         <input class="form-control" id="address" name="address" type="text">
@@ -173,6 +176,8 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
         </fieldset>
 
+<!-- NATIONAL INSURANCE NUMBER -->
+
         <fieldset class="fieldset inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's national insurance number" >
                 <div class="form-group form-group-compound" id="fieldset--nino" data-target="section--nino">
@@ -188,8 +193,8 @@ GOV.UK Reporting benefit fraud: What type of fraud
                 </div>
             </div>
 
-            <div class="section--nino section--nino__yes display-none-js" data-form-validate-id="nino">
-                <div class="panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
+            <div class="section--nino section--nino__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
                     <div class="form-group">
                         <label class="form-label" for="ni-number">Please enter their national insurance number</label>
                         <input class="form-control" id="ni-number" name="ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$">
@@ -199,6 +204,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
         </fieldset>
 
+<!-- ADDITIONAL INFO -->
 
         <fieldset class="fieldset inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if have any additional contact information" >
@@ -214,24 +220,24 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     </label>
                 </div>
             </div>
-            <div class="section--additional-info section--additional-info__yes display-none-js" data-form-validate-id="extra-info">
-                <div class="panel-indent validation-group" data-validation-type="required--one-or-more" data-validation-message="Please enter some additional information">
+            <div class="section--additional-info section--additional-info__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="additional-info" data-validation-type="required--one-or-more" data-validation-message="Please enter some additional information">
                     <div class="form-group float-none">
                         <div class="form-group">
                             <label class="form-label" for="telephone-number__home">Home telephone number</label>
-                            <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="text">
+                            <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="telephone-number__mobile">Mobile telephone number</label>
-                            <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="text">
+                            <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="telephone-number__other">Any other telephone numbers</label>
-                            <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="text">
+                            <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="email-address">Email address </label>
-                            <input class="form-control" name="email-address" id="email-address" type="text">
+                            <input class="form-control" name="email-address" id="email-address" type="email" data-pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="social-media">Any social media details</label>
