@@ -107,17 +107,17 @@ GOV.UK Reporting benefit fraud: What type of fraud
                         <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
                         <div class="form-group form-group-day">
-                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="^[0-9]+$" min="0" max="31"">
+                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="^\d{1,2}$" min="0" max="31"">
                             <label for="dob-day" class="form-hint">Day</label>
                         </div>
 
                         <div class="form-group form-group-month">
-                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="^[0-9]+$" min="0" max="12">
+                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="^\d{1,2}$" min="0" max="12">
                             <label for="dob-month" class="form-hint">Month</label>
                         </div>
 
                         <div class="form-group form-group-year">
-                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="^[0-9]+$" min="1900" max="2015">
+                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="^\d{4}$" min="1900" max="2015">
                             <label for="dob-year" class="form-hint">Year</label>
                         </div>
                     </div>
@@ -127,7 +127,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                 <div class="panel-indent validation-group" data-validation-id="age" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
                     <div class=form-group>
                         <label class="form-label" for="dob-approx">Enter their approximate age</label>
-                        <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="[0-9]*" min="0" max="120">
+                        <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="^\d{2,3}$" min="10" max="120" data-field-error="Please enter a valid age (between 10 and 120)">
                     </div>
                 </div>
             </div>
@@ -170,7 +170,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="postcode">Postcode</label>
-                        <input class="form-control width__half" id="postcode" name="postcode" type="text" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$">
+                        <input class="form-control width__half" id="postcode" name="postcode" type="text" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$" data-field-error="Please enter a valid postcode">
                     </div>
                 </div>
             </div>
@@ -197,7 +197,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                 <div class="panel-indent validation-group" data-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
                     <div class="form-group">
                         <label class="form-label" for="ni-number">Please enter their national insurance number</label>
-                        <input class="form-control" id="ni-number" name="ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$">
+                        <input class="form-control" id="ni-number" name="ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid national insurance number, for example: QQ123456C">
                         <p class="form-hint display-block">For example, QQ 12 34 56 C</p>
                     </div>
                 </div>
@@ -225,19 +225,19 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     <div class="form-group float-none">
                         <div class="form-group">
                             <label class="form-label" for="telephone-number__home">Home telephone number</label>
-                            <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$">
+                            <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="telephone-number__mobile">Mobile telephone number</label>
-                            <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$">
+                            <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="telephone-number__other">Any other telephone numbers</label>
-                            <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$">
+                            <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid phone number">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="email-address">Email address </label>
-                            <input class="form-control" name="email-address" id="email-address" type="email" data-pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/">
+                            <input class="form-control" name="email-address" id="email-address" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="social-media">Any social media details</label>

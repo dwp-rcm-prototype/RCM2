@@ -17,22 +17,23 @@
             case 'textarea':
                 var pattern = (pattern = $(el).attr('data-pattern')) ? pattern : $(el).attr('pattern');
 
-                if (pattern != null) {
-                    $(el).removeClass('invalid');
+                if (pattern == null) {
+                    return ($(el).val() != '') ? el.name : null;
+                } else {
 
+                    $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
                     var regexObj = new RegExp(pattern,"gi");
                     var result = regexObj.test($(el).val());
-                    //was match and : return (result!= null && result.length > 0 && result[0] != '') ?el.name : null;
+
                     if (result) {
                         return el.name
                     } else {
                         if ($(el).val() != '') {
                             $(el).addClass('invalid');
+                            $(el).after('<p class="form-hint display-block">' + $(el).attr('data-field-error') + '</p>');
                         }
                         return null
                     }
-                } else {
-                    return ($(el).val() != '') ? el.name : null;
                 }
                 break;
             default:
@@ -42,6 +43,7 @@
 
     $(document).ready(function() {
 
+            // move this to the html page
         var formErrorMessages = [];
         formErrorMessages['fraud-suspect'] = 'Please make sure you enter at least<ol class="list-bullet">' +
                                                 '<li>A name, approximate age (or date of birth) and an address</li>' +
@@ -72,7 +74,7 @@
         });
 
         // disable html5 form validation and set all new-style text fields to text so they return val() even if
-        $('form.crm-check').attr('novalidate', 'novalidate').find('input[type="number"]', 'input[type="tel"]', 'input[type="email"]').each(function() {
+        $('form.crm-check').attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function() {
             $(this).attr('type', 'text');
         })
 
@@ -149,7 +151,7 @@
                                 for (var f = 0, fl = fields.length; f < fl; f++) {
                                     if (!formCheckValid($(this).find('input[name="' + fields[f] + '"]').get(0))) {
                                         setOK = false;
-                                        break;
+                                        //break;
                                     }
                                 }
                                 if (setOK) {
