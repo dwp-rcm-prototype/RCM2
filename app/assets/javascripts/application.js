@@ -11,7 +11,8 @@
             allFields: '',
             validationMessage: '',
             errorCount: 0,
-            errorMessages: ''
+            errorMessages: '',
+            threeStrikesCount: 0
         },
 
         init: function (formClassName) {
@@ -93,7 +94,6 @@
                 var regexObj, result,
                     pattern = $(el).attr('data-pattern');
                 pattern = (pattern != null) ? pattern : $(el).attr('pattern');
-                console.log('pattern = ' + pattern)
                 if (pattern == null) {
                     return ($(el).val() !== '') ? el.name : null;
                 } else {
@@ -106,7 +106,10 @@
                     } else {
                         if ($(el).val() !== '') {
                             $(el).addClass('invalid');
-                            $(el).after('<p class="form-hint display-block">' + $(el).attr('data-field-error') + '</p>');
+                            var tooltip = $(el).attr('data-field-error');
+                            if (tooltip != null) {
+                                $(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
+                            }
                         }
                         return null;
                     }
@@ -227,11 +230,16 @@
                 formErrorMessage,
                 formErrorMessages = [];
 
+            // move to external data file
             formErrorMessages['fraud-suspect'] = 'Please make sure you enter at least<ol class="list-bullet">' +
                 '<li>A name, approximate age (or date of birth) and an address</li>' +
                 '<li>A name, approximate age (or date of birth) and some additional info</li>' +
                 '<li>A National insurance number and an approximate age (or date of birth)</li>' +
                 '<li>A National insurance number and an address</li>' +
+                '</ul>';
+            formErrorMessages['fraud-suspect__3strikes'] = 'Having trouble? Call us on 0800 854 440.<br><br>Otherwise please make sure you enter at least<ol class="list-bullet">' +
+                '<li>A name, approximate age (or date of birth) and either an address or some additional info</li>' +
+                '<li>A National insurance number and either an approximate age (or date of birth) or an address</li>' +
                 '</ul>';
 
 
@@ -261,8 +269,14 @@
                     }
                     if (!setsOK) {
                         e.preventDefault();
-                        formErrorMessage = formErrorMessages[$(rcm.form).attr('data-form-validation-message').replace('$message--', '')];
+                        var messageIdentifier = $(rcm.form).attr('data-form-validation-message').replace('$message--', '');
+                        formErrorMessage = formErrorMessages[messageIdentifier];
+                        rcm.threeStrikesCount += 1;
+                        if (rcm.threeStrikesCount >= 3) {
+                            formErrorMessage = (formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : formErrorMessages[messageIdentifier + '__3strikes'];
+                        }
                         $(rcm.form).addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
+
                         return false;
                     }
 

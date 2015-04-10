@@ -107,17 +107,17 @@ GOV.UK Reporting benefit fraud: What type of fraud
                         <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
                         <div class="form-group form-group-day">
-                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="^\d{1,2}$" min="0" max="31"">
+                            <input class="form-control" id="dob-day" name="dob-day" type="number" pattern="^([1-9]|0[1-9]|[12][0-9]|3[0-1])$" min="1" max="31" maxlength="2">
                             <label for="dob-day" class="form-hint">Day</label>
                         </div>
 
                         <div class="form-group form-group-month">
-                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="^\d{1,2}$" min="0" max="12">
+                            <input class="form-control" id="dob-month" name="dob-month" type="number" pattern="^([1-9]|0[1-9]|1[0-2])$" min="0" max="12" maxlength="2">
                             <label for="dob-month" class="form-hint">Month</label>
                         </div>
 
                         <div class="form-group form-group-year">
-                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="^\d{4}$" min="1900" max="2015">
+                            <input class="form-control" id="dob-year" name="dob-year" type="number" pattern="^(19[0-9][0-9]|200[0-5])$" min="1900" max="2005">
                             <label for="dob-year" class="form-hint">Year</label>
                         </div>
                     </div>
@@ -127,7 +127,8 @@ GOV.UK Reporting benefit fraud: What type of fraud
                 <div class="panel-indent validation-group" data-validation-id="age" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
                     <div class=form-group>
                         <label class="form-label" for="dob-approx">Enter their approximate age</label>
-                        <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="^\d{2,3}$" min="10" max="120" data-field-error="Please enter a valid age (between 10 and 120)">
+                        <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)">
+
                     </div>
                 </div>
             </div>
@@ -254,6 +255,11 @@ GOV.UK Reporting benefit fraud: What type of fraud
     <a href="{{previousPage}}" class="previousPage">Back</a>
 
 </main>
+
+
+
+
+
 
 {{/content}}
 
