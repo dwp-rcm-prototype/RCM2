@@ -1,7 +1,8 @@
 (function () {
     "use strict";
 
-    var $, rcm, ValidationObject = {
+    var rcm,
+        ValidationObject = {
 
         settings: {
             form: '',
@@ -73,13 +74,12 @@
 
         },
 
-        formCheckValid: function (el) {
+        fieldValid: function (el) {
             if (!$(el).is(':visible')) {
                 return null;
             }
 
-            var pattern, regexObj, result,
-                inputType = (el.tagName.toLowerCase() === 'textarea') ? 'textarea' : $(el).attr('type');
+            var inputType = (el.tagName.toLowerCase() === 'textarea') ? 'textarea' : $(el).attr('type');
 
             switch (inputType) {
             case 'radio':
@@ -90,9 +90,11 @@
             //case 'email':
             //case 'tel':
             case 'textarea':
-                pattern = $(el).attr('data-pattern');
-                pattern = (pattern !== null) ? pattern : $(el).attr('pattern');
-                if (pattern === null) {
+                var regexObj, result,
+                    pattern = $(el).attr('data-pattern');
+                pattern = (pattern != null) ? pattern : $(el).attr('pattern');
+                console.log('pattern = ' + pattern)
+                if (pattern == null) {
                     return ($(el).val() !== '') ? el.name : null;
                 } else {
                     $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
@@ -119,7 +121,7 @@
             if (el.tagName.toUpperCase() === 'INPUT') {
                 $(el).addClass('invalid');
                 //.on('click focusout', function () {
-                //        if (ValidationObject.formCheckValid(el) != null) {
+                //        if (ValidationObject.fieldValid(el) != null) {
                 //            $(el).removeClass('invalid');
                 //        }
                 //    });
@@ -127,7 +129,7 @@
                 $(el).addClass('invalid');
                 //.find('input').each(function () {
                 //        $(this).on('click focusout', function () {
-                //            if (formCheckValid(this) != null) {
+                //            if (fieldValid(this) != null) {
                 //                $(this).removeClass('invalid');//.parents('.validation-group.invalid');
                 //            }
                 //        });
@@ -142,7 +144,6 @@
                 rcm.validationMessage = $(el).attr('data-validation-message');
 
                 var fields, setOK, setsOK, sets,
-                    s, sl, f, fl,
                     validationType = $(el).attr('data-validation-type'),
                     typesToCheck = ['required--one-or-more', 'required--one', 'required--all', 'not-required--one-or-more', 'not-required--one'],
                     fieldsWithValidValue = [],
@@ -151,7 +152,7 @@
 
                 if (typesToCheck.indexOf(validationType) !== -1) {
                     fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
-                        return ValidationObject.formCheckValid(this);
+                        return ValidationObject.fieldValid(this);
                     }).get());
                 }
 
@@ -190,12 +191,12 @@
                     setsOK = false;
                     sets = $(el).attr('data-validation-set').split('|');
 
-                    for (s = 0, sl = sets.length; s < sl; s += 1) {
+                    for (var s = 0, sl = sets.length; s < sl; s += 1) {
 
                         fields = sets[s].split(',');
                         setOK = true;
-                        for (f = 0, fl = fields.length; f < fl; f += 1) {
-                            if (!ValidationObject.formCheckValid($(el).find('input[name="' + fields[f] + '"]').get(0))) {
+                        for (var f = 0, fl = fields.length; f < fl; f += 1) {
+                            if (!ValidationObject.fieldValid($(el).find('input[name="' + fields[f] + '"]').get(0))) {
                                 setOK = false;
                                 //don't break - keep checking the fields
                             }
@@ -222,7 +223,6 @@
 
         validateFormSets: function (e) {
             var groups, groupOK, setsOK, sets,
-                s, sl, f, fl,
                 formValidationType,
                 formErrorMessage,
                 formErrorMessages = [];
@@ -244,11 +244,11 @@
                     setsOK = false;
                     sets = $(rcm.form).attr('data-form-validation-set').split('|');
 
-                    for (s = 0, sl = sets.length; s < sl; s += 1) {
+                    for (var s = 0, sl = sets.length; s < sl; s += 1) {
                         groups = sets[s].split(',');
                         groupOK = true;
 
-                        for (f = 0, fl = groups.length; f < fl; f += 1) {
+                        for (var f = 0, fl = groups.length; f < fl; f += 1) {
                             if (!$('[data-validation-id="' + groups[f] + '"]').hasClass('valid')) {
                                 groupOK = false;
                                 break;
@@ -306,7 +306,7 @@
                 }
             });
         });
-    }
+    };
 
     $(document).ready(function () {
         pageSetup();
