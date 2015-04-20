@@ -1,0 +1,239 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: What type of fraud
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Reporting benefit fraud</span>
+        What can you tell us about their partner?
+    </h1>
+
+    <form method="post" action="complete/" id="form-partner" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="" data-form-validation-message="">
+
+        <!-- NAME -->
+
+        <fieldset class="fieldset">
+            <legend>If you know the partner's first and/ or last name, please enter it here:</legend>
+
+            <div class="validation-group" data-validation-id="name" data-validation-type="not-required--one-or-more">
+                <div class="form-group">
+                    <label class="form-label" for="partner-first-name">First name(s)</label>
+                    <div class="validation-wrapper">
+                        <input class="form-control" id="partner-first-name" name="partner-first-name" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="partner-last-name">And/ or last name</label>
+                    <div class="validation-wrapper">
+                        <input class="form-control" id="partner-last-name" name="partner-last-name" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
+                <div class="form-group inline" id="fieldset--partner-alternative-name" data-target="section--partner-alternative-name">
+                    <p class="legend">Do you know this person by another name?</p>
+                    <label class="block-label" for="partner-alternative-name__yes">
+                        <input id="partner-alternative-name__yes" type="radio" class="toggle-section" name="helper--partner-alternative-name" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="partner-alternative-name__no">
+                        <input id="partner-alternative-name__no" type="radio" class="toggle-section" name="helper--partner-alternative-name" value="No">
+                        No
+                    </label>
+                </div>
+            </div>
+
+            <div class="section--partner-alternative-name section--partner-alternative-name__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="partner-alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
+                    <div class="form-group">
+                        <label class="form-label" for="partner-alternative-first-name">First name(s)</label>
+                        <div class="validation-wrapper">
+                            <input class="form-control" id="partner-alternative-first-name" name="partner-alternative-first-name" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="partner-alternative-last-name">And/ or last name</label>
+                        <div class="validation-wrapper">
+                            <input class="form-control" id="partner-alternative-last-name" name="partner-alternative-last-name" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- AGE -->
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's date of birth" >
+                <div class="form-group form-group-compound" id="fieldset--partner-dob" data-target="section--partner-dob">
+                    <legend>Do you know the date of birth for the partner?</legend>
+
+                    <label class="block-label" for="partner-dob__yes">
+                        <input id="partner-dob__yes" class="toggle-section" type="radio" name="helper--partner-dob" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="partner-dob__no">
+                        <input id="partner-dob__no" class="toggle-section" type="radio" name="helper--partner-dob" value="No">
+                        No
+                    </label>
+                </div>
+            </div>
+
+
+
+            <div class="section--partner-dob section--partner-dob__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="partner-dob" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
+                    <div class="form-date">
+                        <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
+
+                        <div class="form-group form-group-day">
+                            <input class="form-control" id="partner-dob-day" name="partner-dob-day" type="number" pattern="^([1-9]|0[1-9]|[12][0-9]|3[0-1])$" min="1" max="31" maxlength="2">
+                            <label for="partner-dob-day" class="form-hint">Day</label>
+                        </div>
+
+                        <div class="form-group form-group-month">
+                            <input class="form-control" id="partner-dob-month" name="partner-dob-month" type="number" pattern="^([1-9]|0[1-9]|1[0-2])$" min="0" max="12" maxlength="2">
+                            <label for="partner-dob-month" class="form-hint">Month</label>
+                        </div>
+
+                        <div class="form-group form-group-year">
+                            <input class="form-control" id="partner-dob-year" name="partner-dob-year" type="number" pattern="^(19[0-9][0-9]|200[0-5])$" min="1900" max="2005">
+                            <label for="partner-dob-year" class="form-hint">Year</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section--partner-dob section--partner-dob__no display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="partner-age" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
+                    <div class=form-group>
+                        <label class="form-label" for="partner-dob-approx">Enter their approximate age</label>
+                        <input class="form-control required" id="partner-dob-approx" name="partner-dob-approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)">
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <!-- ADDRESS -->
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if they live at the same address" >
+                <div class="form-group form-group-compound" id="fieldset--partner-address" data-target="section--partner-address">
+                    <legend>Do they live at the same address?</legend>
+
+                    <label class="block-label" for="partner-address__yes">
+                        <input id="partner-address__yes" class="toggle-section" type="radio" name="helper--partner-same-address" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="partner-address__no-yes">
+                        <input id="partner-address__no-yes" class="toggle-section" type="radio" name="helper--partner-same-address" value="No__address-yes">
+                        No, but I know the address
+                    </label>
+                    <label class="block-label" for="partner-address__no-no">
+                        <input id="partner-address__no-no" class="toggle-section" type="radio" name="helper--partner-same-address" value="No__address-no">
+                        No, and I don't know the address
+                    </label>
+                    <label class="block-label" for="partner-address__unknown">
+                        <input id="partner-address__unknown" class="toggle-section" type="radio" name="helper--partner-same-address" value="Unknown">
+                        Don't know
+                    </label>
+                </div>
+            </div>
+
+            <div class="section--address section--partner-address__no-yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="partner-address" data-validation-type="required--set" data-validation-set="address,address-line-2,postcode|address-line-2,town" data-validation-message="Please enter at least either number and postcode or street and town">
+                    <div class="form-group">
+                        <label class="form-label" for="partner-address">Building name or number</label>
+                        <input class="form-control" id="partner-address" name="partner-address" type="text">
+                        <label class="form-label" for="partner-address-line-2">Street</label>
+                        <input class="form-control" id="partner-address-line-2" name="partner-address-line-2" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="partner-town">Town or city</label>
+                        <input class="form-control" id="partner-town" name="partner-town" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="partner-county">County</label>
+                        <input class="form-control" id="partner-county" name="partner-county" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="partner-postcode">Postcode</label>
+                        <input class="form-control width__half" id="partner-postcode" name="partner-postcode" type="text" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {0,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$" data-field-error="Please enter a valid postcode">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- NATIONAL INSURANCE NUMBER -->
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's national insurance number" >
+                <div class="form-group form-group-compound" id="fieldset--partner-nino" data-target="section--partner-nino">
+                    <legend>Do you know the national insurance number for the partner?</legend>
+                    <label class="block-label" for="partner-nino__yes">
+                        <input id="partner-nino__yes" type="radio" class="toggle-section" name="helper--partner-nino" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="partner-nino__no">
+                        <input id="partner-nino__no" type="radio" class="toggle-section" name="helper--partner-nino" value="No">
+                        No
+                    </label>
+                </div>
+            </div>
+
+            <div class="section--partner-nino section--partner-nino__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="partner-nino" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
+                    <div class="form-group">
+                        <label class="form-label" for="partner-ni-number">Please enter their national insurance number</label>
+                        <input class="form-control" id="partner-ni-number" name="partner-ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid national insurance number.<br>For example: QQ123456C">
+                        <p class="form-hint display-block sticky" data-default-text="For example, QQ 12 34 56 C">For example, QQ123456C</p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- ADDITIONAL INFO -->
+
+
+<br>
+
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-id="partner-additional-information" data-validation-type="not-required" data-validation-message="Please enter some additional information">
+                <legend>Do you have any additional information?</legend>
+                <div class="form-group">
+                    <label class="form-label" for="partner-additional-information">If so, please enter it here</label>
+                    <textarea class="form-control" id="partner-additional-information" rows="5" name="partner-additional-information"></textarea>
+                </div>
+                </div>
+        </fieldset>
+
+
+        <input type="submit" id="complete" class="button" value="Continue" />
+    </form>
+
+    <a href="{{previousPage}}" class="previousPage">Back</a>
+
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}
