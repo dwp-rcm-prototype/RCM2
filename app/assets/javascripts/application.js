@@ -1,13 +1,22 @@
 (function () {
     "use strict";
 
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function(obj, start) {
+            for (var i = (start || 0), j = this.length; i < j; i++) {
+                if (this[i] === obj) { return i; }
+            }
+            return -1;
+        }
+    };
+
     var rcm,
         ValidationObject = {
 
         settings: {
             form: '',
             submitButton: '',
-            inputFields: ['input[type="text"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
+            inputFields: ['input[type="text"]', 'input[type="number"]', 'input[type="tel"]', 'input[type="email"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
             allFields: '',
             validationMessage: '',
             errorCount: 0,
@@ -49,13 +58,18 @@
         },
 
         disableHTML5validation: function (formClassName) {
-            $('form.' + formClassName).attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function () {
-                $(this).attr('type', 'text');
-            });
+            // disable html5 form checking (if we have js)
+            if (!$('html').hasClass('lte-ie8')) { // we can't have attr('novalidate) for IE7 - see https://www.google.co.uk/search?q=jquery%20ie7%20member%20not%20found - but this line is not required for IE8 and less anyway.
+                $('form.' + formClassName).attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function () {
+                    $(this).attr('type', 'text');
+                });
+            }
         },
 
 
         validateForm: function (e) {
+
+            //e.preventDefault();
 
             ValidationObject.reset();
 
@@ -87,20 +101,21 @@
             case 'checkbox':
                 return (el.checked) ? el.name : null;
             case 'text':
-            //case 'number':
-            //case 'email':
-            //case 'tel':
+            case 'number':
+            case 'email':
+            case 'tel':
             case 'textarea':
                 var regexObj, result,
+                    value = el.value,
                     pattern = $(el).attr('data-pattern');
                 pattern = (pattern != null) ? pattern : $(el).attr('pattern');
+
                 if (pattern == null) {
-                    return ($(el).val() !== '') ? el.name : null;
+                    return (value !== '') ? el.name : null;
                 } else {
                     $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
                     regexObj = new RegExp(pattern, "gi");
-                    result = regexObj.test($(el).val());
-
+                    result = regexObj.test(value);
                     if (result) {
                         return el.name;
                     } else {
@@ -143,7 +158,9 @@
         },
 
         validateGroup: function (el) {
+
             if ($(el).is(':visible')) {
+
                 rcm.validationMessage = $(el).attr('data-validation-message');
 
                 var fields, setOK, setsOK, sets,
@@ -154,11 +171,11 @@
 
 
                 if (typesToCheck.indexOf(validationType) !== -1) {
+
                     fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
                         return ValidationObject.fieldValid(this);
                     }).get());
                 }
-
 
                 switch (validationType) {
                 // it's not required, so don't display error messages. But when there is valid data, mark it as such
@@ -305,9 +322,6 @@
                 }
             }
         }
-
-
-
 
     };
 

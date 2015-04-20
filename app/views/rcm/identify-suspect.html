@@ -27,7 +27,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
         Who do you suspect is committing benefit fraud?
     </h1>
 
-    <form method="post" action="complete" id="form-identify" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="complete/" id="form-identify" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect">
 
 <!-- NAME -->
 
@@ -128,7 +128,6 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     <div class=form-group>
                         <label class="form-label" for="dob-approx">Enter their approximate age</label>
                         <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)">
-
                     </div>
                 </div>
             </div>
@@ -154,7 +153,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
 
             <div class="section--address section--address__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="address" data-validation-type="required--set" data-validation-set="address,postcode|address,address-line-2,town" data-validation-message="Please enter either number and postcode or number, street and town">
+                <div class="panel-indent validation-group" data-validation-id="address" data-validation-type="required--set" data-validation-set="address,address-line-2,postcode|address-line-2,town" data-validation-message="Please enter at least either number and postcode or street and town">
                     <div class="form-group">
                         <label class="form-label" for="address">Building name or number</label>
                         <input class="form-control" id="address" name="address" type="text">
@@ -171,7 +170,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="postcode">Postcode</label>
-                        <input class="form-control width__half" id="postcode" name="postcode" type="text" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$" data-field-error="Please enter a valid postcode">
+                        <input class="form-control width__half" id="postcode" name="postcode" type="text" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {0,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$" data-field-error="Please enter a valid postcode">
                     </div>
                 </div>
             </div>

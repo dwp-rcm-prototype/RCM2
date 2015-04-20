@@ -157,9 +157,9 @@ input[type="text"]+input[type="text"],
 input[type="text"]+label{
   margin-top:8px
 }
-.margin-vertical-0px {
+.panel-indent .form-date > p {
   margin-top:0;
-  margin-bottom:0;
+  margin-bottom:5px;
 }
 
 .form-control.width__half {
@@ -222,4 +222,39 @@ input.invalid {
   border:1px solid #DF3034;
   outline:none;
 
+}
+
+/* Overrides to allow for IE6 - 8 to work */
+.lte-ie8 {
+
+  main#content {
+    margin: 0 auto;
+  }
+  .button {
+    margin:3px 3px 1px 3px;
+    border-bottom: 2px solid #353535;
+    outline:none;
+  }
+  .button:focus {
+    border: 3px solid #ffbf47;
+    outline:none;
+    margin:0;
+  }
+  .block-label {
+    float: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .block-label,
+  .block-label:hover {
+    zoom:1;
+  }
+
+  .form-group {
+    float:none;
+  }
+  .form-date .form-group {
+    float: left;
+  }
 }
