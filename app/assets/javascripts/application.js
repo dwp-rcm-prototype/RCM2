@@ -105,17 +105,19 @@
             case 'email':
             case 'tel':
             case 'textarea':
-                var regexObj, result, defaultText,
-                value = el.value,
+                var regexObj, result, tooltip, defaultTooltip,
+                    value = el.value,
                     pattern = $(el).attr('data-pattern');
+
                 pattern = (pattern != null) ? pattern : $(el).attr('pattern');
 
                 if (pattern == null) {
                     return (value !== '') ? el.name : null;
                 } else {
-                    if ($(el).next('p.sticky')  != null) {
-                        defaultText = $(el).next('p.sticky').attr('data-default-text')
-                        $(el).removeClass('invalid').next('p.sticky').html(defaultText);
+
+                    if ($(el).next('p.sticky').get(0) != null) {
+                        defaultTooltip = $(el).next('p.sticky').attr('data-default-text')
+                        $(el).removeClass('invalid').next('p.sticky').html(defaultTooltip);
                     } else {
                         $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
                     }
@@ -126,11 +128,15 @@
                     } else {
                         if ($(el).val() !== '') {
                             $(el).addClass('invalid');
-                            var tooltip = $(el).attr('data-field-error');
+
+                            tooltip = $(el).attr('data-field-error');
+console.log(tooltip);
+console.log($(el).next('p.sticky').get(0));
                             if (tooltip != null) {
-                                if ($(el).next('p.sticky') != null) {
+                                if ($(el).next('p.sticky').get(0) != null) {
                                     $(el).next('p.sticky').html(tooltip);
                                 } else {
+                                    console.log('in here');
                                     $(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
                                 }
                             }
