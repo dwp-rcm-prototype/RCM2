@@ -105,15 +105,20 @@
             case 'email':
             case 'tel':
             case 'textarea':
-                var regexObj, result,
-                    value = el.value,
+                var regexObj, result, defaultText,
+                value = el.value,
                     pattern = $(el).attr('data-pattern');
                 pattern = (pattern != null) ? pattern : $(el).attr('pattern');
 
                 if (pattern == null) {
                     return (value !== '') ? el.name : null;
                 } else {
-                    $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
+                    if ($(el).next('p.sticky')  != null) {
+                        defaultText = $(el).next('p.sticky').attr('data-default-text')
+                        $(el).removeClass('invalid').next('p.sticky').html(defaultText);
+                    } else {
+                        $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
+                    }
                     regexObj = new RegExp(pattern, "gi");
                     result = regexObj.test(value);
                     if (result) {
@@ -123,7 +128,11 @@
                             $(el).addClass('invalid');
                             var tooltip = $(el).attr('data-field-error');
                             if (tooltip != null) {
-                                $(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
+                                if ($(el).next('p.sticky') != null) {
+                                    $(el).next('p.sticky').html(tooltip);
+                                } else {
+                                    $(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
+                                }
                             }
                         }
                         return null;
