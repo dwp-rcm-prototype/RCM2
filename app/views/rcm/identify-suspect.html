@@ -20,7 +20,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
         Who do you suspect is committing benefit fraud?
     </h1>
 
-    <form method="post" action="complete/" id="form-identify" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="partner/" id="form-identify" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect">
 
 <!-- NAME -->
 
@@ -146,7 +146,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
 
             <div class="section--address section--address__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="address" data-validation-type="required--set" data-validation-set="address,address-line-2,postcode|address-line-2,town" data-validation-message="Please enter at least either number and postcode or street and town">
+                <div class="panel-indent validation-group" data-validation-id="address" data-validation-type="required--set" data-validation-set="address,postcode|address-line-2,town" data-validation-message="Please enter at least either number and postcode or street and town">
                     <div class="form-group">
                         <label class="form-label" for="address">Building name or number</label>
                         <input class="form-control" id="address" name="address" type="text">

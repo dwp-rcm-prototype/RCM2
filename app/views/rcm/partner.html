@@ -20,7 +20,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
         What can you tell us about their partner?
     </h1>
 
-    <form method="post" action="complete/" id="form-partner" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="" data-form-validation-message="">
+    <form method="post" action="complete/" id="form-partner" class="rcm-check" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
 
         <!-- NAME -->
 
@@ -153,8 +153,8 @@ GOV.UK Reporting benefit fraud: What type of fraud
                 </div>
             </div>
 
-            <div class="section--address section--partner-address__no-yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="partner-address" data-validation-type="required--set" data-validation-set="address,address-line-2,postcode|address-line-2,town" data-validation-message="Please enter at least either number and postcode or street and town">
+            <div class="section--partner-address section--partner-address__no__address-yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="partner-address" data-validation-type="required--set" data-validation-set="partner-address,partner-postcode|partner-address-line-2,partner-town" data-validation-message="Please enter at least either number and postcode or street and town">
                     <div class="form-group">
                         <label class="form-label" for="partner-address">Building name or number</label>
                         <input class="form-control" id="partner-address" name="partner-address" type="text">

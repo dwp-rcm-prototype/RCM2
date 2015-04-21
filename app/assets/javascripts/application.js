@@ -2,13 +2,13 @@
     "use strict";
 
     if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function(obj, start) {
+        Array.prototype.indexOf = function (obj, start) {
             for (var i = (start || 0), j = this.length; i < j; i++) {
                 if (this[i] === obj) { return i; }
             }
             return -1;
-        }
-    };
+        };
+    }
 
     var rcm,
         ValidationObject = {
@@ -116,7 +116,7 @@
                 } else {
 
                     if ($(el).next('p.sticky').get(0) != null) {
-                        defaultTooltip = $(el).next('p.sticky').attr('data-default-text')
+                        defaultTooltip = $(el).next('p.sticky').attr('data-default-text');
                         $(el).removeClass('invalid').next('p.sticky').html(defaultTooltip);
                     } else {
                         $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
@@ -130,13 +130,10 @@
                             $(el).addClass('invalid');
 
                             tooltip = $(el).attr('data-field-error');
-console.log(tooltip);
-console.log($(el).next('p.sticky').get(0));
                             if (tooltip != null) {
                                 if ($(el).next('p.sticky').get(0) != null) {
                                     $(el).next('p.sticky').html(tooltip);
                                 } else {
-                                    console.log('in here');
                                     $(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
                                 }
                             }
@@ -144,6 +141,7 @@ console.log($(el).next('p.sticky').get(0));
                         return null;
                     }
                 }
+                break;
             default:
                 return null;
 
@@ -278,7 +276,8 @@ console.log($(el).next('p.sticky').get(0));
             // all the validate-groups have been checked - now check if the form requirements (sets) have been met
 
             formValidationType = $(rcm.form).attr('data-form-validation-type');
-            if (formValidationType !== null) {
+
+            if (formValidationType !== null && formValidationType !== '') {
                 switch (formValidationType) {
                 case 'required--set':
                     setsOK = false;
