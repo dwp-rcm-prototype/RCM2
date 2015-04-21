@@ -221,9 +221,14 @@ form.invalid {
 input.invalid {
   border:1px solid #DF3034;
   outline:none;
-
 }
 
+.display-block-js {
+  display:none;
+}
+input[type="submit"].block-label {
+  padding-left:30px;
+}
 /* Overrides to allow for IE6 - 8 to work */
 .lte-ie8 {
 

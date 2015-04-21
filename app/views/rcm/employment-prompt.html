@@ -1,0 +1,96 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Employemnt
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Reporting benefit fraud</span>
+        Does the suspect or their partner work?
+    </h1>
+
+    <form method="post" action="employment-suspect" id="form__employment-suspect" class="" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+        <div class="fieldset inline">
+            <div class="form-group form-group-compound">
+                <input type="submit" class="block-label" value="The suspect is working" />
+            </div>
+        </div>
+    </form>
+
+    <form method="post" action="employment-partner" id="form__employment-partner" class="" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+        <div class="fieldset inline">
+            <div class="form-group form-group-compound">
+                <input type="submit" class="block-label" value="The partner is working" />
+            </div>
+        </div>
+    </form>
+
+    <form method="post" action="employment-suspect-partner" id="form__employment-suspect-partner" class="" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+        <div class="fieldset inline">
+            <div class="form-group form-group-compound">
+                <input type="submit" class="block-label" value="Both the suspect and partner are working" />
+            </div>
+        </div>
+    </form>
+    <!--
+    <form method="post" action="{{nextPage}}" id="form__employment-prompt" class="rcm-check" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if the suspect and/ or their partner are working" >
+                <div class="form-group form-group-compound">
+                    <legend>Are they working?</legend>
+
+                    <label class="block-label" for="employment-suspect">
+                        <input id="employment-suspect" type="radio" name="employment" value="Suspect">
+                        The suspect is working
+                    </label>
+                </div>
+                <div class="form-group form-group-compound">
+                    <label class="block-label" for="employment-partner">
+                        <input id="employment-partner" type="radio" name="employment" value="Partner">
+                        The partner is working
+                    </label>
+                </div>
+                <p class="display-block-js">or</p>
+                <div class="form-group form-group-compound">
+                    <label class="block-label" for="employment-both">
+                        <input id="employment-both" type="radio" name="employment" value="Both">
+                        They're both working
+                    </label>
+                </div>
+                <div class="form-group form-group-compound display-none-js">
+                    <label class="block-label" for="employment-unknown">
+                        <input id="employment-unknown" type="radio" name="employment" value="Unknown">
+                        I don't know
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+
+        <input type="submit" id="complete" class="button" value="Continue" />
+    </form>
+    -->
+
+    <a href="{{previousPage}}" class="previousPage">Back</a>
+
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}

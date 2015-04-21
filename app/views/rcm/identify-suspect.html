@@ -1,7 +1,7 @@
 {{<layout}}
 
 {{$pageTitle}}
-GOV.UK Reporting benefit fraud: What type of fraud
+GOV.UK Reporting benefit fraud: Identify suspect
 {{/pageTitle}}
 
 {{$content}}
@@ -20,7 +20,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
         Who do you suspect is committing benefit fraud?
     </h1>
 
-    <form method="post" action="partner/" id="form-identify" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="{{nextPage}}" id="form__identify-suspect" class="rcm-check" data-form-validation-type="required--set" data-form-validation-set="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect">
 
 <!-- NAME -->
 

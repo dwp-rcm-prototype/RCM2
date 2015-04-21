@@ -1,0 +1,101 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Employemnt
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Reporting benefit fraud</span>
+        About the suspect's employment
+    </h1>
+
+
+    <form method="post" action="{{nextPage}}" id="form__identify-partner" class="rcm-check" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+
+        <fieldset class="fieldset">
+
+            <div class="validation-group" data-validation-id="suspect-work-location" data-validation-type="required--one" data-validation-message="Please tell us where they work">
+                <div class="form-group">
+                    <label class="form-label" for="work-location">Where do they work?</label>
+                    <textarea id="work-location" class="form-control" rows="5" name="suspect-work-location"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+
+        <fieldset class="fieldset inline form-group">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if this person is self-employed" >
+                <div class="form-group form-group-compound" id="fieldset--suspect--self-employed" data-target="section--suspect--self-employed">
+                    <legend>Is this person self employed?</legend>
+                    <label class="block-label" for="suspect--self-employed__yes">
+                        <input id="suspect--self-employed__yes" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="suspect--self-employed__no">
+                        <input id="suspect--self-employed__no" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="No">
+                        No
+                    </label>
+                    <label class="block-label" for="suspect--self-employed__unknown">
+                        <input id="suspect--self-employed__unknown" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="Unknown">
+                        I don't know
+                    </label>
+                </div>
+            </div>
+
+            <div class="section--suspect--self-employed section--suspect--self-employed__yes display-none-js">
+                <div class="panel-indent validation-group" data-validation-id="suspect--self-employed" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
+                    <div class="form-group">
+                        <label class="form-label" for="suspect--type-of-work">What type of work do they do?</label>
+                        <input class="form-control" id="suspect--type-of-work" name="suspect--type-of-work" type="text">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+
+
+        <fieldset class="fieldset">
+            <div class="validation-group" data-validation-id="suspect-work-duration" data-validation-type="not-required--one">
+                <div class="form-group">
+                    <label class="form-label" for="suspect-work-duration">How long has this person been working?</label>
+                    <input type="text" id="suspect-work-duration" class="form-control" name="suspect-work-duration">
+                    <p class="form-hint display-block sticky">For example, 3 months.</p>
+                </div>
+            </div>
+
+            <div class="validation-group" data-validation-id="suspect-timings" data-validation-type="not-required--one">
+                <div class="form-group">
+                    <label class="form-label" for="suspect-timings">What time do they leave/return home?</label>
+                    <textarea id="suspect-timings" class="form-control" rows="5" name="suspect-timings"></textarea>
+                    <p class="form-hint display-block sticky">If times vary please tell us and also if they work specific days.</p>
+                </div>
+            </div>
+        </fieldset>
+
+        <input type="submit" id="complete" class="button" value="Continue" />
+
+    </form>
+
+    <a href="{{previousPage}}" class="previousPage">Back</a>
+
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}
