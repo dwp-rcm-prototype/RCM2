@@ -229,6 +229,10 @@ input.invalid {
 input[type="submit"].block-label {
   padding-left:30px;
 }
+
+.panel-indent p:only-child, .panel-indent p.form-hint:last-child {
+  margin-bottom:10px;
+}
 /* Overrides to allow for IE6 - 8 to work */
 .lte-ie8 {
 

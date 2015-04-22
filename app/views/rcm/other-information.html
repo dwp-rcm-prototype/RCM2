@@ -1,0 +1,104 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Any other information
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Reporting benefit fraud</span>
+        Is there anything else we need to know?
+    </h1>
+
+    <form method="post" action="{{nextPage}}" id="form__employment-suspect" class="rcm-check" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+
+        <fieldset class="fieldset">
+            <div class="validation-group" data-validation-id="additional-information" data-validation-type="not-required" data-validation-message="">
+                <legend>Do you have any additional information?</legend>
+                <div class="form-group">
+                    <label class="form-label" for="additional-information">If so, please enter it here</label>
+                    <textarea class="form-control" id="additional-information" rows="5" name="additional-information"></textarea>
+                    <p class="form-hint display-block">For example, a description of the person or places they visit</p>
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset inline">
+            <div class="validation-group" data-validation-id="" data-validation-type="not-required" data-validation-message="">
+                <legend>A little about you (entirely optional)</legend>
+                <div class="form-group">
+                    <label class="form-label" for="referral">Where did you hear about this service</label>
+                    <input type="text"  class="form-control" id="referral" name="referral">
+                    <p class="form-hint display-block">For example Google, TV advertisement, DWP office</p>
+                </div>
+            </div>
+
+            <div class="validation-group form-group-compound" data-validation-type="not-required--one" data-validation-message="" >
+                <div class="form-group form-group-compound" id="fieldset--contact" data-target="section--contact">
+                    <legend>Would you like to leave your contact details?</legend>
+                    <label class="block-label" for="contact__yes">
+                        <input id="contact__yes" type="radio" class="toggle-section" name="helper--contact" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="contact__no">
+                        <input id="contact__no" type="radio" class="toggle-section" name="helper--contact" value="No">
+                        No
+                    </label>
+                </div>
+            </div>
+
+            <div class="section--contact section--contact__yes display-none-js">
+
+                <div class="panel-indent validation-group" data-validation-id="contact" data-validation-type="required--set" data-validation-set="contact-email|contact-telephone" data-validation-message="Please enter at least an email address or a telephone number">
+                    <div class="form-group float-none">
+                        <div class="form-group">
+                            <label class="form-label" for="contact--name">Your name</label>
+                            <input class="form-control" name="contact--name" id="contact--name" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contact-email">Your email address</label>
+                            <input class="form-control" name="contact-email" id="contact-email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contact-telephone">Your telephone number</label>
+                            <input class="form-control" name="contact-telephone" id="contact-telephone" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </fieldset>
+
+
+
+
+        <input type="submit" id="complete" class="button" value="Continue" />
+
+    </form>
+
+
+    <a href="{{previousPage}}" class="previousPage">Back</a>
+
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}
