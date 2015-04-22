@@ -3,12 +3,13 @@ module.exports = {
   bind : function (app) {
 
     app.use(function(req, res, next) {
-      if (req.path.substr(-1) == '/' && req.path.length > 1) {
+      if (req.path.substr(-1) === '/' && req.path.length > 1) {
         var query = req.url.slice(req.path.length);
         res.redirect(301, req.path.slice(0, -1) + query);
       } else {
         next();
       }
+
 
       var routes  =[];
       routes['WorkEarning'] = ['identify-suspect', 'employment-suspect', 'verhicle', 'other-information'];
@@ -42,57 +43,57 @@ module.exports = {
     // 2. Identify suspect
     app.post('/rcm/identify-suspect', function (req, res) {
       res.render('rcm/identify-suspect', {
-        'previousPage': 'type-of-fraud',
-        'nextPage': 'identify-partner'});
+        'previousPage': '/rcm/type-of-fraud',
+        'nextPage': '/rcm/identify-partner'});
     });
 
     // 3. Identify partner
     app.post('/rcm/identify-partner', function (req, res) {
       res.render('rcm/identify-partner', {
-        'previousPage': 'type-of-fraud',
-        'nextPage': 'employment-prompt'});
+        'previousPage': '/rcm/type-of-fraud',
+        'nextPage': '/rcm/employment-prompt'});
     });
 
     // 4. Employment prompt
     app.post('/rcm/employment-prompt', function (req, res) {
       res.render('rcm/employment-prompt', {
-        'previousPage': 'identify-suspect',
-        'nextPage': 'employment-suspect-partner'});
+        'previousPage': '/rcm/identify-suspect',
+        'nextPage': '/rcm/employment-suspect-partner'});
     });
 
     // 5. employment suspect
     app.post('/rcm/employment-suspect', function (req, res) {
       res.render('rcm/employment-suspect', {
-        'previousPage': 'employment-prompt',
-        'nextPage': 'vehicle'});
+        'previousPage': '/rcm/employment-prompt',
+        'nextPage': '/rcm/vehicle'});
     });
 
     // 6. employment partner
     app.post('/rcm/employment-partner', function (req, res) {
       res.render('rcm/employment-partner', {
-        'previousPage': 'employment-prompt',
-        'nextPage': 'vehicle'});
+        'previousPage': '/rcm/employment-prompt',
+        'nextPage': '/rcm/vehicle'});
     });
 
     // 6. employment suspect + partner
     app.post('/rcm/employment-suspect-partner', function (req, res) {
       res.render('rcm/employment-suspect-partner', {
-        'previousPage': 'employment-prompt',
-        'nextPage': 'vehicle'});
+        'previousPage': '/rcm/employment-prompt',
+        'nextPage': '/rcm/vehicle'});
     });
 
     // 8. Vehicle
     app.post('/rcm/vehicle', function (req, res) {
       res.render('rcm/vehicle', {
         'previousPage': 'javascript:window.history.back()',
-        'nextPage': 'other-information'});
+        'nextPage': '/rcm/other-information'});
     });
 
     // 9. Other information
     app.post('/rcm/other-information', function (req, res) {
       res.render('rcm/other-information', {
-        'previousPage': 'vehicle',
-        'nextPage': 'complete'});
+        'previousPage': '/rcm/vehicle',
+        'nextPage': '/rcm/complete'});
     });
 
 
