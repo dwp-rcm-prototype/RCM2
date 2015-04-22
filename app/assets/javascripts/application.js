@@ -362,7 +362,7 @@
             });
         });
 
-        console.log(docCookies.getItem('fraud-type'));
+        //console.log(docCookies.getItem('fraud-type'));
 
     };
 
