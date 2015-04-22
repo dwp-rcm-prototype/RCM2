@@ -326,6 +326,9 @@
             switch ($(rcm.form).attr('id')) {
                 case 'form__fraud-type' : // redirect to new or old website based on user input
 
+                    // reset the route cookie
+                    docCookies.removeItem('fraud-type');
+
                     selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
                         return this.value;
                     }).get();
@@ -339,12 +342,7 @@
                     } else {
                         // store the choices in a cookie
                         docCookies.setItem('fraud-type', selected.join('+'));
-
                     }
-                    break;
-                case 'form__employment-prompt' :
-
-
                     break;
 
             }
@@ -362,13 +360,36 @@
             });
         });
 
-        //console.log(docCookies.getItem('fraud-type'));
+        // implement how user choices affect their journey
+
+
+        var myRoute = docCookies.getItem('fraud-type');
+        console.log('myRoute = ' + myRoute);
+        if (myRoute !== null && myRoute !== '') {
+            var cpIndex, newPage,
+                routes = [],
+                currentPage = document.location.href.replace();
+
+            routes['workEarning'] = ['identify-suspect', 'employment-suspect', 'vehicle', 'other-information', 'complete'];
+            routes['livingWithPartner'] = ['identify-suspect', 'identify-partner', 'vehicle', 'other-information', 'complete'];
+            routes['workEarning+livingWithPartner'] = ['identify-suspect', 'identify-partner', 'employment-prompt','vehicle', 'other-information', 'complete'];
+
+            currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+            cpIndex = routes[myRoute].indexOf(currentPage);
+            newPage = routes[myRoute][cpIndex + 1];
+
+            $('form.js-routed').each(function() {
+                $(this).attr('action', newPage + '/');
+            });
+
+
+        }
 
     };
 
     $(document).ready(function () {
         pageSetup();
-        ValidationObject.init('rcm-check');
+        ValidationObject.init('js-check');
     });
 
 
@@ -376,13 +397,6 @@
 
 
 /*
- var cpIndex, npIndex, np, myRoute,
- cp = 'identify-suspect',
- myRoute = docCookies.getItem('fraud-type');
-
- cpIndex = this.routes[myRoute].indexOf('cp');
- npIndex = cpIndex + 1;
- np = this.routes[myRoute][npIndex];
 
 
 

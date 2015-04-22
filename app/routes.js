@@ -9,11 +9,6 @@ module.exports = {
       } else {
         next();
       }
-/*
-      var routes  =[];
-      routes['WorkEarning'] = ['identify-suspect', 'employment-suspect', 'verhicle', 'other-information'];
-      routes['LivingWithPartner'] = ['identify-suspect', 'identify-partner', 'verhicle', 'other-information'];
-      */
     });
 
 
