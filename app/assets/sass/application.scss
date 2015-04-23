@@ -90,8 +90,8 @@ div.invalid {
 }
 @media (min-width: 641px) {
   div.invalid {
-    padding-left: 14px;
-    margin-left: -18px;
+    padding-left: 15px;
+    margin-left: -19px;
   }
   .optional-section div.invalid, .help-content div.invalid,
   .optional-section-core-content .optional-section div.invalid {
@@ -108,8 +108,13 @@ div.invalid {
   outline: solid 3px #ffbf47;
 }
 
-.panel-indent.invalid {
-  margin-left:0;
+.panel-indent {
+  &.no-padding-top {
+    padding-top: 0;
+  }
+  &.invalid {
+    margin-left: 0;
+  }
 }
 
 .form-submitted {

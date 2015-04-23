@@ -352,12 +352,8 @@
 
     var pageSetup = function () {
 
-        $('a.previousPage').each(function () {
-            $(this).on('click', function () {
-                if (!confirm('Are you sure you want to go back? You may lose form data.\n\nNB: We need to assess the need and functionality of this link')) {
-                    return false;
-                }
-            });
+        $('a.previousPage').on('click', function () {
+            window.history.back();
         });
 
         // implement how user choices affect their journey
