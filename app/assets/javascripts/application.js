@@ -364,7 +364,7 @@
 
 
         var myRoute = docCookies.getItem('fraud-type');
-        console.log('myRoute = ' + myRoute);
+        
         if (myRoute !== null && myRoute !== '') {
             var cpIndex, newPage,
                 routes = [],

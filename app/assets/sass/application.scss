@@ -233,6 +233,21 @@ input[type="submit"].block-label {
 .panel-indent p:only-child, .panel-indent p.form-hint:last-child {
   margin-bottom:10px;
 }
+
+.nb {
+  .heading-medium {
+    margin-top:0
+  }
+
+  position: relative;
+  background: #dee0e2;
+  padding: 18px 30px 15px 30px;
+  margin-top: 30px;
+
+}
+
+
+
 /* Overrides to allow for IE6 - 8 to work */
 .lte-ie8 {
 
