@@ -352,7 +352,8 @@
 
     var pageSetup = function () {
 
-        $('a.previousPage').on('click', function () {
+        $('a.previousPage').on('click', function (e) {
+            e.preventDefault();
             window.history.back();
         });
 
