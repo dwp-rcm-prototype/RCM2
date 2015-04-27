@@ -1,0 +1,277 @@
+
+label.invalid, fieldset.invalid {
+    outline: none;
+}
+fieldset.invalid {
+    border-left: solid 4px $error-colour;
+    padding-left: 10px;
+    margin-left: -14px;
+}
+@media (min-width: 641px) {
+    fieldset.invalid {
+        padding-left: 14px;
+        margin-left: -18px;
+    }
+}.help-content fieldset.invalid {
+     padding-left: 28px;
+     margin-left: -32px;
+ }
+@media (min-width: 641px) {
+    .help-content fieldset.invalid {
+        padding-left: 32px;
+        margin-left: -36px;
+    }
+}
+
+.validation-message {
+    font-size: 19px;
+    clear: both;
+    padding: 10px;
+    margin: 1em 0 1em -14px;
+    border-left: 4px solid $error-colour;
+    color: $error-colour;
+    font-weight: bold;
+    .list-bullet {
+        margin-bottom:0
+    }
+}
+@media (min-width: 641px) {
+    .validation-message {
+        padding-left: 14px;
+        margin-left: -18px;
+    }
+}
+
+label .validation-message {
+    display: block;
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+}
+.validation-message a {
+    color: $error-colour;
+    text-decoration: none;
+}
+.validation-message a:focus, .validation-message a:hover {
+    text-decoration: underline;
+}
+
+.invalid {
+    outline: solid 4px $error-colour;
+}
+div.invalid {
+    padding-left: 10px;
+    margin-left: -14px;
+    border-left: solid 4px $error-colour;
+    outline: none;
+}
+@media (min-width: 641px) {
+    div.invalid {
+        padding-left: 15px;
+        margin-left: -19px;
+    }
+    .optional-section div.invalid, .help-content div.invalid,
+    .optional-section-core-content .optional-section div.invalid {
+        padding-left: 30px;
+        margin-left: -34px;
+    }
+    .optional-section-core-content div.invalid {
+        padding-left: 14px;
+        margin-left: -18px;
+    }
+}
+
+
+input.invalid {
+    border:4px solid $error-colour;
+    outline:none;
+}
+input.invalid:focus {
+    border:4px solid #ffbf47;
+    outline: 0;
+}
+.invalid:focus {
+    outline: solid 3px #ffbf47;
+}
+
+label span.error-message {
+    font-weight:bold;
+    color: $error-colour;
+    display:block;
+    padding-bottom:5px;
+}
+
+.panel-indent {
+    &.no-padding-top {
+        padding-top: 0;
+    }
+    &.invalid {
+        margin-left: 0;
+    }
+}
+
+.form-submitted {
+    background-color:#28a197;
+    text-align: center;
+    padding:30px;
+    color:#fff;
+    margin:30px 0;
+}
+.form-submitted h1 {
+    -webkit-margin-before:0;
+    -webkit-margin-after:0;
+    margin-bottom:30px
+}
+.form-submitted .text {
+    max-width:none;
+}
+.form-submitted .text p:last-child {
+    margin-bottom: 0;
+}
+
+.crm-check-form fieldset {
+    margin-bottom: 1em;
+}
+legend {
+    font-weight: bold;
+    margin-bottom:8px
+}
+p.legend {
+    margin-bottom: 0;
+    font-weight: bold;
+}
+.clear-both {
+    clear:both;
+}
+
+
+.form-date:after {
+    clear:both;
+    display:block;
+    content:''
+}
+
+input[type="text"]+input[type="text"],
+input[type="text"]+label{
+    margin-top:8px
+}
+.panel-indent .form-date > p {
+    margin-top:0;
+    margin-bottom:5px;
+}
+
+.form-control.width__half {
+    width:25%
+}
+
+.validation-group:after {
+    clear:both;
+    content:'';
+    display: block;
+}
+
+
+form.invalid {
+    padding-left: 10px;
+    margin-left: -14px;
+    border-left: solid 4px $error-colour;
+    outline: none;
+}
+@media (min-width: 641px) {
+    form.invalid {
+        padding-left: 14px;
+        margin-left: -18px;
+    }
+    /*
+    .optional-section div.invalid, .help-content div.invalid,
+    .optional-section-core-content .optional-section div.invalid {
+      padding-left: 30px;
+      margin-left: -34px;
+    }
+    .optional-section-core-content div.invalid {
+      padding-left: 14px;
+      margin-left: -18px;
+    }
+    */
+}
+
+
+
+/* for testing purposes only
+
+.valid {
+  outline: none;
+}
+.valid {
+  border-left: solid 4px green;
+  padding-left: 10px;
+  margin-left: -14px;
+}
+@media (min-width: 641px) {
+  .valid {
+    padding-left: 14px;
+    margin-left: -18px;
+  }
+}
+/*
+*/
+
+.display-block-js {
+    display:none;
+}
+input[type="submit"].block-label {
+    padding-left:30px;
+}
+
+.panel-indent p:only-child, .panel-indent p.form-hint:last-child {
+    margin-bottom:10px;
+}
+
+.nb {
+    .heading-medium {
+        margin-top:0
+    }
+
+    position: relative;
+    background: #dee0e2;
+    padding: 18px 30px 15px 30px;
+    margin-top: 30px;
+
+}
+
+
+
+/* Overrides to allow for IE6 - 8 to work */
+.lte-ie8 {
+
+    main#content {
+        margin: 0 auto;
+    }
+    .button {
+        margin:3px 3px 1px 3px;
+        border-bottom: 2px solid #353535;
+        outline:none;
+    }
+    .button:focus {
+        border: 3px solid #ffbf47;
+        outline:none;
+        margin:0;
+    }
+    .block-label {
+        float: left;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .block-label,
+    .block-label:hover {
+        zoom:1;
+    }
+
+    .form-group {
+        float:none;
+    }
+    .form-date .form-group {
+        float: left;
+    }
+}

@@ -21,8 +21,18 @@
             validationMessage: '',
             errorCount: 0,
             errorMessages: '',
-            threeStrikesCount: 0
-        },
+            threeStrikesCount: 0,
+            messageTemplate :   '<div class="validation-message error-summary" role="group" tabindex="-1" aria-labelledby="error-summary-heading">' +
+                                    '<h3 class="heading-medium error-summary-heading" id="error-summary-heading">' +
+                                    'Unable to submit the form.' +
+                                    '</h3>' +
+                                    '<p>Please check the following problem(s)</p>' +
+                                    '<ul class="list-bullet error-summary-list">' +
+                                        '[errorMessages]' +
+                                    '</ul>' +
+                                '</div>'
+
+},
 
         init: function (formClassName) {
             rcm = this.settings;
@@ -82,7 +92,8 @@
 
             if (rcm.errorMessages !== '') {
                 e.preventDefault();
-                $(rcm.form).find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + rcm.errorMessages + '</ul></div>');
+                $(rcm.form).find('input[type="submit"]').before(rcm.messageTemplate.replace('[errorMessages]', rcm.errorMessages));
+                //$(rcm.form).find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + rcm.errorMessages + '</ul></div>');
             } else {
                 ValidationObject.validateFormSets(e);
             }
@@ -90,6 +101,8 @@
             ValidationObject.postProcessor(e);
 
         },
+
+
 
         fieldValid: function (el) {
             if (!$(el).is(':visible')) {
@@ -136,7 +149,11 @@
                                 if ($(el).next('p.sticky').get(0) != null) {
                                     $(el).next('p.sticky').html(tooltip);
                                 } else {
-                                    $(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
+                                    //$(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
+
+                                    console.log($(el).parent().find('label'));
+
+                                    $(el).parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
                                 }
                             }
                         }
