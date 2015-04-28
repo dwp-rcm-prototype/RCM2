@@ -657,7 +657,7 @@ fieldset {
     width: 100%; } }
 
 .validation-summary {
-  border: 3px solid #df3034;
+  border: 3px solid #af1324;
   padding: 15px 30px;
   margin-bottom: 30px; }
 
@@ -680,7 +680,7 @@ fieldset {
   margin-bottom: 5px; }
 
 .validation-summary a {
-  color: #df3034; }
+  color: #af1324; }
 
 .validation-summary .heading-small {
   margin-top: 15px; }
@@ -692,7 +692,7 @@ fieldset {
   line-height: 1.25;
   font-weight: 400;
   text-transform: none;
-  color: #df3034; }
+  color: #af1324; }
   @media (max-width: 640px) {
     .validation-message {
       font-size: 14px;
@@ -1032,19 +1032,21 @@ ul, ol {
       font-size: 14px;
       line-height: 1.1428571429; } }
 
+form.js-check {
+  position: relative; }
+
 label.invalid, fieldset.invalid {
   outline: none; }
 
 fieldset.invalid {
-  border-left: solid 4px #df3034;
+  border-left: solid 4px #af1324;
   padding-left: 10px;
   margin-left: -14px; }
 
 @media (min-width: 641px) {
   fieldset.invalid {
     padding-left: 14px;
-    margin-left: -18px; }
- }
+    margin-left: -18px; } }
 
 .help-content fieldset.invalid {
   padding-left: 28px;
@@ -1053,26 +1055,33 @@ fieldset.invalid {
 @media (min-width: 641px) {
   .help-content fieldset.invalid {
     padding-left: 32px;
-    margin-left: -36px; }
- }
+    margin-left: -36px; } }
 
 .validation-message {
   font-size: 19px;
   clear: both;
-  padding: 10px;
-  margin: 1em 0 1em -14px;
-  border-left: 4px solid #df3034;
-  color: #df3034;
+  padding: 15px;
+  margin: 1em 0 1em -18px;
+  border: 4px solid #af1324;
+  color: #af1324;
   font-weight: bold; }
   .validation-message .list-bullet {
     margin-bottom: 0; }
+  .validation-message h3 {
+    margin-top: 10px;
+    color: #000; }
+  .validation-message p {
+    color: #000;
+    margin-bottom: 0; }
 
+/*
 @media (min-width: 641px) {
-  .validation-message {
-    padding-left: 14px;
-    margin-left: -18px; }
- }
-
+    .validation-message {
+        padding-left: 14px;
+        margin-left: -18px;
+    }
+}
+*/
 label .validation-message {
   display: block;
   position: absolute;
@@ -1080,38 +1089,51 @@ label .validation-message {
   top: -9999em; }
 
 .validation-message a {
-  color: #df3034;
+  color: #af1324;
   text-decoration: none; }
 
 .validation-message a:focus, .validation-message a:hover {
   text-decoration: underline; }
 
 .invalid {
-  outline: solid 4px #df3034; }
+  outline: solid 4px #af1324; }
 
 div.invalid {
   padding-left: 10px;
   margin-left: -14px;
-  border-left: solid 4px #DF3034;
+  border-left: solid 4px #af1324;
   outline: none; }
 
 @media (min-width: 641px) {
   div.invalid {
-    padding-left: 14px;
-    margin-left: -18px; }
-
+    padding-left: 15px;
+    margin-left: -19px; }
   .optional-section div.invalid, .help-content div.invalid, .optional-section-core-content .optional-section div.invalid {
     padding-left: 30px;
     margin-left: -34px; }
-
   .optional-section-core-content div.invalid {
     padding-left: 14px;
-    margin-left: -18px; }
- }
+    margin-left: -18px; } }
+
+input.invalid {
+  border: 4px solid #af1324;
+  outline: none; }
+
+input.invalid:focus {
+  border: 4px solid #ffbf47;
+  outline: 0; }
 
 .invalid:focus {
   outline: solid 3px #ffbf47; }
 
+label span.error-message {
+  font-weight: bold;
+  color: #af1324;
+  display: block;
+  padding-bottom: 5px; }
+
+.panel-indent.no-padding-top {
+  padding-top: 0; }
 .panel-indent.invalid {
   margin-left: 0; }
 
@@ -1155,9 +1177,9 @@ p.legend {
 input[type="text"] + input[type="text"], input[type="text"] + label {
   margin-top: 8px; }
 
-.margin-vertical-0px {
+.panel-indent .form-date > p {
   margin-top: 0;
-  margin-bottom: 0; }
+  margin-bottom: 5px; }
 
 .form-control.width__half {
   width: 25%; }
@@ -1166,3 +1188,82 @@ input[type="text"] + input[type="text"], input[type="text"] + label {
   clear: both;
   content: '';
   display: block; }
+
+form.invalid {
+  padding-left: 10px;
+  margin-left: -14px;
+  border-left: solid 4px #af1324;
+  outline: none; }
+
+@media (min-width: 641px) {
+  form.invalid {
+    padding-left: 14px;
+    margin-left: -18px; }
+  /*
+    .optional-section div.invalid, .help-content div.invalid,
+    .optional-section-core-content .optional-section div.invalid {
+      padding-left: 30px;
+      margin-left: -34px;
+    }
+    .optional-section-core-content div.invalid {
+      padding-left: 14px;
+      margin-left: -18px;
+    }
+    */ }
+
+/* for testing purposes only
+
+.valid {
+  outline: none;
+}
+.valid {
+  border-left: solid 4px green;
+  padding-left: 10px;
+  margin-left: -14px;
+}
+@media (min-width: 641px) {
+  .valid {
+    padding-left: 14px;
+    margin-left: -18px;
+  }
+}
+/*
+*/
+.display-block-js {
+  display: none; }
+
+input[type="submit"].block-label {
+  padding-left: 30px; }
+
+.panel-indent p:only-child, .panel-indent p.form-hint:last-child {
+  margin-bottom: 10px; }
+
+.nb {
+  position: relative;
+  background: #dee0e2;
+  padding: 18px 30px 15px 30px;
+  margin-top: 30px; }
+  .nb .heading-medium {
+    margin-top: 0; }
+
+/* Overrides to allow for IE6 - 8 to work */
+.lte-ie8 main#content {
+  margin: 0 auto; }
+.lte-ie8 .button {
+  margin: 3px 3px 1px 3px;
+  border-bottom: 2px solid #353535;
+  outline: none; }
+.lte-ie8 .button:focus {
+  border: 3px solid #ffbf47;
+  outline: none;
+  margin: 0; }
+.lte-ie8 .block-label {
+  float: left;
+  margin-top: 5px;
+  margin-bottom: 5px; }
+.lte-ie8 .block-label, .lte-ie8 .block-label:hover {
+  zoom: 1; }
+.lte-ie8 .form-group {
+  float: none; }
+.lte-ie8 .form-date .form-group {
+  float: left; }

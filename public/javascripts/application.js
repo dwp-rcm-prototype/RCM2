@@ -1,264 +1,418 @@
-(function() {
+(function () {
+    "use strict";
 
-    var formCheckValid = function(el) {
-        var inputType = (el.tagName.toLowerCase() == 'textarea') ? 'textarea' : $(el).attr('type');
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function (obj, start) {
+            for (var i = (start || 0), j = this.length; i < j; i++) {
+                if (this[i] === obj) { return i; }
+            }
+            return -1;
+        };
+    }
+
+    var rcm,
+        ValidationObject = {
+
+        settings: {
+            form: '',
+            submitButton: '',
+            inputFields: ['input[type="text"]', 'input[type="number"]', 'input[type="tel"]', 'input[type="email"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
+            allFields: '',
+            validationMessage: '',
+            errorCount: 0,
+            errorMessages: '',
+            threeStrikesCount: 0,
+            messageTemplate :   '<div class="validation-message error-summary" role="group" tabindex="-1" aria-labelledby="error-summary-heading">' +
+                                    '<h3 class="heading-medium error-summary-heading" id="error-summary-heading">' +
+                                    'Unable to submit the form.' +
+                                    '</h3>' +
+                                    '<p>[customMessage]</p>' +
+                                    '[errorMessages]' +
+                                '</div>'
+
+},
+
+        init: function (formClassName) {
+            rcm = this.settings;
+            rcm.submitButton = 'form.' + formClassName + ' input[type="submit"]';
+            this.disableHTML5validation(formClassName);
+            this.bindUIActions();
+
+            var i = 0;
+            $('form.' + formClassName).each(function() {
+                $(this).find('.validation-group').each(function() {
+                    $(this).attr('id', 'validation-group--' + i);
+                    i += 1;
+                });
+            });
+        },
+
+        reset: function () {
+            rcm.errorCount = 0;
+            rcm.errorMessages = '';
+            $(rcm.form).removeClass('invalid').parent().find('div.validation-message').remove();
+            // remove all valids and invalids?
+        },
+
+        bindUIActions: function () {
+            $(rcm.submitButton).on("click", function (e) {
+                //e.preventDefault();
+                rcm.form = $(this).parents('form');
+                ValidationObject.validateForm(e);
+            });
+
+            // display-none-js is a class that should only work to hide information when javascript is enabled
+            $('.display-none-js').hide();
+            $('.display-block-js').show();
 
 
-        switch (inputType) {
+            // generic toggle functionality
+            $('.toggle-section').on('click', function () {
+                var sections = $(this).parents('.form-group').attr('data-target'),
+                    sectionOn = $(this).parents('.form-group').attr('data-target') + '__' + $(this).val().toLowerCase();
+                $('.' + sections).hide();
+                $('.' + sectionOn).show();
+            });
+
+
+
+        },
+
+        disableHTML5validation: function (formClassName) {
+            // disable html5 form checking (if we have js)
+            if (!$('html').hasClass('lte-ie8')) { // we can't have attr('novalidate) for IE7 - see https://www.google.co.uk/search?q=jquery%20ie7%20member%20not%20found - but this line is not required for IE8 and less anyway.
+                $('form.' + formClassName).attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function () {
+                    $(this).attr('type', 'text');
+                });
+            }
+        },
+
+
+        validateForm: function (e) {
+
+            //e.preventDefault();
+
+            ValidationObject.reset();
+
+            // loop each validation-group
+            $(rcm.form).find('.validation-group').removeClass('invalid valid').each(function () {
+                ValidationObject.validateGroup(this);
+            });
+
+            if (rcm.errorMessages !== '') {
+                e.preventDefault();
+                $(rcm.form).prepend(rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem(s)').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>'));
+                $("html, body").animate({scrollTop:$('form').position().top - 20}, '500', 'swing');
+
+            } else {
+                ValidationObject.validateFormSets(e);
+            }
+
+            ValidationObject.postProcessor(e);
+
+        },
+
+
+
+        fieldValid: function (el) {
+            if (!$(el).is(':visible')) {
+                return null;
+            }
+
+            var inputType = (el.tagName.toLowerCase() === 'textarea') ? 'textarea' : $(el).attr('type');
+
+            switch (inputType) {
             case 'radio':
             case 'checkbox':
                 return (el.checked) ? el.name : null;
-                break;
             case 'text':
             case 'number':
+            case 'email':
+            case 'tel':
             case 'textarea':
-                return ($(el).val() != '') ? el.name : null;
-                break;
-            default:
-                return null;
-        }
-    }
-    var formCheckInvalid = function(el) {
+                var regexObj, result, tooltip, defaultTooltip,
+                    value = el.value,
+                    pattern = $(el).attr('data-pattern');
 
-        switch ($(el).attr('type')) {
-            //case 'radio':
-            case 'checkbox':
-                return (!el.checked) ? el.name : null;
-                break;
-            case 'text':
-                return ($(el).val() == '') ? el.name : null;
-                break;
-            default:
-                return null;
-        }
-    }
+                pattern = (pattern != null) ? pattern : $(el).attr('pattern');
 
-    $(document).ready(function() {
-        $('a.previousPage').each(function() {
-            $(this).on('click', function() {
-                if (!confirm('Are you sure you want to go back? You may lose form data.\n\nNB: We need to assess the need and functionality of this link')) {
-                    return false;
+                if (pattern == null) {
+                    return (value !== '') ? el.name : null;
+                } else {
+
+                    /*if ($(el).next('p.sticky').get(0) != null) {
+                        defaultTooltip = $(el).next('p.sticky').attr('data-default-text');
+                        $(el).removeClass('invalid').next('p.sticky').html(defaultTooltip);
+                    } else {
+                        $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
+                    }*/
+                    $(el).removeClass('invalid').parent().find('.error-message').remove();
+
+                    regexObj = new RegExp(pattern, "gi");
+                    result = regexObj.test(value);
+                    if (result) {
+                        return el.name;
+                    } else {
+                        if ($(el).val() !== '') {
+
+                            tooltip = $(el).attr('data-field-error');
+                            if (tooltip != null) {
+                                //if ($(el).next('p.sticky').get(0) != null) {
+                                //    $(el).next('p.sticky').html(tooltip);
+                                //} else {
+                                    //$(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
+                                $(el).parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
+                                //}
+                            }
+                        }
+                        return null;
+                    }
                 }
-            });
+                break;
+            default:
+                return null;
 
-        });
+            }
+        },
+
+        invalidateElement: function (el) {
+            var id = $(el).attr('id');
+            if (id === null) { id = $(el).parents('.validation-group').attr('id')};
+            $(el).addClass('invalid');
+            rcm.errorMessages += '<li><a href="#' + id + '">' + rcm.validationMessage + '</a></li>';
+            rcm.errorCount += 1;
+        },
+
+        validateGroup: function (el) {
+
+            if ($(el).is(':visible')) {
+
+                rcm.validationMessage = $(el).attr('data-validation-message');
+
+                var fields, setOK, setsOK, sets,
+                    validationType = $(el).attr('data-validation-type'),
+                    typesToCheck = ['required--one-or-more', 'required--one', 'required--all', 'not-required--one-or-more', 'not-required--one'],
+                    fieldsWithValidValue = [],
+                    allFields = [];
 
 
-        /* display-none-js is a class that should only work to hide information when javascript is enabled */
-        $('.display-none-js').hide();
+                if (typesToCheck.indexOf(validationType) !== -1) {
 
-        /* generic toggle functionality */
-        $('.toggle-section').on('click', function() {
-            var sections = $(this).parents('.form-group').attr('data-target');
-            var sectionOn = $(this).parents('.form-group').attr('data-target') + '__' + $(this).val().toLowerCase();
-            $('.' + sections).hide();
-            $('.' + sectionOn).show();
-        });
-
-
-
-
-        $('form.crm-check').on('submit', function(e) {
-
-
-            e.preventDefault();
-            var form = $(this),
-                validationMessage = '',
-                errorMessages = '',
-                validationType = '',
-                inputFields = ['input[type="text"]', 'input[type="number"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
-                fieldsWithValidValue,
-                fields;
-
-            form.find('div.validation-message').remove();
-
-            // loop each validation-group
-            form.find('.validation-group:visible').each(function() {
-
-                validationType = $(this).attr('data-validation-type');
-                validationMessage = $(this).attr('data-validation-message');
-
-                fieldsWithValidValue = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function() {
-                    return formCheckValid(this);
-                }).get());
+                    fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
+                        return ValidationObject.fieldValid(this);
+                    }).get());
+                }
 
                 switch (validationType) {
-                    case 'required--one-or-more':
-                    case 'required--one':
+                // it's not required, so don't display error messages. But when there is valid data, mark it as such
+                case 'not-required--one-or-more':
+                case 'not-required--one':
+                    if (fieldsWithValidValue.length > 0) {
+                        $(el).addClass('valid');
+                    }
+                    break;
+                case 'required--one-or-more':
+                case 'required--one':
+                    if (fieldsWithValidValue.length === 0) {
+                        ValidationObject.invalidateElement(el);
+                    } else {
+                        $(el).addClass('valid');
+                    }
+                    break;
 
-                        if (fieldsWithValidValue.length == 0) {
-                            $(this).addClass('invalid');
-                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                case 'required--all':
+                    allFields = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
+                        return this.name;
+                    }).get());
+
+                    if (allFields.length > fieldsWithValidValue.length) {
+                        ValidationObject.invalidateElement(el);
+                    } else {
+                        $(el).addClass('valid');
+                    }
+                    break;
+
+                case 'required--set':
+
+                    setsOK = false;
+                    sets = $(el).attr('data-validation-set').split('|');
+
+                    for (var s = 0, sl = sets.length; s < sl; s += 1) {
+
+                        fields = sets[s].split(',');
+                        setOK = true;
+                        for (var f = 0, fl = fields.length; f < fl; f += 1) {
+                            if (!ValidationObject.fieldValid($(el).find('input[name="' + fields[f] + '"]').get(0))) {
+                                setOK = false;
+                                //don't break - keep checking the fields
+                            }
                         }
-                        break;
-
-                    case 'required--all':
-
-                        fields = $.unique($(this).removeClass('invalid').find(inputFields.join(',')).map(function() {
-                            return this.name;
-                        }).get());
-
-                        if (fields.length > fieldsWithValidValue.length) {
-                            $(this).addClass('invalid');
-                            errorMessages += '<li id="validation-message-' + 0 + '">' + validationMessage + '</li>';
+                        if (setOK) {
+                            setsOK = true;
+                            $(el).addClass('valid');
+                            break;
                         }
-                        break;
+                    }
+                    if (!setsOK) {
+                        ValidationObject.invalidateElement(el);
+                    }
+                    break;
+                default:
+                        // nothing
+                    break;
                 }
+            }
+        },
+
+
+
+
+        validateFormSets: function (e) {
+            var groups, groupOK, setsOK, sets,
+                formValidationType,
+                formErrorMessage,
+                formErrorMessages = [];
+
+            // move to external data file
+            formErrorMessages['fraud-suspect'] = '<p>Please make sure you enter at least</p>' +
+                '<ul class="list-bullet error-summary-list">' +
+                '<li>A name, approximate age (or date of birth) and an address</li>' +
+                '<li>A name, approximate age (or date of birth) and some additional info</li>' +
+                '<li>A National insurance number and an approximate age (or date of birth)</li>' +
+                '<li>A National insurance number and an address</li>' +
+                '</ol>';
+            formErrorMessages['fraud-suspect__3strikes'] = '<p>Having trouble? Call us on 0800 854 440.<br>' +
+                'Otherwise please make sure you enter at least</p>' +
+                '<ul class="list-bullet error-summary-list">' +
+                '<li>A name, approximate age (or date of birth) and either an address or some additional info</li>' +
+                '<li>A National insurance number and either an approximate age (or date of birth) or an address</li>' +
+                '</ul>';
+
+
+            // all the validate-groups have been checked - now check if the form requirements (sets) have been met
+
+            formValidationType = $(rcm.form).attr('data-form-validation-type');
+
+            if (formValidationType !== null && formValidationType !== '') {
+                switch (formValidationType) {
+                case 'required--set':
+                    setsOK = false;
+                    sets = $(rcm.form).attr('data-form-validation-set').split('|');
+
+                    for (var s = 0, sl = sets.length; s < sl; s += 1) {
+                        groups = sets[s].split(',');
+                        groupOK = true;
+
+                        for (var f = 0, fl = groups.length; f < fl; f += 1) {
+                            if (!$('[data-validation-id="' + groups[f] + '"]').hasClass('valid')) {
+                                groupOK = false;
+                                break;
+                            }
+                        }
+                        if (groupOK) {
+                            setsOK = true;
+                            break;
+                        }
+                    }
+                    if (!setsOK) {
+                        e.preventDefault();
+                        var messageIdentifier = $(rcm.form).attr('data-form-validation-message').replace('$message--', '');
+                        formErrorMessage = formErrorMessages[messageIdentifier];
+                        rcm.threeStrikesCount += 1;
+                        if (rcm.threeStrikesCount >= 3) {
+                            formErrorMessage = (formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : formErrorMessages[messageIdentifier + '__3strikes'];
+                        }
+                        //$(rcm.form).addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
+                        //$(rcm.form).addClass('invalid').before('<div class="validation-message">' + formErrorMessage + '</div>');
+                        $(rcm.form).addClass('invalid').before(rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
+                        $("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
+
+                        return false;
+                    }
+
+                    break;
+                }
+            }
+        },
+
+        postProcessor: function (e) {
+            var redirectsSelected,
+                selected,
+                redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+
+            switch ($(rcm.form).attr('id')) {
+                case 'form__fraud-type' : // redirect to new or old website based on user input
+
+                    // reset the route cookie
+                    docCookies.removeItem('fraud-type');
+
+                    selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
+                        return this.value;
+                    }).get();
+
+                    redirectsSelected = $.grep(selected, function (n) {
+                        return (redirects.indexOf(n) !== -1);
+                    });
+                    if (redirectsSelected.length > 0) {
+                        e.preventDefault();
+                        document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
+                    } else {
+                        // store the choices in a cookie
+                        docCookies.setItem('fraud-type', selected.join('+'));
+                    }
+                    break;
+
+            }
+        }
+
+    };
+
+    var pageSetup = function () {
+
+        $('a.previousPage').on('click', function (e) {
+            e.preventDefault();
+            window.history.back();
+        });
+
+        // implement how user choices affect their journey
+
+
+        var myRoute = docCookies.getItem('fraud-type');
+
+        if (myRoute !== null && myRoute !== '') {
+            var cpIndex, newPage,
+                routes = [],
+                currentPage = document.location.href.replace();
+
+            routes['workEarning'] = ['identify-suspect', 'employment-suspect', 'vehicle', 'other-information', 'complete'];
+            routes['livingWithPartner'] = ['identify-suspect', 'identify-partner', 'vehicle', 'other-information', 'complete'];
+            routes['workEarning+livingWithPartner'] = ['identify-suspect', 'identify-partner', 'employment-prompt','vehicle', 'other-information', 'complete'];
+
+            currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+            cpIndex = routes[myRoute].indexOf(currentPage);
+            newPage = routes[myRoute][cpIndex + 1];
+
+            $('form.js-routed').each(function() {
+                $(this).attr('action', newPage + '/');
             });
 
-            if (errorMessages != '') {
-                form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessages + '</ul></div>');
-                return false;
-            }
 
-        });
+        }
+
+    };
+
+    $(document).ready(function () {
+        pageSetup();
+        ValidationObject.init('js-check');
     });
+
 
 })();
 
 
-
-    /*
-
-    $('form.crm-check-form').on('submit', function(e) {
+/*
 
 
 
-        var form = $(this), errorMessage = '';
 
-
-        // check (groups of) checkboxes where (at least) one must be checked
-        var ids = $.unique(form.find('.fieldset').removeClass('invalid').find('input[type="checkbox"].required--one-or-more').map(function() {
-            return this.name;
-        }).get());
-        if (ids.length > 0) {
-            var idsChecked = $.unique(form.find('input[type="checkbox"].required--one-or-more:checked').map(function () {
-                return (this.name);
-            }).get());
-
-            if (idsChecked.length < ids.length) { // not all groups of checkboxes have at least one checked
-                // report the issue. Filter out the checked IDs
-                ids = $.grep(ids, function (n) {
-                    return ( idsChecked.indexOf(n) == -1 );
-                });
-
-
-                for (var i = 0, il = ids.length; i < il; i++) {
-                    form.find('#fieldset--' + ids[i]).each(function () {
-                        $(this).addClass('invalid');
-                        errorMessage += '<li>' + $(this).attr('data-error-message') + '</li>';
-
-                    });
-                };
-            }
-        }
-
-        // check required radio buttons
-
-        var ids = $.unique(form.find('.fieldset').find('input[type="radio"].required').map(function() {
-            return this.name.replace('helper--', '');
-        }).get());
-        if (ids.length > 0) {
-            var idsChecked = $.unique(form.find('input[type="radio"].required:checked').map(function () {
-                return this.name.replace('helper--', '');
-            }).get());
-
-            if (idsChecked.length < ids.length) { // not all required sets of radio buttons have been ticked
-                // report the issue. Filter out the checked IDs
-                ids = $.grep(ids, function (n) {
-                    return (idsChecked.indexOf(n) == -1);
-                });
-
-                for (var i = 0, il = ids.length; i < il; i++) {
-                    form.find('#fieldset--' + ids[i]).each(function() {
-                        // set the invalid class and add functionality to remove it
-                        $(this).addClass('invalid').attr('data-error-id', i).find('input[type="radio"]').each(function() {
-
-                            $(this).on('click', function () {
-                                var errorID = $(this).parents('.invalid').removeClass('invalid').attr('data-error-id');
-                                $('#error__' + errorID).remove();
-                                if (form.find('div.validation-message').find('li').length == 0) {
-                                    form.find('div.validation-message').remove();
-                                }
-                            });
-                        });
-                        errorMessage += '<li id="error__' + i + '">' + $(this).attr('data-error-message') + '</li>';
-                    });
-                };
-            }
-        }
-
-
-        // check required text fields
-        var parentNames = [];
-
-        var ids = $.unique(form.find('.fieldset').removeClass('invalid').find('input[type="text"].required:visible, input[type="number"].required:visible').map(function() {
-            return this.name.replace('helper--', '');
-        }).get());
-        console.log(ids);
-        if (ids.length > 0) {
-            var idsValid = $.unique(form.find('input[type="text"].required:visible, input[type="number"].required:visible').map(function () {
-                // TODO: add validation based on regexp
-                if ($(this).val() == '') {
-                    parentNames.push($(this).attr('data-parent-fieldset'));
-                    return null
-                } else {
-                    return this.name.replace('helper--', '');
-                }
-
-            }).get());
-console.log(idsValid);
-            if (idsValid.length < ids.length) { // not all required sets of radio buttons have been ticked
-                // report the issue. Filter out the valid IDs
-                ids = $.grep(ids, function (n) {
-                    return (idsValid.indexOf(n) == -1);
-                });
-
-                console.log(ids);
-
-                for (var i = 0, il = ids.length; i < il; i++) {
-                    console.log('invalidating #fieldset--' + ids[i]);
-                    form.find('#fieldset--' + ids[i]).each(function () {
-                        $(this).addClass('invalid');
-                        errorMessage += '<li>' + $(this).attr('data-error-message') + '</li>';
-                    });
-                };
-                for (var i = 0, il = parentNames.length; i < il; i++) {
-                    console.log('invalidating #fieldset--' + parentNames[i]);
-                    form.find('#fieldset--' + parentNames[i]).each(function () {
-                        $(this).addClass('invalid');
-                        errorMessage += '<li>' + $(this).attr('data-error-message') + '</li>';
-                    });
-                };
-
-            }
-            console.log('------');
-        }
-
-
-
-        if (errorMessage != '') {
-            form.find('div.validation-message').remove();
-            form.find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + errorMessage + '</ul></div>');
-
-            return false
-        }
-
-return false;
-
-        // MANUAL OVERRIDES HERE
-        if (form.attr('id') == 'form__fraud-type') { // redirect to new or old website based on user input
-            var redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
-            var selected = form.find('input[type="checkbox"][name="fraud-type"]:checked').map(function() {
-                return this.value;
-            }).get();
-            var redirectsSelected = $.grep(selected, function(n) {
-                return ( redirects.indexOf(n) != -1 );
-            });
-            if (redirectsSelected.length > 0) {
-                e.preventDefault();
-                document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
-            }
-        }
-    });
-    */
+ */

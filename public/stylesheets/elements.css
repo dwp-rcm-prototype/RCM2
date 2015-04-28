@@ -657,7 +657,7 @@ fieldset {
     width: 100%; } }
 
 .validation-summary {
-  border: 3px solid #df3034;
+  border: 3px solid #af1324;
   padding: 15px 30px;
   margin-bottom: 30px; }
 
@@ -680,7 +680,7 @@ fieldset {
   margin-bottom: 5px; }
 
 .validation-summary a {
-  color: #df3034; }
+  color: #af1324; }
 
 .validation-summary .heading-small {
   margin-top: 15px; }
@@ -692,7 +692,7 @@ fieldset {
   line-height: 1.25;
   font-weight: 400;
   text-transform: none;
-  color: #df3034; }
+  color: #af1324; }
   @media (max-width: 640px) {
     .validation-message {
       font-size: 14px;
