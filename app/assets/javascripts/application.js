@@ -26,10 +26,8 @@
                                     '<h3 class="heading-medium error-summary-heading" id="error-summary-heading">' +
                                     'Unable to submit the form.' +
                                     '</h3>' +
-                                    '<p>Please check the following problem(s)</p>' +
-                                    '<ul class="list-bullet error-summary-list">' +
-                                        '[errorMessages]' +
-                                    '</ul>' +
+                                    '<p>[customMessage]</p>' +
+                                    '[errorMessages]' +
                                 '</div>'
 
 },
@@ -39,12 +37,20 @@
             rcm.submitButton = 'form.' + formClassName + ' input[type="submit"]';
             this.disableHTML5validation(formClassName);
             this.bindUIActions();
+
+            var i = 0;
+            $('form.' + formClassName).each(function() {
+                $(this).find('.validation-group').each(function() {
+                    $(this).attr('id', 'validation-group--' + i);
+                    i += 1;
+                });
+            });
         },
 
         reset: function () {
             rcm.errorCount = 0;
             rcm.errorMessages = '';
-            $(rcm.form).removeClass('invalid').find('div.validation-message').remove();
+            $(rcm.form).removeClass('invalid').parent().find('div.validation-message').remove();
             // remove all valids and invalids?
         },
 
@@ -67,6 +73,9 @@
                 $('.' + sections).hide();
                 $('.' + sectionOn).show();
             });
+
+
+
         },
 
         disableHTML5validation: function (formClassName) {
@@ -92,8 +101,9 @@
 
             if (rcm.errorMessages !== '') {
                 e.preventDefault();
-                $(rcm.form).find('input[type="submit"]').before(rcm.messageTemplate.replace('[errorMessages]', rcm.errorMessages));
-                //$(rcm.form).find('input[type="submit"]').before('<div class="validation-message"><ul class="list-bullet">' + rcm.errorMessages + '</ul></div>');
+                $(rcm.form).prepend(rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem(s)').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>'));
+                $("html, body").animate({scrollTop:$('form').position().top - 20}, '500', 'swing');
+
             } else {
                 ValidationObject.validateFormSets(e);
             }
@@ -130,31 +140,29 @@
                     return (value !== '') ? el.name : null;
                 } else {
 
-                    if ($(el).next('p.sticky').get(0) != null) {
+                    /*if ($(el).next('p.sticky').get(0) != null) {
                         defaultTooltip = $(el).next('p.sticky').attr('data-default-text');
                         $(el).removeClass('invalid').next('p.sticky').html(defaultTooltip);
                     } else {
                         $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
-                    }
+                    }*/
+                    $(el).removeClass('invalid').parent().find('.error-message').remove();
+
                     regexObj = new RegExp(pattern, "gi");
                     result = regexObj.test(value);
                     if (result) {
                         return el.name;
                     } else {
                         if ($(el).val() !== '') {
-                            $(el).addClass('invalid');
 
                             tooltip = $(el).attr('data-field-error');
                             if (tooltip != null) {
-                                if ($(el).next('p.sticky').get(0) != null) {
-                                    $(el).next('p.sticky').html(tooltip);
-                                } else {
+                                //if ($(el).next('p.sticky').get(0) != null) {
+                                //    $(el).next('p.sticky').html(tooltip);
+                                //} else {
                                     //$(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
-
-                                    console.log($(el).parent().find('label'));
-
-                                    $(el).parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
-                                }
+                                $(el).parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
+                                //}
                             }
                         }
                         return null;
@@ -168,24 +176,10 @@
         },
 
         invalidateElement: function (el) {
-            if (el.tagName.toUpperCase() === 'INPUT') {
-                $(el).addClass('invalid');
-                //.on('click focusout', function () {
-                //        if (ValidationObject.fieldValid(el) != null) {
-                //            $(el).removeClass('invalid');
-                //        }
-                //    });
-            } else {
-                $(el).addClass('invalid');
-                //.find('input').each(function () {
-                //        $(this).on('click focusout', function () {
-                //            if (fieldValid(this) != null) {
-                //                $(this).removeClass('invalid');//.parents('.validation-group.invalid');
-                //            }
-                //        });
-                //    });
-            }
-            rcm.errorMessages += '<li id="validation-message-' + rcm.errorCount + '">' + rcm.validationMessage + '</li>';
+            var id = $(el).attr('id');
+            if (id === null) { id = $(el).parents('.validation-group').attr('id')};
+            $(el).addClass('invalid');
+            rcm.errorMessages += '<li><a href="#' + id + '">' + rcm.validationMessage + '</a></li>';
             rcm.errorCount += 1;
         },
 
@@ -280,13 +274,16 @@
                 formErrorMessages = [];
 
             // move to external data file
-            formErrorMessages['fraud-suspect'] = 'Please make sure you enter at least<ol class="list-bullet">' +
+            formErrorMessages['fraud-suspect'] = '<p>Please make sure you enter at least</p>' +
+                '<ul class="list-bullet error-summary-list">' +
                 '<li>A name, approximate age (or date of birth) and an address</li>' +
                 '<li>A name, approximate age (or date of birth) and some additional info</li>' +
                 '<li>A National insurance number and an approximate age (or date of birth)</li>' +
                 '<li>A National insurance number and an address</li>' +
-                '</ul>';
-            formErrorMessages['fraud-suspect__3strikes'] = 'Having trouble? Call us on 0800 854 440.<br><br>Otherwise please make sure you enter at least<ol class="list-bullet">' +
+                '</ol>';
+            formErrorMessages['fraud-suspect__3strikes'] = '<p>Having trouble? Call us on 0800 854 440.<br>' +
+                'Otherwise please make sure you enter at least</p>' +
+                '<ul class="list-bullet error-summary-list">' +
                 '<li>A name, approximate age (or date of birth) and either an address or some additional info</li>' +
                 '<li>A National insurance number and either an approximate age (or date of birth) or an address</li>' +
                 '</ul>';
@@ -325,7 +322,10 @@
                         if (rcm.threeStrikesCount >= 3) {
                             formErrorMessage = (formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : formErrorMessages[messageIdentifier + '__3strikes'];
                         }
-                        $(rcm.form).addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
+                        //$(rcm.form).addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
+                        //$(rcm.form).addClass('invalid').before('<div class="validation-message">' + formErrorMessage + '</div>');
+                        $(rcm.form).addClass('invalid').before(rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
+                        $("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
 
                         return false;
                     }

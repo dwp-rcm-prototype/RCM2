@@ -1,3 +1,37 @@
+#3.4.2
+
+- Fix: Before this fix, when a user fell into variant 0 of a multivariate test,
+the data wouldn't be reported to Google correctly because of a broken
+null check in the code block that opts the user into the Google Content
+Experiment.
+
+# 3.4.1
+
+- Fix: Make the error colour a darker red for greater contrast and to meet WCAG 2.0 AAAA
+(this was meant to go into 3.3.1 but was lost from history)
+- Add `$focus-colour` variable (#180)
+
+# 3.4.0
+
+- multivariate-test.js: add support for using Google Content Experiments as the reporting
+backend for multivariate tests
+
+# 3.3.1
+
+- Fix: Make the error colour a darker red for greater contrast and to meet WCAG 2.0 AAAA
+
+# 3.3.0
+
+- Add: Analytics - pageview tracking for a print attempt
+
+# 3.2.1
+
+- Fix: Analytics - don't run error and print plugins on load
+
+# 3.2.0
+
+- Add: Analytics API https://github.com/alphagov/govuk_frontend_toolkit/pull/162 https://github.com/alphagov/govuk_frontend_toolkit/blob/master/docs/analytics.md
+
 # 3.1.0
 
 - Fix: outdent to add right margin rather than only left

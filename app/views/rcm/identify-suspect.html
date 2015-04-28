@@ -27,7 +27,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
         <fieldset class="fieldset">
             <legend>If you know their first and/ or last name, please enter it here:</legend>
 
-            <div class="validation-group" data-validation-id="name" data-validation-type="not-required--one-or-more">
+            <div class="validation-group" XXXid="validation---name" data-validation-id="name" data-validation-type="not-required--one-or-more">
                 <div class="form-group">
                     <label class="form-label" for="first-name">First name(s)</label>
                     <div class="validation-wrapper">
@@ -42,7 +42,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
                 </div>
             </div>
 
-            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
+            <div class="validation-group" XXXid="validation--alternative-name" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
                 <div class="form-group inline" id="fieldset--alternative-name" data-target="section--alternative-name">
                     <p class="legend">Do you know this person by another name?</p>
                     <label class="block-label" for="alternative-name__yes">
@@ -57,7 +57,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
             </div>
 
             <div class="section--alternative-name section--alternative-name__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
+                <div class="panel-indent validation-group" XXXid="validation--name-fields" data-validation-id="alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
                     <div class="form-group">
                         <label class="form-label" for="alternative-first-name">First name(s)</label>
                         <div class="validation-wrapper">
@@ -190,8 +190,8 @@ GOV.UK Reporting benefit fraud: Identify suspect
                 <div class="panel-indent validation-group" data-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
                     <div class="form-group">
                         <label class="form-label" for="ni-number">Please enter their national insurance number</label>
-                        <input class="form-control" id="ni-number" name="ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid national insurance number.<br>For example: QQ123456C">
-                        <p class="form-hint display-block sticky" data-default-text="For example, QQ123456C">For example, QQ123456C</p>
+                        <input class="form-control" id="ni-number" name="ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid national insurance number.">
+                        <p class="form-hint display-block">For example, QQ123456C</p>
                     </div>
                 </div>
             </div>

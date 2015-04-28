@@ -1,4 +1,6 @@
-
+form.js-check {
+    position: relative;
+}
 label.invalid, fieldset.invalid {
     outline: none;
 }
@@ -26,22 +28,32 @@ fieldset.invalid {
 .validation-message {
     font-size: 19px;
     clear: both;
-    padding: 10px;
-    margin: 1em 0 1em -14px;
-    border-left: 4px solid $error-colour;
+    padding: 15px;
+    margin: 1em 0 1em -18px;
+
+    border: 4px solid $error-colour;
     color: $error-colour;
     font-weight: bold;
     .list-bullet {
         margin-bottom:0
     }
+    h3 {
+        margin-top:10px;
+        color:#000;
+    }
+    p {
+        color:#000;
+        margin-bottom:0
+    }
 }
+/*
 @media (min-width: 641px) {
     .validation-message {
         padding-left: 14px;
         margin-left: -18px;
     }
 }
-
+*/
 label .validation-message {
     display: block;
     position: absolute;
