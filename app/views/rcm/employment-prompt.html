@@ -20,33 +20,17 @@ GOV.UK Reporting benefit fraud: Employemnt
         Does the suspect or their partner work?
     </h1>
 
-    <form method="post" action="employment-suspect/" id="form__employment-suspect" class="" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
-        <div class="fieldset inline">
-            <div class="form-group form-group-compound">
-                <input type="submit" class="block-label" value="The suspect is working" />
-            </div>
-        </div>
-    </form>
 
-    <form method="post" action="employment-partner/" id="form__employment-partner" class="" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
-        <div class="fieldset inline">
-            <div class="form-group form-group-compound">
-                <input type="submit" class="block-label" value="The partner is working" />
-            </div>
-        </div>
-    </form>
+    <ul>
+        <li><form method="post" action="employment-suspect/"><input type="submit" class="button grey" value="The suspect is working"></form></li>
+        <li><form method="post" action="employment-partner/"><input type="submit" class="button grey" value="The partner is working"></form></li>
+        <li><form method="post" action="employment-suspect-partner/"><input type="submit" class="button grey" value="Both the suspect and partner are working"></form></li>
+    </ul>
 
-    <form method="post" action="employment-suspect-partner/" id="form__employment-suspect-partner" class="" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
-        <div class="fieldset inline">
-            <div class="form-group form-group-compound">
-                <input type="submit" class="block-label" value="Both the suspect and partner are working" />
-            </div>
-        </div>
-    </form>
     <!--
-    <form method="post" action="{{nextPage}}" id="form__employment-prompt" class="rcm-check" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+    <form method="post" action="{{nextPage}}" id="form__employment-prompt" class="rcm-check">
 
-        <fieldset class="fieldset inline">
+        <fieldset class="inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if the suspect and/ or their partner are working" >
                 <div class="form-group form-group-compound">
                     <legend>Are they working?</legend>
