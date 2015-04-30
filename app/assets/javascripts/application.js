@@ -22,7 +22,7 @@
             errorCount: 0,
             errorMessages: '',
             threeStrikesCount: 0,
-            messageTemplate :   '<div class="validation-message error-summary" role="group" tabindex="-1" aria-labelledby="error-summary-heading">' +
+            messageTemplate :   '<div class="error-summary" role="group" tabindex="-1" aria-labelledby="error-summary-heading">' +
                                     '<h3 class="heading-medium error-summary-heading" id="error-summary-heading">' +
                                     'Unable to submit the form.' +
                                     '</h3>' +
@@ -50,7 +50,7 @@
         reset: function () {
             rcm.errorCount = 0;
             rcm.errorMessages = '';
-            $(rcm.form).removeClass('invalid').parent().find('div.validation-message').remove();
+            $(rcm.form).removeClass('invalid').parent().find('div.error-summary').remove();
             // remove all valids and invalids?
         },
 

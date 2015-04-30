@@ -54,17 +54,20 @@ fieldset.invalid {
     }
 }
 */
+/* RE 30/04/2015 removed because A. Unneeded and B. badly implemented
 label .validation-message {
     display: block;
     position: absolute;
     left: -9999em;
     top: -9999em;
 }
+*/
 .validation-message a {
     color: $error-colour;
     text-decoration: none;
 }
-.validation-message a:focus, .validation-message a:hover {
+.validation-message a:focus,
+.validation-message a:hover {
     text-decoration: underline;
 }
 
@@ -122,6 +125,13 @@ label span.error-message {
     }
 }
 
+.error-summary {
+    @extend .validation-message;
+    a {
+        text-decoration: underline;
+    }
+}
+
 .form-submitted {
     background-color:#28a197;
     text-align: center;
@@ -140,8 +150,8 @@ label span.error-message {
 .form-submitted .text p:last-child {
     margin-bottom: 0;
 }
-
-.crm-check-form fieldset {
+/*
+.js-check fieldset {
     margin-bottom: 1em;
 }
 legend {
@@ -152,6 +162,10 @@ p.legend {
     margin-bottom: 0;
     font-weight: bold;
 }
+
+*/
+p.legend, legend {@extend .form-label-bold}
+
 .clear-both {
     clear:both;
 }
@@ -176,12 +190,19 @@ input[type="text"]+label{
     width:25%
 }
 
-.validation-group:after {
-    clear:both;
-    content:'';
-    display: block;
+.validation-group {
+    margin-bottom: 15px;
+    :after {
+        clear: both;
+        content: '';
+        display: block;
+    }
 }
-
+@media (min-width: 641px) {
+    .validation-group {
+        margin-bottom: 30px;
+    }
+}
 
 form.invalid {
     padding-left: 10px;
@@ -252,7 +273,29 @@ input[type="submit"].block-label {
 }
 
 
+fieldset.form-group {
+    float:none;
+}
 
+.button.grey {
+    background: #dee0e2;
+    border: 1px solid #dee0e2;
+    padding: 18px 30px 15px 45px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color:#000;
+    @include box-shadow(none);
+    @include ie-lte(8) {
+        border-bottom-width: 1px;
+    }
+    &:hover {
+        border-color: #0b0c0c;
+    }
+    &:visited {
+        background: #dee0e2;
+    }
+}
 /* Overrides to allow for IE6 - 8 to work */
 .lte-ie8 {
 
@@ -285,5 +328,10 @@ input[type="submit"].block-label {
     }
     .form-date .form-group {
         float: left;
+    }
+
+    .button:active {
+        top: 0;
+        margin-top:2px;
     }
 }
