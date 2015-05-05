@@ -17,13 +17,13 @@ GOV.UK Reporting benefit fraud: What type of fraud
         });
 
 
-        /* display-none-js is a class that should only work to hide information when javascript is enabled */
-        $('.display-none-js').hide();
+        /* toggle-controlled is a class that should only work to hide information when javascript is enabled */
+        $('.toggle-controlled').hide();
 
         /* generic toggle functionality */
         $('.toggle-section').on('click', function() {
-            var sections = $(this).parents('.form-group').attr('data-target');
-            var sectionOn = $(this).parents('.form-group').attr('data-target') + '__' + $(this).val().toLowerCase();
+            var sections = $(this).parents('.form-group').attr('data-toggle-target');
+            var sectionOn = $(this).parents('.form-group').attr('data-toggle-target') + '__' + $(this).val().toLowerCase();
             $('.' + sections).hide();
             $('.' + sectionOn).show();
         });
@@ -109,7 +109,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
         <fieldset class="inline">
             <legend class="form-label">Do you know the national insurance number for this person?</legend>
-            <div class="form-group form-group-compound" data-target="section--nino">
+            <div class="form-group form-group-compound" data-toggle-target="section--nino">
                 <label class="block-label" for="nino_yes">
                     <input id="nino_yes" type="radio" class="toggle-section" name="helper-nino" value="Yes">
                     Yes
@@ -121,7 +121,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
             </div>
         </fieldset>
 
-        <div class="section--nino section--nino__yes display-none-js">
+        <div class="section--nino section--nino__yes toggle-controlled">
 
             <div class="panel-indent margin-top-0">
                 <fieldset>
@@ -139,13 +139,13 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
         </div>
 
-        <div class="section--nino section--nino__no display-none-js">
+        <div class="section--nino section--nino__no toggle-controlled">
 
             <h2 class="heading-medium">Please enter information for the following three sections</h2>
 
         </div>
 
-        <ol class="list-number list-number-outside section--nino section--nino__yes section--nino__no display-none-js">
+        <ol class="list-number list-number-outside section--nino section--nino__yes section--nino__no toggle-controlled">
 
             <!-- name -->
 
@@ -168,7 +168,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
                         <!--
                         <legend class="form-label">Do you know this person by another name?</legend>
-                        <div class="form-group form-group-compound" data-target="section--alternative-name">
+                        <div class="form-group form-group-compound" data-toggle-target="section--alternative-name">
                             <label class="block-label" for="nino_yes">
                                 <input id="nino_yes" type="radio" class="toggle-section" name="helper-other-name" value="Yes">
                                 Yes
@@ -217,8 +217,8 @@ GOV.UK Reporting benefit fraud: What type of fraud
                 <fieldset class="inline fieldset-dob">
                     <legend>Do you know the date of birth for this person?</legend>
                     <!--
-                                       <div class="form-group form-group-compound" data-target="section--dob">
-                                           <label class="block-label" data-target="example-ni-number" for="radio1">
+                                       <div class="form-group form-group-compound" data-toggle-target="section--dob">
+                                           <label class="block-label" data-toggle-target="example-ni-number" for="radio1">
                                                <input id="radio1" class="toggle-section" type="radio" name="helper-dob" value="Yes">
                                                Yes
                                            </label>
@@ -231,7 +231,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
 
 
-                                       <div class="section--dob section--dob__yes display-none-js">
+                                       <div class="section--dob section--dob__yes toggle-controlled">
                                            <div class="form-date">
 
                                                <div class="form-group form-group-day">
@@ -251,7 +251,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                                                <p class="form-hint clear-both">For example, 31 3 1980</p>
                                            </div>
                                        </div>
-                                       <div class="section--dob section--dob__no display-none-js">
+                                       <div class="section--dob section--dob__no toggle-controlled">
                                            <div class=form-group>
                                                <label class="form-label" for="dob-approx">Enter their approximate age</label>
                                                <input class="form-control" id="dob-approx" type="number" pattern="[0-9]*" min="0" max="150">
@@ -324,7 +324,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                         <input class="form-control" id="county" type="text">
                     </div>
                 </fieldset>
-                <div class="section--nino section--nino__no display-none-js">
+                <div class="section--nino section--nino__no toggle-controlled">
                     <details>
                         <summary><span class="summary">Do you have additional contact details for the suspect?</span></summary>
                         <div class="panel-indent">
@@ -355,7 +355,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     </details>
                 </div>
             </li>
-            <li class="panel-indent section--nino section--nino__yes display-none-js">
+            <li class="panel-indent section--nino section--nino__yes toggle-controlled">
                 <fieldset>
                     <legend>Additional contact details for this suspect</legend>
                     <div class="form-group float-none">

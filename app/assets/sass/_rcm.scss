@@ -1,6 +1,7 @@
 form.js-check {
     position: relative;
 }
+
 label.invalid, fieldset.invalid {
     outline: none;
 }
@@ -9,21 +10,21 @@ fieldset.invalid {
     padding-left: 10px;
     margin-left: -14px;
 }
+.help-content fieldset.invalid {
+    padding-left: 28px;
+    margin-left: -32px;
+}
 @media (min-width: 641px) {
     fieldset.invalid {
         padding-left: 14px;
         margin-left: -18px;
     }
-}.help-content fieldset.invalid {
-     padding-left: 28px;
-     margin-left: -32px;
- }
-@media (min-width: 641px) {
     .help-content fieldset.invalid {
         padding-left: 32px;
         margin-left: -36px;
     }
 }
+
 
 .validation-message {
     font-size: 19px;
@@ -125,6 +126,13 @@ label span.error-message {
     }
 }
 
+
+.toggle-controlled.panel-indent {
+    padding-top:0;
+    padding-bottom:0;
+}
+
+
 .error-summary {
     @extend .validation-message;
     a {
@@ -164,39 +172,69 @@ p.legend {
 }
 
 */
-p.legend, legend {@extend .form-label-bold}
+p.legend, legend {
+    @extend .form-label-bold;
+    span {
+        display:block;
+        font-weight:normal;
+        font-size: 19px;
+        padding-bottom:1em;
+    }
+}
 
 .clear-both {
     clear:both;
 }
 
-
-.form-date:after {
-    clear:both;
-    display:block;
-    content:''
+.form-date {
+    .form-group label {
+        margin-bottom:0;
+        line-height: 1;
+    }
+    .form-date:after {
+        clear:both;
+        display:block;
+        content:''
+    }
+}
+textarea {
+    display:block
 }
 
 input[type="text"]+input[type="text"],
 input[type="text"]+label{
     margin-top:8px
 }
-.panel-indent .form-date > p {
-    margin-top:0;
-    margin-bottom:5px;
+.panel-indent {
+    .form-date > p {
+        margin-top:0;
+        margin-bottom:5px;
+    }
+    &.validation-group {
+        margin-top:0;
+    }
 }
-
 .form-control.width__half {
     width:25%
 }
 
 .validation-group {
     margin-bottom: 15px;
+    position:relative;
     :after {
         clear: both;
         content: '';
         display: block;
     }
+    &>p {
+        margin-bottom: 0;
+    }
+    &>p.form-label {
+        margin-top:0;
+        margin-bottom:5px;
+
+    }
+
 }
 @media (min-width: 641px) {
     .validation-group {
@@ -248,12 +286,31 @@ form.invalid {
 }
 /*
 */
-
+fieldset {
+    position: relative;
+}
 .display-block-js {
     display:none;
 }
 input[type="submit"].block-label {
     padding-left:30px;
+}
+
+.toggle-control {
+    position:relative;
+    &:after {
+        clear:both;
+        display: block;
+        content:''
+    }
+    .block-label {
+        clear: none;
+        margin-right: 15px;
+    }
+}
+.toggle-controlled {
+    display:block;
+    position:relative;
 }
 
 .panel-indent p:only-child, .panel-indent p.form-hint:last-child {
@@ -301,6 +358,10 @@ fieldset.form-group {
 
     main#content {
         margin: 0 auto;
+        _width:780px; /* dirty IE6 hack */
+    }
+    .text {
+        zoom:1;
     }
     .button {
         margin:3px 3px 1px 3px;

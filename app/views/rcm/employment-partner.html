@@ -21,11 +21,11 @@ GOV.UK Reporting benefit fraud: Employemnt
     </h1>
 
 
-    <form method="post" action="vehicle/" id="form__identify-partner" class="js-check" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+    <form method="post" action="vehicle/" id="form__identify-partner" class="js-check">
 
-        <fieldset class="fieldset">
+        <fieldset>
 
-            <div class="validation-group" data-validation-id="partner-work-location" data-validation-type="required--one" data-validation-message="Please tell us where they work">
+            <div class="validation-group" data-form-validation-id="partner-work-location" data-validation-type="required--one" data-validation-message="Please tell us where they work">
                 <div class="form-group">
                     <label class="form-label" for="work-location">Where do they work?</label>
                     <textarea id="work-location" class="form-control" rows="5" name="partner-work-location"></textarea>
@@ -34,9 +34,9 @@ GOV.UK Reporting benefit fraud: Employemnt
         </fieldset>
 
 
-        <fieldset class="fieldset inline form-group">
+        <fieldset class="inline form-group">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if this person is self-employed" >
-                <div class="form-group form-group-compound" id="fieldset--partner--self-employed" data-target="section--partner--self-employed">
+                <div class="form-group form-group-compound" id="fieldset--partner--self-employed" data-toggle-target="section--partner--self-employed">
                     <legend>Is this person self employed?</legend>
                     <label class="block-label" for="partner--self-employed__yes">
                         <input id="partner--self-employed__yes" type="radio" class="toggle-section" name="helper--partner--self-employed" value="Yes">
@@ -53,8 +53,8 @@ GOV.UK Reporting benefit fraud: Employemnt
                 </div>
             </div>
 
-            <div class="section--partner--self-employed section--partner--self-employed__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="partner--self-employed" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
+            <div class="section--partner--self-employed section--partner--self-employed__yes toggle-controlled">
+                <div class="panel-indent validation-group" data-form-validation-id="partner--self-employed" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
                     <div class="form-group">
                         <label class="form-label" for="partner--type-of-work">What type of work do they do?</label>
                         <input class="form-control" id="partner--type-of-work" name="partner--type-of-work" type="text">
@@ -65,8 +65,8 @@ GOV.UK Reporting benefit fraud: Employemnt
 
 
 
-        <fieldset class="fieldset">
-            <div class="validation-group" data-validation-id="partner-work-duration" data-validation-type="not-required--one">
+        <fieldset>
+            <div class="validation-group" data-form-validation-id="partner-work-duration" data-validation-type="not-required--one">
                 <div class="form-group">
                     <label class="form-label" for="partner-work-duration">How long has the partner been working?</label>
                     <input type="text" id="partner-work-duration" class="form-control" name="partner-work-duration">
@@ -74,7 +74,7 @@ GOV.UK Reporting benefit fraud: Employemnt
                 </div>
             </div>
 
-            <div class="validation-group" data-validation-id="partner-timings" data-validation-type="not-required--one">
+            <div class="validation-group" data-form-validation-id="partner-timings" data-validation-type="not-required--one">
                 <div class="form-group">
                     <label class="form-label" for="partner-timings">What time do they leave/return home?</label>
                     <textarea id="partner-timings" class="form-control" rows="5" name="partner-timings"></textarea>

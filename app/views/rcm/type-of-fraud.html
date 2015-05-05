@@ -20,36 +20,37 @@ GOV.UK Reporting benefit fraud: What type of fraud
         What type of fraud?
     </h1>
 
-<!-- NB to RE: removed class="input-fraud-type" from input type="checkbox" -->
+
+
     <form method="post" action="identify-suspect/" id="form__fraud-type" class="js-check js-routed">
-        <div class="form-group validation-group" data-validation-type="required--one-or-more" data-validation-message="Please select at least one type of fraud." >
+        <div class="validation-group" data-validation-type="required--one-or-more" data-validation-message="Please select at least one type of fraud." >
             <fieldset>
-                <legend class="form-label-bold heading-large">Which type of fraud do you want to report?</legend>
+                <legend xclass="form-label-bold heading-large">Which type of fraud do you want to report?</legend>
                 <p>Please select all that apply</p>
 
-                <label class="block-label" for="cb1">
-                    <input id="cb1" name="fraud-type" type="checkbox" value="workEarning">
+                <label class="block-label" for="workEarning">
+                    <input id="workEarning" name="fraud-type" type="checkbox" value="workEarning">
                     Not telling us about earnings
                 </label>
-                <label class="block-label" for="cb2">
-                    <input id="cb2" name="fraud-type" type="checkbox" value="livingWithPartner">
+                <label class="block-label" for="livingWithPartner">
+                    <input id="livingWithPartner" name="fraud-type" type="checkbox" value="livingWithPartner">
                     Living with a partner while claiming to be living alone
                 </label>
 
-                <label class="block-label" for="cb3">
-                    <input id="cb3" name="fraud-type" type="checkbox" value="disabilityCarers">
+                <label class="block-label" for="disabilityCarers">
+                    <input id="disabilityCarers" name="fraud-type" type="checkbox" value="disabilityCarers">
                     Dishonestly claiming a disability or carers benefit
                 </label>
-                <label class="block-label" for="cb4">
-                    <input id="cb4" name="fraud-type" type="checkbox" value="abroad">
+                <label class="block-label" for="abroad">
+                    <input id="abroad" name="fraud-type" type="checkbox" value="abroad">
                     The person claiming is no longer in the United Kingdom
                 </label>
-                <label class="block-label" for="cb5">
-                    <input id="cb5" name="fraud-type" type="checkbox" value="idFraud">
+                <label class="block-label" for="idFraud">
+                    <input id="idFraud" name="fraud-type" type="checkbox" value="idFraud">
                     Identity Fraud
                 </label>
-                <label class="block-label" for="cb6">
-                    <input id="cb6" name="fraud-type" type="checkbox" value="savingsCapital">
+                <label class="block-label" for="savingsCapital">
+                    <input id="savingsCapital" name="fraud-type" type="checkbox" value="savingsCapital">
                     Not telling us about savings or other income
                 </label>
 
@@ -57,7 +58,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
         </div>
 
-        <input type="submit" id="complete" class="button" value="Continue" />
+        <input type="submit" class="button" value="Continue" />
     </form>
 
     <a href="{{previousPage}}#" class="previousPage">Back</a>

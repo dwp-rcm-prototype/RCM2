@@ -20,12 +20,12 @@ GOV.UK Reporting benefit fraud: Vehicle
         About the vehicle
     </h1>
 
-    <form method="post" action="other-information/" id="form__employment-suspect" class="js-check js-routed" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+    <form method="post" action="other-information/" id="form__employment-suspect" class="js-check js-routed">
 
 
-        <fieldset class="fieldset inline">
+        <fieldset class="inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please let us if you can tell us about their vehicle" >
-                <div class="form-group form-group-compound" id="fieldset--vehicle" data-target="section--vehicle">
+                <div class="form-group form-group-compound" id="fieldset--vehicle" data-toggle-target="section--vehicle">
                     <legend>Can you tell us anything about a vehicle they may own?</legend>
                     <label class="block-label" for="vehicle__yes">
                         <input id="vehicle__yes" type="radio" class="toggle-section" name="helper--vehicle" value="Yes">
@@ -38,9 +38,9 @@ GOV.UK Reporting benefit fraud: Vehicle
                 </div>
             </div>
 
-            <div class="section--vehicle section--vehicle__yes display-none-js">
+            <div class="section--vehicle section--vehicle__yes toggle-controlled">
                 <div class="panel-indent no-padding-top">
-                    <div class="validation-group form-group-compound" data-validation-id="vehicle" data-validation-type="required--one" data-validation-message="Please tell us what kind of vehicle they own">
+                    <div class="validation-group form-group-compound" data-form-validation-id="vehicle" data-validation-type="required--one" data-validation-message="Please tell us what kind of vehicle they own">
                         <div class="form-group">
                             <label class="form-label" for="vehicle-type">What kind of vehicle do they own?</label>
                             <input class="form-control" id="vehicle-type" name="vehicle-type" type="text">

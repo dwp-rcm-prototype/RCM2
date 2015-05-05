@@ -20,14 +20,14 @@ GOV.UK Reporting benefit fraud: Identify partner
         What can you tell us about their partner?
     </h1>
 
-    <form method="post" action="employment-prompt/" id="form__identify-partner" class="js-check js-routed" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+    <form method="post" action="employment-prompt/" id="form__identify-partner" class="js-check js-routed">
 
         <!-- NAME -->
 
-        <fieldset class="fieldset">
+        <fieldset>
             <legend>If you know the partner's first and/ or last name, please enter it here:</legend>
 
-            <div class="validation-group" data-validation-id="name" data-validation-type="not-required--one-or-more">
+            <div class="validation-group" data-form-validation-id="name" data-validation-type="optional--one-or-more">
                 <div class="form-group">
                     <label class="form-label" for="partner-first-name">First name(s)</label>
                     <div class="validation-wrapper">
@@ -43,7 +43,7 @@ GOV.UK Reporting benefit fraud: Identify partner
             </div>
 
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
-                <div class="form-group inline" id="fieldset--partner-alternative-name" data-target="section--partner-alternative-name">
+                <div class="form-group inline" id="fieldset--partner-alternative-name" data-toggle-target="section--partner-alternative-name">
                     <p class="legend">Do you know this person by another name?</p>
                     <label class="block-label" for="partner-alternative-name__yes">
                         <input id="partner-alternative-name__yes" type="radio" class="toggle-section" name="helper--partner-alternative-name" value="Yes">
@@ -56,8 +56,8 @@ GOV.UK Reporting benefit fraud: Identify partner
                 </div>
             </div>
 
-            <div class="section--partner-alternative-name section--partner-alternative-name__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="partner-alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
+            <div class="section--partner-alternative-name section--partner-alternative-name__yes toggle-controlled">
+                <div class="panel-indent validation-group" data-form-validation-id="partner-alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
                     <div class="form-group">
                         <label class="form-label" for="partner-alternative-first-name">First name(s)</label>
                         <div class="validation-wrapper">
@@ -76,9 +76,9 @@ GOV.UK Reporting benefit fraud: Identify partner
 
         <!-- AGE -->
 
-        <fieldset class="fieldset inline">
+        <fieldset class="inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's date of birth" >
-                <div class="form-group form-group-compound" id="fieldset--partner-dob" data-target="section--partner-dob">
+                <div class="form-group form-group-compound" id="fieldset--partner-dob" data-toggle-target="section--partner-dob">
                     <legend>Do you know the date of birth for the partner?</legend>
 
                     <label class="block-label" for="partner-dob__yes">
@@ -94,8 +94,8 @@ GOV.UK Reporting benefit fraud: Identify partner
 
 
 
-            <div class="section--partner-dob section--partner-dob__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="partner-dob" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
+            <div class="section--partner-dob section--partner-dob__yes toggle-controlled">
+                <div class="panel-indent validation-group" data-form-validation-id="partner-dob" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
                     <div class="form-date">
                         <p class="margin-vertical-0px">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
@@ -116,8 +116,8 @@ GOV.UK Reporting benefit fraud: Identify partner
                     </div>
                 </div>
             </div>
-            <div class="section--partner-dob section--partner-dob__no display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="partner-age" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
+            <div class="section--partner-dob section--partner-dob__no toggle-controlled">
+                <div class="panel-indent validation-group" data-form-validation-id="partner-age" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
                     <div class=form-group>
                         <label class="form-label" for="partner-dob-approx">Enter their approximate age</label>
                         <input class="form-control required" id="partner-dob-approx" name="partner-dob-approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)">
@@ -129,9 +129,9 @@ GOV.UK Reporting benefit fraud: Identify partner
 
         <!-- ADDRESS -->
 
-        <fieldset class="fieldset inline">
+        <fieldset class="inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if they live at the same address" >
-                <div class="form-group form-group-compound" id="fieldset--partner-address" data-target="section--partner-address">
+                <div class="form-group form-group-compound" id="fieldset--partner-address" data-toggle-target="section--partner-address">
                     <legend>Do they live at the same address?</legend>
 
                     <label class="block-label" for="partner-address__yes">
@@ -153,8 +153,8 @@ GOV.UK Reporting benefit fraud: Identify partner
                 </div>
             </div>
 
-            <div class="section--partner-address section--partner-address__no__address-yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="partner-address" data-validation-type="required--set" data-validation-set="partner-address,partner-postcode|partner-address-line-2,partner-town" data-validation-message="Please enter at least either number and postcode or street and town">
+            <div class="section--partner-address section--partner-address__no__address-yes toggle-controlled">
+                <div class="panel-indent validation-group" data-form-validation-id="partner-address" data-validation-type="required--set" data-validation-sets="partner-address,partner-postcode|partner-address-line-2,partner-town" data-validation-message="Please enter at least either number and postcode or street and town">
                     <div class="form-group">
                         <label class="form-label" for="partner-address">Building name or number</label>
                         <input class="form-control" id="partner-address" name="partner-address" type="text">
@@ -179,9 +179,9 @@ GOV.UK Reporting benefit fraud: Identify partner
 
         <!-- NATIONAL INSURANCE NUMBER -->
 
-        <fieldset class="fieldset inline">
+        <fieldset class="inline">
             <div class="validation-group form-group-compound" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's national insurance number" >
-                <div class="form-group form-group-compound" id="fieldset--partner-nino" data-target="section--partner-nino">
+                <div class="form-group form-group-compound" id="fieldset--partner-nino" data-toggle-target="section--partner-nino">
                     <legend>Do you know the national insurance number for the partner?</legend>
                     <label class="block-label" for="partner-nino__yes">
                         <input id="partner-nino__yes" type="radio" class="toggle-section" name="helper--partner-nino" value="Yes">
@@ -194,8 +194,8 @@ GOV.UK Reporting benefit fraud: Identify partner
                 </div>
             </div>
 
-            <div class="section--partner-nino section--partner-nino__yes display-none-js">
-                <div class="panel-indent validation-group" data-validation-id="partner-nino" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
+            <div class="section--partner-nino section--partner-nino__yes toggle-controlled">
+                <div class="panel-indent validation-group" data-form-validation-id="partner-nino" data-validation-type="required--one" data-validation-message="Please enter the national insurance number">
                     <div class="form-group">
                         <label class="form-label" for="partner-ni-number">Please enter their national insurance number</label>
                         <input class="form-control" id="partner-ni-number" name="partner-ni-number" type="text" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid national insurance number.<br>For example: QQ123456C">
@@ -209,8 +209,8 @@ GOV.UK Reporting benefit fraud: Identify partner
 
 
 
-        <fieldset class="fieldset inline">
-            <div class="validation-group" data-validation-id="partner-additional-information" data-validation-type="not-required" data-validation-message="Please enter some additional information">
+        <fieldset class="inline">
+            <div class="validation-group" data-form-validation-id="partner-additional-information" data-validation-type="not-required" data-validation-message="Please enter some additional information">
                 <legend>Do you have any additional information?</legend>
                 <div class="form-group">
                     <label class="form-label" for="partner-additional-information">If so, please enter it here</label>

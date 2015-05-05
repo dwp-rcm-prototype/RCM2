@@ -20,10 +20,10 @@ GOV.UK Reporting benefit fraud: Any other information
         Is there anything else we need to know?
     </h1>
 
-    <form method="post" action="complete/" id="form__employment-suspect" class="js-check js-routed" data-form-validation-type="" data-form-validation-set="" data-form-validation-message="">
+    <form method="post" action="complete/" id="form__employment-suspect" class="js-check js-routed">
 
-        <fieldset class="fieldset">
-            <div class="validation-group" data-validation-id="additional-information" data-validation-type="not-required" data-validation-message="">
+        <fieldset>
+            <div class="validation-group" data-form-validation-id="additional-information" data-validation-type="not-required" data-validation-message="">
                 <legend>Do you have any additional information?</legend>
                 <div class="form-group">
                     <label class="form-label" for="additional-information">If so, please enter it here</label>
@@ -34,8 +34,8 @@ GOV.UK Reporting benefit fraud: Any other information
             </div>
         </fieldset>
 
-        <fieldset class="fieldset inline">
-            <div class="validation-group" data-validation-id="" data-validation-type="not-required" data-validation-message="">
+        <fieldset class="inline">
+            <div class="validation-group" data-form-validation-id="" data-validation-type="not-required" data-validation-message="">
                 <legend>A little about you (entirely optional)</legend>
                 <div class="form-group">
                     <label class="form-label" for="referral">Where did you hear about this service</label>
@@ -45,7 +45,7 @@ GOV.UK Reporting benefit fraud: Any other information
             </div>
 
             <div class="validation-group form-group-compound" data-validation-type="not-required--one" data-validation-message="" >
-                <div class="form-group form-group-compound" id="fieldset--contact" data-target="section--contact">
+                <div class="form-group form-group-compound" id="fieldset--contact" data-toggle-target="section--contact">
                     <legend>Would you like to leave your contact details?</legend>
                     <label class="block-label" for="contact__yes">
                         <input id="contact__yes" type="radio" class="toggle-section" name="helper--contact" value="Yes">
@@ -58,9 +58,9 @@ GOV.UK Reporting benefit fraud: Any other information
                 </div>
             </div>
 
-            <div class="section--contact section--contact__yes display-none-js">
+            <div class="section--contact section--contact__yes toggle-controlled">
 
-                <div class="panel-indent validation-group" data-validation-id="contact" data-validation-type="required--set" data-validation-set="contact-email|contact-telephone" data-validation-message="Please enter at least an email address or a telephone number">
+                <div class="panel-indent validation-group" data-form-validation-id="contact" data-validation-type="required--set" data-validation-sets="contact-email|contact-telephone" data-validation-message="Please enter at least an email address or a telephone number">
                     <div class="form-group float-none">
                         <div class="form-group">
                             <label class="form-label" for="contact--name">Your name</label>
