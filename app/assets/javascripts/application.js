@@ -154,12 +154,14 @@
 
                                     tooltip = $(el).attr('data-field-error');
                                     if (tooltip != null) {
-                                        //if ($(el).next('p.sticky').get(0) != null) {
-                                        //    $(el).next('p.sticky').html(tooltip);
-                                        //} else {
-                                        //$(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
-                                        $(el).parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
+                                        if ($(el).prev('label') !== null) {
+                                            $(el).addClass('invalid').prev('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
+                                        } else {
+                                            $(el).addClass('invalid').parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
+                                        }
                                         //}
+                                    } else {
+                                        $(el).addClass('invalid');
                                     }
                                 }
                                 return null;
