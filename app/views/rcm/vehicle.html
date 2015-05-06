@@ -24,18 +24,18 @@ GOV.UK Reporting benefit fraud: Vehicle
 
 
         <fieldset class="inline">
-            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please let us if you can tell us about their vehicle" >
-                <div class="form-group form-group-compound" id="fieldset--vehicle" data-toggle-target="section--vehicle">
-                    <legend>Can you tell us anything about a vehicle they may own?</legend>
-                    <label class="block-label" for="vehicle__yes">
-                        <input id="vehicle__yes" type="radio" class="toggle-section" name="helper--vehicle" value="Yes">
-                        Yes
-                    </label>
-                    <label class="block-label" for="vehicle__no">
-                        <input id="vehicle__no" type="radio" class="toggle-section" name="helper--vehicle" value="No">
-                        No
-                    </label>
-                </div>
+            <div class="validation-group toggle-control" data-toggle-target="section--vehicle" data-validation-type="required--one" data-validation-message="Please let us if you can tell us about their vehicle" >
+
+                <legend>Can you tell us anything about a vehicle they may own?</legend>
+                <label class="block-label" for="vehicle__yes">
+                    <input id="vehicle__yes" type="radio" class="toggle-section" name="helper--vehicle" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="vehicle__no">
+                    <input id="vehicle__no" type="radio" class="toggle-section" name="helper--vehicle" value="No">
+                    No
+                </label>
+
             </div>
 
             <div class="section--vehicle section--vehicle__yes toggle-controlled">

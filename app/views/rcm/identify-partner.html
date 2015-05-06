@@ -42,8 +42,8 @@ GOV.UK Reporting benefit fraud: Identify partner
                 </div>
             </div>
 
-            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
-                <div class="form-group inline" id="fieldset--partner-alternative-name" data-toggle-target="section--partner-alternative-name">
+            <div class="validation-group inline toggle-control" data-toggle-target="section--partner-alternative-name" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
+
                     <p class="legend">Do you know this person by another name?</p>
                     <label class="block-label" for="partner-alternative-name__yes">
                         <input id="partner-alternative-name__yes" type="radio" class="toggle-section" name="helper--partner-alternative-name" value="Yes">
@@ -53,7 +53,7 @@ GOV.UK Reporting benefit fraud: Identify partner
                         <input id="partner-alternative-name__no" type="radio" class="toggle-section" name="helper--partner-alternative-name" value="No">
                         No
                     </label>
-                </div>
+
             </div>
 
             <div class="section--partner-alternative-name section--partner-alternative-name__yes toggle-controlled">
@@ -77,8 +77,8 @@ GOV.UK Reporting benefit fraud: Identify partner
         <!-- AGE -->
 
         <fieldset class="inline">
-            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's date of birth" >
-                <div class="form-group form-group-compound" id="fieldset--partner-dob" data-toggle-target="section--partner-dob">
+            <div class="validation-group toggle-control" data-toggle-target="section--partner-dob" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's date of birth" >
+
                     <legend>Do you know the date of birth for the partner?</legend>
 
                     <label class="block-label" for="partner-dob__yes">
@@ -89,7 +89,7 @@ GOV.UK Reporting benefit fraud: Identify partner
                         <input id="partner-dob__no" class="toggle-section" type="radio" name="helper--partner-dob" value="No">
                         No
                     </label>
-                </div>
+
             </div>
 
 
@@ -130,27 +130,28 @@ GOV.UK Reporting benefit fraud: Identify partner
         <!-- ADDRESS -->
 
         <fieldset class="inline">
-            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if they live at the same address" >
-                <div class="form-group form-group-compound" id="fieldset--partner-address" data-toggle-target="section--partner-address">
-                    <legend>Do they live at the same address?</legend>
+            <div class="validation-group toggle-control" data-toggle-target="section--partner-address" data-validation-type="required--one" data-validation-message="Please tell us if they live at the same address" >
 
-                    <label class="block-label" for="partner-address__yes">
-                        <input id="partner-address__yes" class="toggle-section" type="radio" name="helper--partner-same-address" value="Yes">
-                        Yes
-                    </label>
-                    <label class="block-label" for="partner-address__no-yes">
-                        <input id="partner-address__no-yes" class="toggle-section" type="radio" name="helper--partner-same-address" value="No__address-yes">
-                        No, but I know the address
-                    </label>
-                    <label class="block-label" for="partner-address__no-no">
-                        <input id="partner-address__no-no" class="toggle-section" type="radio" name="helper--partner-same-address" value="No__address-no">
-                        No, and I don't know the address
-                    </label>
-                    <label class="block-label" for="partner-address__unknown">
-                        <input id="partner-address__unknown" class="toggle-section" type="radio" name="helper--partner-same-address" value="Unknown">
-                        Don't know
-                    </label>
-                </div>
+                <legend>Do they live at the same address?</legend>
+
+                <label class="block-label" for="partner-address__yes">
+                    <input id="partner-address__yes" class="toggle-section" type="radio" name="helper--partner-same-address" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="partner-address__no-yes">
+                    <input id="partner-address__no-yes" class="toggle-section" type="radio" name="helper--partner-same-address" value="No__address-yes">
+                    No, but I know the address
+                </label>
+                <label class="block-label" for="partner-address__no-no">
+                    <input id="partner-address__no-no" class="toggle-section" type="radio" name="helper--partner-same-address" value="No__address-no">
+                    No, and I don't know the address
+                </label>
+                <label class="block-label" for="partner-address__unknown">
+                    <input id="partner-address__unknown" class="toggle-section" type="radio" name="helper--partner-same-address" value="Unknown">
+                    Don't know
+                </label>
+
+
             </div>
 
             <div class="section--partner-address section--partner-address__no__address-yes toggle-controlled">
@@ -180,8 +181,8 @@ GOV.UK Reporting benefit fraud: Identify partner
         <!-- NATIONAL INSURANCE NUMBER -->
 
         <fieldset class="inline">
-            <div class="validation-group form-group-compound" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's national insurance number" >
-                <div class="form-group form-group-compound" id="fieldset--partner-nino" data-toggle-target="section--partner-nino">
+            <div class="validation-group form-group-compound toggle-control" data-toggle-target="section--partner-nino" data-validation-type="required--one" data-validation-message="Please tell us if you know the partner's national insurance number" >
+
                     <legend>Do you know the national insurance number for the partner?</legend>
                     <label class="block-label" for="partner-nino__yes">
                         <input id="partner-nino__yes" type="radio" class="toggle-section" name="helper--partner-nino" value="Yes">
@@ -191,7 +192,7 @@ GOV.UK Reporting benefit fraud: Identify partner
                         <input id="partner-nino__no" type="radio" class="toggle-section" name="helper--partner-nino" value="No">
                         No
                     </label>
-                </div>
+
             </div>
 
             <div class="section--partner-nino section--partner-nino__yes toggle-controlled">
