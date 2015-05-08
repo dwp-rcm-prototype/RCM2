@@ -226,7 +226,7 @@ input[type="text"]+label{
 .validation-group {
     margin-bottom: 15px;
     position:relative;
-    :after {
+    &:after {
         clear: both;
         content: '';
         display: block;
@@ -234,6 +234,10 @@ input[type="text"]+label{
     &>p {
         margin-bottom: 0;
     }
+    &>p.legend {
+        margin-bottom: 1ex;
+    }
+
     &>p.form-label {
         margin-top:0;
         margin-bottom:5px;

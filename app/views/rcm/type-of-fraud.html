@@ -17,16 +17,15 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
     <h1 class="heading-xlarge">
         <span class="heading-secondary">Reporting benefit fraud</span>
-        What type of fraud?
+        Which type of fraud do you want to report?
     </h1>
 
 
 
     <form method="post" action="identify-suspect/" id="form__fraud-type" class="js-check js-routed">
         <div class="validation-group" data-validation-type="required--one-or-more" data-validation-message="Please select at least one type of fraud." >
-            <fieldset>
-                <legend xclass="form-label-bold heading-large">Which type of fraud do you want to report?</legend>
-                <p>Please select all that apply</p>
+
+                <p class="legend">Please select all that apply</p>
 
                 <label class="block-label" for="workEarning">
                     <input id="workEarning" name="fraud-type" type="checkbox" value="workEarning">
@@ -53,12 +52,15 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     <input id="savingsCapital" name="fraud-type" type="checkbox" value="savingsCapital">
                     Not telling us about savings or other income
                 </label>
-
-            </fieldset>
+            <label class="block-label" for="unsure">
+                <input id="unsure" name="fraud-type" type="checkbox" value="unsure">
+                I'm not sure or I don't know
+            </label>
 
         </div>
 
         <input type="submit" class="button" value="Continue" />
+
     </form>
 
     <a href="{{previousPage}}#" class="previousPage">Back</a>
