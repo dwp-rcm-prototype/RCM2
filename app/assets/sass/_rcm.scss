@@ -38,7 +38,7 @@ fieldset.invalid {
     .list-bullet {
         margin-bottom:0
     }
-    h3 {
+    h2 {
         margin-top:10px;
         color:#000;
     }
@@ -406,4 +406,12 @@ fieldset.form-group {
     .error-summary-list a{
         color:$error-colour;
     }
+}
+
+.a11y {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
 }

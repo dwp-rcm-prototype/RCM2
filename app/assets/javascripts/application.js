@@ -23,9 +23,9 @@
                 errorMessages: '',
                 threeStrikesCount: 0,
                 messageTemplate :   '<div class="error-summary" role="group" tabindex="-1" aria-labelledby="error-summary-heading">' +
-                '<h3 class="heading-medium error-summary-heading" id="error-summary-heading">' +
+                '<h2 class="heading-medium error-summary-heading" id="error-summary-heading">' +
                 'Unable to submit the form.' +
-                '</h3>' +
+                '</h2>' +
                 '<p>[customMessage]</p>' +
                 '[errorMessages]' +
                 '</div>'
