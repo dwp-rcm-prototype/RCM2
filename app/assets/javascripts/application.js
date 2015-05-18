@@ -22,7 +22,7 @@
                 errorCount: 0,
                 errorMessages: '',
                 threeStrikesCount: 0,
-                messageTemplate :   '<div class="error-summary" role="group" tabindex="-1" aria-labelledby="error-summary-heading">' +
+                messageTemplate :   '<div class="error-summary" id="error-summary" role="alert" tabindex="-1" aria-labelledby="error-summary-heading">' +
                 '<h2 class="heading-medium error-summary-heading" id="error-summary-heading">' +
                 'Unable to submit the form.' +
                 '</h2>' +
@@ -73,6 +73,7 @@
                     $('.' + sections).hide();
                     $('.' + sectionOn).show();
                 });
+
             },
 
             disableHTML5validation: function (formClassName) {
@@ -98,14 +99,16 @@
 
                 if (rcm.errorMessages !== '') {
                     e.preventDefault();
-                    $(rcm.form).prepend(rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem(s)').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>'));
+                    $(rcm.form).prepend(rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem or problems').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>'));
                     $("html, body").animate({scrollTop:$('form').position().top - 20}, '500', 'swing');
+                    $('#error-summary').focus();
 
                 } else {
                     ValidationObject.validateFormSets(e);
+                    ValidationObject.postProcessor(e);
                 }
 
-                ValidationObject.postProcessor(e);
+
 
             },
 
@@ -322,8 +325,11 @@
                                 }
                                 //$(rcm.form).addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
                                 //$(rcm.form).addClass('invalid').before('<div class="validation-message">' + formErrorMessage + '</div>');
+
+                                // NOTE TO SELF: put in function and merge with call in 102
                                 $(rcm.form).addClass('invalid').before(rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
                                 $("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
+                                $('#error-summary').focus();
 
                                 return false;
                             }
@@ -359,7 +365,10 @@
                             docCookies.setItem('fraud-type', selected.join('+'));
                         }
                         break;
-
+                    case 'form__other-information':
+                        // final submit
+                        alert('mocking submit to https://alphagov-rcmfrontend.herokuapp.com/submitEvidence');
+                        break;
                 }
             }
 
