@@ -15,6 +15,8 @@ GOV.UK Reporting benefit fraud: Any other information
     </div>
 
 
+    <div id="submit-cover"><div class="bg"></div><div class="clock">Please wait while we're submitting your report</div></div>
+
     <h1 class="heading-large">
         <span class="heading-secondary">Reporting benefit fraud</span>
         Is there anything else we need to know?
@@ -60,29 +62,26 @@ GOV.UK Reporting benefit fraud: Any other information
 
             <div class="section--contact section--contact__yes toggle-controlled">
 
-                <div class="panel-indent validation-group" data-form-validation-id="contact" data-validation-type="required--set" data-validation-sets="contact-email|contact-telephone" data-validation-message="Please enter at least an email address or a telephone number">
+                <div class="panel-indent validation-group" data-form-validation-id="contact" data-validation-type="required--set" data-validation-sets="contact--email|contact--telephone" data-validation-message="Please enter at least an email address or a telephone number">
                     <div class="form-group float-none">
                         <div class="form-group">
                             <label class="form-label" for="contact--name">Your name</label>
                             <input class="form-control" name="contact--name" id="contact--name" type="text">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="contact-email">Your email address</label>
-                            <input class="form-control" name="contact-email" id="contact-email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address">
+                            <label class="form-label" for="contact--email">Your email address</label>
+                            <input class="form-control" name="contact--email" id="contact--email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="contact-telephone">Your telephone number</label>
-                            <input class="form-control" name="contact-telephone" id="contact-telephone" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
+                            <label class="form-label" for="contact--telephone">Your telephone number</label>
+                            <input class="form-control" name="contact--telephone" id="contact--telephone" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
                         </div>
 
                     </div>
                 </div>
             </div>
 
-
         </fieldset>
-
-
 
 
         <input type="submit" id="complete" class="button" value="Submit" />

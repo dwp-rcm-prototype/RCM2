@@ -22,13 +22,14 @@
                 errorCount: 0,
                 errorMessages: '',
                 threeStrikesCount: 0,
+                submitErrorMessage: 'There\'s been an error talking to the server. Please wait a moment and try again.',
                 messageTemplate :   '<div class="error-summary" id="error-summary" role="alert" tabindex="-1" aria-labelledby="error-summary-heading">' +
-                '<h2 class="heading-medium error-summary-heading" id="error-summary-heading">' +
-                'Unable to submit the form.' +
-                '</h2>' +
-                '<p>[customMessage]</p>' +
-                '[errorMessages]' +
-                '</div>'
+                                        '<h2 class="heading-medium error-summary-heading" id="error-summary-heading">' +
+                                            'Unable to submit the form.' +
+                                        '</h2>' +
+                                        '<p>[customMessage]</p>' +
+                                        '[errorMessages]' +
+                                    '</div>'
 
             },
 
@@ -86,6 +87,14 @@
             },
 
 
+            displayMessageAndBlockSubmit: function (e, message) {
+                e.preventDefault();
+                $('h1').prepend(message);
+                $("html, body").animate({scrollTop:$('#error-summary').position().top}, '500', 'swing');
+                //$("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
+                $('#error-summary').focus();
+            },
+
             validateForm: function (e) {
 
                 //e.preventDefault();
@@ -98,10 +107,8 @@
                 });
 
                 if (rcm.errorMessages !== '') {
-                    e.preventDefault();
-                    $(rcm.form).prepend(rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem or problems').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>'));
-                    $("html, body").animate({scrollTop:$('form').position().top - 20}, '500', 'swing');
-                    $('#error-summary').focus();
+                    var message = rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem or problems').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>');
+                    ValidationObject.displayMessageAndBlockSubmit(e, message);
 
                 } else {
                     ValidationObject.validateFormSets(e);
@@ -158,9 +165,9 @@
                                     tooltip = $(el).attr('data-field-error');
                                     if (tooltip != null) {
                                         if ($(el).prev('label') !== null) {
-                                            $(el).addClass('invalid').prev('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
+                                            $(el).addClass('invalid').prev('label').append('<span class="error-message">' + tooltip + '</span>');
                                         } else {
-                                            $(el).addClass('invalid').parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
+                                            $(el).addClass('invalid').parent().find('label').append('<span class="error-message">' + tooltip + '</span>');
                                         }
                                         //}
                                     } else {
@@ -181,6 +188,8 @@
                 var id = $(el).attr('id');
                 if (id === null) { id = $(el).parents('.validation-group').attr('id')};
                 $(el).addClass('invalid');
+
+                // NOTE TO SELF: Change the anchor to a jQuery animation
                 rcm.errorMessages += '<li><a href="#' + id + '">' + rcm.validationMessage + '</a></li>';
                 rcm.errorCount += 1;
             },
@@ -327,9 +336,8 @@
                                 //$(rcm.form).addClass('invalid').before('<div class="validation-message">' + formErrorMessage + '</div>');
 
                                 // NOTE TO SELF: put in function and merge with call in 102
-                                $(rcm.form).addClass('invalid').before(rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
-                                $("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
-                                $('#error-summary').focus();
+                                $(rcm.form).addClass('invalid');
+                                ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
 
                                 return false;
                             }
@@ -365,9 +373,91 @@
                             docCookies.setItem('fraud-type', selected.join('+'));
                         }
                         break;
+
                     case 'form__other-information':
-                        // final submit
-                        alert('mocking submit to https://alphagov-rcmfrontend.herokuapp.com/submitEvidence');
+                        /* final submit
+                        1. collect data; form JSON
+                        2. Use Ajax to submit data
+                        3. if result = ok: proceed
+                        4. if false: display error message & try again
+                        */
+                        e.preventDefault();
+
+                        var jsonData = {},
+                            varName,
+                            varValue,
+                            el,
+                            inSub = false,
+                            subName = '',
+                            formID = document.forms[0].id;
+                        jsonData[formID] = {};
+                        var values = jsonData[formID];
+
+                        for (var i = 0, il = document.forms[0].elements.length; i < il; i += 1) {
+                            el = document.forms[0].elements[i];
+                            varName = el.name;
+                            varValue = el.value;
+
+                            if (inSub && varName.indexOf(subName + '--') !== 0) {
+                                inSub = false;
+                                subName = '';
+                            }
+                            if (varName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+
+                                switch(el.type) {
+                                    case 'radio':
+                                        if (el.checked) {
+                                            if (inSub) {
+                                                values[subName + '--data'][varName] = varValue;
+                                            } else {
+                                                values[varName] = varValue;
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        if (inSub) {
+                                            values[subName + '--data'][varName] = varValue;
+                                        } else {
+                                            values[varName] = varValue;
+                                        }
+                                        break;
+                                }
+                            }
+
+                            if (varName.indexOf('helper--') === 0) {
+                                // we're diving into a subgroup
+                                inSub = true;
+                                subName = varName.replace('helper--', '');
+                                values[subName + '--data'] = {};
+                            }
+                        }
+
+                        var timestamp = Date(),
+                            formData = {
+                                "caller": "RCM",
+                                "timestamp": timestamp,
+                                "values": jsonData
+                            };
+
+                        $('#submit-cover').show();
+                        // NB had to install this plugin: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
+                        $.ajax({
+                            type: "POST",
+                            url: "https://alphagov-rcmfrontend.herokuapp.com/submitEvidence",
+                            dataType: 'text',
+                            data: JSON.stringify(formData),
+                            crossDomain: true
+                        }).done(function(returnData) {
+                            $('#submit-cover .clock').remove();
+                            document.location.href = document.forms[0].action;
+
+                        }).fail(function() {
+                            e.preventDefault();
+                            $('#submit-cover').hide();
+                            ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
+                        });
+
+                        return false
                         break;
                 }
             }
