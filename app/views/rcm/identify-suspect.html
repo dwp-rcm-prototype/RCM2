@@ -9,7 +9,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
     <div class="outer-block">
         <div class="inner-block">
             <div class="phase-banner">
-                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
             </div>
         </div>
     </div>
@@ -24,11 +24,12 @@ GOV.UK Reporting benefit fraud: Identify suspect
 
 <!-- NAME -->
 
-        <fieldset>
-            <div class="validation-group" data-form-validation-id="name" data-validation-type="optional--one-or-more">
-                <legend>Do you know their first and/ or last name? <span>If so, please enter it here:</span></legend>
+        <fieldset aria-live="polite">
+            <legend>Do you know their first and/ or last name? <span>If so, please enter it here:</span></legend>
 
-                <label class="form-label" for="first-name">First name(s)</label>
+            <div class="validation-group" data-form-validation-id="name" data-validation-type="optional--one-or-more">
+
+                <label class="form-label" for="first-name">First name<span aria-hidden="true">(s)</span></label>
                 <input type="text" class="form-control" id="first-name" name="first-name">
 
                 <label class="form-label" for="last-name">And/ or last name</label>
@@ -41,39 +42,39 @@ GOV.UK Reporting benefit fraud: Identify suspect
                 <p class="legend">Do you know this person by another name?</p>
                 <label class="block-label" for="alternative-name__yes">
                     <input type="radio" id="alternative-name__yes" name="helper--alternative-name" value="Yes">
-                    Yes
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know this person by another name</span>
                 </label>
                 <label class="block-label" for="alternative-name__no">
                     <input type="radio" id="alternative-name__no" name="helper--alternative-name" value="No">
-                    No
+                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know this person by another name</span>
                 </label>
 
             </div>
 
-            <div class="section--alternative-name section--alternative-name__yes toggle-controlled panel-indent validation-group" data-form-validation-id="alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name." >
+            <div class="section--alternative-name section--alternative-name__yes toggle-controlled panel-indent validation-group" data-form-validation-id="alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name.">
 
-                <label class="form-label" for="alternative-first-name">First name(s)</label>
-                <input class="form-control" id="alternative-first-name" name="alternative-first-name" type="text">
+                <label class="form-label" for="alternative-first-name">First name<span aria-hidden="true">(s)</span></label>
+                <input class="form-control" id="alternative-first-name" name="alternative-name--first-name" type="text">
 
                 <label class="form-label" for="alternative-last-name">And/ or last name</label>
-                <input class="form-control" id="alternative-last-name" name="alternative-last-name" type="text">
+                <input class="form-control" id="alternative-last-name" name="alternative-name--last-name" type="text">
 
             </div>
         </fieldset>
 
 <!-- AGE -->
 
-        <fieldset>
+        <fieldset aria-live="polite">
+            <legend>Do you know the date of birth for this person?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--dob" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's date of birth" >
-                <legend>Do you know the date of birth for this person?</legend>
 
                 <label class="block-label" for="dob__yes">
                     <input id="dob__yes" class="toggle-section" type="radio" name="helper--dob" value="Yes">
-                    Yes
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know the date of birth</span>
                 </label>
                 <label class="block-label" for="dob__no">
                     <input id="dob__no" class="toggle-section" type="radio" name="helper--dob" value="No">
-                    No
+                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know the date of birth</span>
                 </label>
             </div>
 
@@ -82,17 +83,17 @@ GOV.UK Reporting benefit fraud: Identify suspect
 
                 <div class="form-group">
                     <input type="number" class="form-control" id="dob-day" name="dob-day" pattern="^([1-9]|0[1-9]|[12][0-9]|3[0-1])$" min="1" max="31" maxlength="2">
-                    <label class="form-hint" for="dob-day">Day</label>
+                    <label class="form-hint" for="dob-day"><span aria-hidden="true">Day</span><span class="a11y">Day of date of birth</span></label>
                 </div>
 
                 <div class="form-group">
                     <input type="number" class="form-control" id="dob-month" name="dob-month" pattern="^([1-9]|0[1-9]|1[0-2])$" min="0" max="12" maxlength="2">
-                    <label class="form-hint" for="dob-month">Month</label>
+                    <label class="form-hint" for="dob-month"><span aria-hidden="true">Month</span><span class="a11y">Month of date of birth</span></label>
                 </div>
 
                 <div class="form-group">
                     <input type="number" class="form-control" id="dob-year" name="dob-year" pattern="^(19[0-9][0-9]|200[0-5])$" min="1900" max="2005">
-                    <label class="form-hint" for="dob-year">Year</label>
+                    <label class="form-hint" for="dob-year"><span aria-hidden="true">Year</span><span class="a11y">Year of date of birth</span></label>
                 </div>
             </div>
 
@@ -105,16 +106,17 @@ GOV.UK Reporting benefit fraud: Identify suspect
 
 <!-- ADDRESS -->
 
-        <fieldset>
+        <fieldset aria-live="polite">
+            <legend>Do you know the address for this person?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's address" >
-                <legend>Do you know the address for this person?</legend>
+
                 <label class="block-label" for="address__yes">
                     <input id="address__yes" class="toggle-section" type="radio" name="helper--address" value="Yes">
-                    Yes
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know the address</span>
                 </label>
                 <label class="block-label" for="address__no">
                     <input id="address__no" class="toggle-section" type="radio" name="helper--address" value="No">
-                    No
+                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know the address</span>
                 </label>
             </div>
 
@@ -138,16 +140,17 @@ GOV.UK Reporting benefit fraud: Identify suspect
 
 <!-- NATIONAL INSURANCE NUMBER -->
 
-        <fieldset>
+        <fieldset aria-live="polite">
+            <legend>Do you know the National Insurance number for this person?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--nino" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's national insurance number" >
-                <legend>Do you know the National Insurance number for this person?</legend>
+
                 <label class="block-label" for="nino__yes">
                     <input id="nino__yes" type="radio" class="toggle-section" name="helper--nino" value="Yes">
-                    Yes
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know the National Insurance number</span>
                 </label>
                 <label class="block-label" for="nino__no">
                     <input id="nino__no" type="radio" class="toggle-section" name="helper--nino" value="No">
-                    No
+                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know the National Insurance number</span>
                 </label>
             </div>
 
@@ -162,16 +165,17 @@ GOV.UK Reporting benefit fraud: Identify suspect
 
 <!-- ADDITIONAL INFO -->
 
-        <fieldset>
+        <fieldset aria-live="polite">
+            <legend>Do you have additional contact details for this person?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--additional-info" data-validation-type="required--one" data-validation-message="Please tell us if have any additional contact information" >
-                <legend>Do you have additional contact details for this person?</legend>
+
                 <label class="block-label" for="additional-info__yes">
                     <input type="radio" id="additional-info__yes" class="toggle-section" name="helper--additional-info" value="Yes">
-                    Yes
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I have additional contact details</span>
                 </label>
                 <label class="block-label" for="additional-info__no">
                     <input type="radio" id="additional-info__no" class="toggle-section" name="helper--additional-info" value="No">
-                    No
+                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't have additional contact details</span>
                 </label>
             </div>
             <div class="section--additional-info section--additional-info__yes toggle-controlled panel-indent validation-group" data-form-validation-id="additional-info" data-validation-type="required--one-or-more" data-validation-message="Please enter some additional information">
