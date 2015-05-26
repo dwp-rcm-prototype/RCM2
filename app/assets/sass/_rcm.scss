@@ -179,7 +179,7 @@ p.legend, legend {
         display:block;
         font-weight:normal;
         font-size: 19px;
-        padding-bottom:1em;
+        XXXpadding-bottom:1em;
     }
 }
 
@@ -239,6 +239,10 @@ input[type="text"]+label{
         margin-top:0;
         margin-bottom:5px;
 
+    }
+    label.legend {
+        @extend legend;
+        margin-bottom:5px
     }
 
 }

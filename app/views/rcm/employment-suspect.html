@@ -1,7 +1,7 @@
 {{<layout}}
 
 {{$pageTitle}}
-GOV.UK Reporting benefit fraud: Employemnt
+GOV.UK Reporting benefit fraud: The suspect's employment
 {{/pageTitle}}
 
 {{$content}}
@@ -14,72 +14,60 @@ GOV.UK Reporting benefit fraud: Employemnt
         </div>
     </div>
 
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
     <h1 class="heading-large">
-        <span class="heading-secondary">Reporting benefit fraud</span>
-        About the suspect's employment
+        The person you’re reporting: their employment
     </h1>
 
 
-    <form method="post" action="vehicle/" id="form__identify-partner" class="js-check">
+    <form method="post" action="other-information/" id="form__employment-suspect" class="js-check">
 
-        <fieldset>
+        <fieldset aria-live="polite">
+            <legend class="a11y">Work location</legend>
 
             <div class="validation-group" data-form-validation-id="suspect-work-location" data-validation-type="required--one" data-validation-message="Please tell us where they work">
-                <div class="form-group">
-                    <label class="form-label" for="work-location">Where do they work?</label>
-                    <textarea id="work-location" class="form-control" rows="5" name="suspect-work-location"></textarea>
-                </div>
+                <label class="form-label legend" for="work-location">Where does this person work?</label>
+                <textarea id="work-location" class="form-control" rows="5" name="suspect-work-location"></textarea>
             </div>
-        </fieldset>
 
 
-        <fieldset class="inline form-group">
-            <div class="validation-group toggle-control" data-toggle-target="section--suspect--self-employed" data-validation-type="required--one" data-validation-message="Please tell us if this person is self-employed" >
-
+            <div class="validation-group toggle-control" data-toggle-target="section--suspect--self-employed" data-validation-type="required--one" data-validation-message="Please tell us if this person is self-employed">
                 <legend>Is this person self employed?</legend>
                 <label class="block-label" for="suspect--self-employed__yes">
                     <input id="suspect--self-employed__yes" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="Yes">
-                    Yes
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, this person is self-employed</span>
                 </label>
                 <label class="block-label" for="suspect--self-employed__no">
                     <input id="suspect--self-employed__no" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="No">
-                    No
+                    <span aria-hidden="true">Yes</span><span class="a11y"> No, this person is not self-employede</span>
                 </label>
                 <label class="block-label" for="suspect--self-employed__unknown">
                     <input id="suspect--self-employed__unknown" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="Unknown">
                     I don't know
                 </label>
-
             </div>
 
-            <div class="section--suspect--self-employed section--suspect--self-employed__yes toggle-controlled">
-                <div class="panel-indent validation-group" data-form-validation-id="suspect--self-employed" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
-                    <div class="form-group">
-                        <label class="form-label" for="suspect--type-of-work">What type of work do they do?</label>
-                        <input class="form-control" id="suspect--type-of-work" name="suspect--type-of-work" type="text">
-                    </div>
-                </div>
+            <div class="section--suspect--self-employed section--suspect--self-employed__yes toggle-controlled panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
+                <label class="form-label" for="suspect--type-of-work">What type of work do they do?</label>
+                <input class="form-control" id="suspect--type-of-work" name="suspect--type-of-work" type="text">
             </div>
-        </fieldset>
 
 
 
-        <fieldset>
-            <div class="validation-group" data-form-validation-id="suspect-work-duration" data-validation-type="not-required--one">
-                <div class="form-group">
-                    <label class="form-label" for="suspect-work-duration">How long has this person been working?</label>
-                    <input type="text" id="suspect-work-duration" class="form-control" name="suspect-work-duration">
-                    <p class="form-hint display-block sticky">For example, 3 months.</p>
-                </div>
+            <div class="validation-group" data-form-validation-id="suspect-work-duration" data-validation-type="optional--one">
+                <label class="form-label legend" for="suspect-work-duration">How long have they been working?</label>
+                <input type="text" id="suspect-work-duration" class="form-control" name="suspect-work-duration">
             </div>
 
             <div class="validation-group" data-form-validation-id="suspect-timings" data-validation-type="not-required--one">
-                <div class="form-group">
-                    <label class="form-label" for="suspect-timings">What time do they leave/return home?</label>
-                    <textarea id="suspect-timings" class="form-control" rows="5" name="suspect-timings"></textarea>
-                    <p class="form-hint display-block sticky">If times vary please tell us and also if they work specific days.</p>
-                </div>
+
+                <label class="form-label legend" for="suspect-timings">
+                    What time do they leave/return home?
+                    <span  class="form-hint">Indicate whether their working days or times vary</span>
+                </label>
+                <textarea id="suspect-timings" class="form-control" rows="5" name="suspect-timings"></textarea>
+
             </div>
         </fieldset>
 
@@ -87,7 +75,6 @@ GOV.UK Reporting benefit fraud: Employemnt
 
     </form>
 
-    <a href="{{previousPage}}#" class="previousPage">Back</a>
 
 </main>
 

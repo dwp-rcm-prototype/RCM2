@@ -503,9 +503,9 @@
                 routes = [],
                 currentPage = document.location.href.replace();
 
-            routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'vehicle', 'other-information', 'complete'];
-            routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'vehicle', 'other-information', 'complete'];
-            routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt','vehicle', 'other-information', 'complete'];
+            routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
+            routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
+            routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
 
             currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
             currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
