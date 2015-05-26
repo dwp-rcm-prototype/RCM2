@@ -1,7 +1,7 @@
 {{<layout}}
 
 {{$pageTitle}}
-GOV.UK Reporting benefit fraud: Employemnt
+GOV.UK Reporting benefit fraud: The partner's employment
 {{/pageTitle}}
 
 {{$content}}
@@ -9,85 +9,72 @@ GOV.UK Reporting benefit fraud: Employemnt
     <div class="outer-block">
         <div class="inner-block">
             <div class="phase-banner">
-                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
             </div>
         </div>
     </div>
 
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
     <h1 class="heading-large">
-        <span class="heading-secondary">Reporting benefit fraud</span>
-        About the partner's employment
+        The partner: their employment
     </h1>
 
 
-    <form method="post" action="vehicle/" id="form__identify-partner" class="js-check">
+    <form method="post" action="other-information/" id="form__employment-partner" class="js-check">
 
-        <fieldset>
+        <fieldset aria-live="polite">
+            <legend class="a11y">Work location</legend>
 
             <div class="validation-group" data-form-validation-id="partner-work-location" data-validation-type="required--one" data-validation-message="Please tell us where they work">
-                <div class="form-group">
-                    <label class="form-label" for="work-location">Where do they work?</label>
-                    <textarea id="work-location" class="form-control" rows="5" name="partner-work-location"></textarea>
-                </div>
-            </div>
-        </fieldset>
-
-
-        <fieldset class="inline form-group">
-            <div class="validation-group toggle-control" data-toggle-target="section--partner--self-employed" data-validation-type="required--one" data-validation-message="Please tell us if this person is self-employed" >
-
-                    <legend>Is this person self employed?</legend>
-                    <label class="block-label" for="partner--self-employed__yes">
-                        <input id="partner--self-employed__yes" type="radio" class="toggle-section" name="helper--partner--self-employed" value="Yes">
-                        Yes
-                    </label>
-                    <label class="block-label" for="partner--self-employed__no">
-                        <input id="partner--self-employed__no" type="radio" class="toggle-section" name="helper--partner--self-employed" value="No">
-                        No
-                    </label>
-                    <label class="block-label" for="partner--self-employed__unknown">
-                        <input id="partner--self-employed__unknown" type="radio" class="toggle-section" name="helper--partner--self-employed" value="Unknown">
-                        I don't know
-                    </label>
-
+                <label class="form-label legend" for="work-location">Where does this person work?</label>
+                <textarea id="work-location" class="form-control" rows="5" name="partner-work-location"></textarea>
             </div>
 
-            <div class="section--partner--self-employed section--partner--self-employed__yes toggle-controlled">
-                <div class="panel-indent validation-group" data-form-validation-id="partner--self-employed" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
-                    <div class="form-group">
-                        <label class="form-label" for="partner--type-of-work">What type of work do they do?</label>
-                        <input class="form-control" id="partner--type-of-work" name="partner--type-of-work" type="text">
-                    </div>
-                </div>
+
+            <div class="validation-group toggle-control" data-toggle-target="section--partner--self-employed" data-validation-type="required--one" data-validation-message="Please tell us if this person is self-employed">
+                <legend>Is this person self employed?</legend>
+                <label class="block-label" for="partner--self-employed__yes">
+                    <input id="partner--self-employed__yes" type="radio" class="toggle-section" name="helper--partner--self-employed" value="Yes">
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, this person is self-employed</span>
+                </label>
+                <label class="block-label" for="partner--self-employed__no">
+                    <input id="partner--self-employed__no" type="radio" class="toggle-section" name="helper--partner--self-employed" value="No">
+                    <span aria-hidden="true">Yes</span><span class="a11y"> No, this person is not self-employede</span>
+                </label>
+                <label class="block-label" for="partner--self-employed__unknown">
+                    <input id="partner--self-employed__unknown" type="radio" class="toggle-section" name="helper--partner--self-employed" value="Unknown">
+                    I don't know
+                </label>
             </div>
-        </fieldset>
+
+            <div class="section--partner--self-employed section--partner--self-employed__yes toggle-controlled panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
+                <label class="form-label" for="partner--type-of-work">What type of work do they do?</label>
+                <input class="form-control" id="partner--type-of-work" name="partner--type-of-work" type="text">
+            </div>
 
 
 
-        <fieldset>
-            <div class="validation-group" data-form-validation-id="partner-work-duration" data-validation-type="not-required--one">
-                <div class="form-group">
-                    <label class="form-label" for="partner-work-duration">How long has the partner been working?</label>
-                    <input type="text" id="partner-work-duration" class="form-control" name="partner-work-duration">
-                    <p class="form-hint display-block sticky">For example, 3 months.</p>
-                </div>
+            <div class="validation-group" data-form-validation-id="partner-work-duration" data-validation-type="optional--one">
+                <label class="form-label legend" for="partner-work-duration">How long have they been working?</label>
+                <input type="text" id="partner-work-duration" class="form-control" name="partner-work-duration">
             </div>
 
             <div class="validation-group" data-form-validation-id="partner-timings" data-validation-type="not-required--one">
-                <div class="form-group">
-                    <label class="form-label" for="partner-timings">What time do they leave/return home?</label>
-                    <textarea id="partner-timings" class="form-control" rows="5" name="partner-timings"></textarea>
-                    <p class="form-hint display-block sticky">If times vary please tell us and also if they work specific days.</p>
-                </div>
+
+                <label class="form-label legend" for="partner-timings">
+                    What time do they leave/return home?
+                    <span  class="form-hint">Indicate whether their working days or times vary</span>
+                </label>
+                <textarea id="partner-timings" class="form-control" rows="5" name="partner-timings"></textarea>
+
             </div>
         </fieldset>
 
-        <input type="submit" id="complete" class="button" value="Continue" />
+        <input type="submit" class="button" value="Continue" />
 
     </form>
 
-    <a href="{{previousPage}}#" class="previousPage">Back</a>
 
 </main>
 
