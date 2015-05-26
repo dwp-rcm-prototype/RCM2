@@ -14,19 +14,19 @@ GOV.UK Reporting benefit fraud: What type of fraud
         </div>
     </div>
 
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
     <h1 class="heading-xlarge">
-        <span class="heading-secondary">Reporting benefit fraud</span>
-        Which type of fraud do you want to report?
+        What type of fraud do you want to report?
     </h1>
 
 
 
-    <form method="post" action="identify-suspect/" id="form__fraud-type" class="js-check js-routed">
+    <form method="post" action="identify-partner/" id="form__fraud-type" class="js-check">
         <div class="validation-group" data-validation-type="required--one-or-more" data-validation-message="Please select at least one type of fraud." >
 
             <fieldset>
-                <legend>Please select all that apply</legend>
+                <legend class="a11y">Select one or both types of fraud</legend>
 
                 <label class="block-label" for="workEarning">
                     <input id="workEarning" name="fraud-type" type="checkbox" value="workEarning">
@@ -36,7 +36,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     <input id="livingWithPartner" name="fraud-type" type="checkbox" value="livingWithPartner">
                     Living with a partner while claiming to be living alone
                 </label>
-
+<!--
                 <label class="block-label" for="disabilityCarers">
                     <input id="disabilityCarers" name="fraud-type" type="checkbox" value="disabilityCarers">
                     Dishonestly claiming a disability or carers benefit
@@ -57,14 +57,13 @@ GOV.UK Reporting benefit fraud: What type of fraud
                     <input id="unsure" name="fraud-type" type="checkbox" value="unsure">
                     I'm not sure or I don't know
                 </label>
+                -->
             </fieldset>
         </div>
 
         <input type="submit" class="button" value="Continue" />
 
     </form>
-
-    <a href="{{previousPage}}#" class="previousPage">Back</a>
 
 </main>
 

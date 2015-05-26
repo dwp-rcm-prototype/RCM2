@@ -349,9 +349,9 @@
             },
 
             postProcessor: function (e) {
-                var redirectsSelected,
+                var partnerSelected,
                     selected,
-                    redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+                    partnerOptions = ['livingWithPartner'];
 
                 switch ($(rcm.form).attr('id')) {
                     case 'form__fraud-type' : // redirect to new or old website based on user input
@@ -362,16 +362,16 @@
                         selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
                             return this.value;
                         }).get();
+                        // store the choices in a cookie
+                        docCookies.setItem('fraud-type', selected.join('+'));
 
-                        redirectsSelected = $.grep(selected, function (n) {
-                            return (redirects.indexOf(n) !== -1);
+                        partnerSelected = $.grep(selected, function (n) {
+                            return (partnerOptions.indexOf(n) !== -1);
                         });
-                        if (redirectsSelected.length > 0) {
+
+                        if (partnerSelected.length === 0) {
                             e.preventDefault();
-                            document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
-                        } else {
-                            // store the choices in a cookie
-                            docCookies.setItem('fraud-type', selected.join('+'));
+                            document.location.href = '/rcm/employment-suspect';
                         }
                         break;
 
@@ -482,9 +482,9 @@
                 routes = [],
                 currentPage = document.location.href.replace();
 
-            routes['workEarning'] = ['identify-suspect', 'employment-suspect', 'vehicle', 'other-information', 'complete'];
-            routes['livingWithPartner'] = ['identify-suspect', 'identify-partner', 'vehicle', 'other-information', 'complete'];
-            routes['workEarning+livingWithPartner'] = ['identify-suspect', 'identify-partner', 'employment-prompt','vehicle', 'other-information', 'complete'];
+            routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'vehicle', 'other-information', 'complete'];
+            routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'vehicle', 'other-information', 'complete'];
+            routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt','vehicle', 'other-information', 'complete'];
 
             currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
             currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
