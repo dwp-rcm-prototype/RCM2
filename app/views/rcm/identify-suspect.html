@@ -1,7 +1,7 @@
 {{<layout}}
 
 {{$pageTitle}}
-GOV.UK Reporting benefit fraud: Identify suspect
+GOV.UK Reporting benefit fraud: Identify the suspect
 {{/pageTitle}}
 
 {{$content}}
@@ -14,32 +14,32 @@ GOV.UK Reporting benefit fraud: Identify suspect
         </div>
     </div>
 
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
     <h1 class="heading-large">
-        <span class="heading-secondary">Reporting benefit fraud</span>
-        Who do you suspect is committing benefit fraud?
+        Who do you want to report?
     </h1>
 
-    <form method="post" action="identify-partner/" id="form__identify-suspect" class="js-check js-routed" data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,additional-info|name,dob,additional-info" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="identify-partner/" id="form__identify-suspect" class="js-check js-routed" data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
 
 <!-- NAME -->
 
         <fieldset aria-live="polite">
-            <legend>Do you know their first and/ or last name? <span>If so, please enter it here:</span></legend>
+            <legend class="a11y">Suspect's name</span></legend>
 
             <div class="validation-group" data-form-validation-id="name" data-validation-type="optional--one-or-more">
 
-                <label class="form-label" for="first-name">First name<span aria-hidden="true">(s)</span></label>
+                <label class="form-label" for="first-name">First name</label>
                 <input type="text" class="form-control" id="first-name" name="first-name">
 
-                <label class="form-label" for="last-name">And/ or last name</label>
+                <label class="form-label" for="last-name">Last name</label>
                 <input type="text" class="form-control" id="last-name" name="last-name">
 
             </div>
 
             <div class="validation-group toggle-control" data-toggle-target="section--alternative-name" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
 
-                <p class="legend">Do you know this person by another name?</p>
+                <p class="legend">Do you know them by another name?</p>
                 <label class="block-label" for="alternative-name__yes">
                     <input type="radio" id="alternative-name__yes" name="helper--alternative-name" value="Yes">
                     <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know this person by another name</span>
@@ -53,10 +53,10 @@ GOV.UK Reporting benefit fraud: Identify suspect
 
             <div class="section--alternative-name section--alternative-name__yes toggle-controlled panel-indent validation-group" data-form-validation-id="alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name.">
 
-                <label class="form-label" for="alternative-first-name">First name<span aria-hidden="true">(s)</span></label>
+                <label class="form-label" for="alternative-first-name">First name</label>
                 <input class="form-control" id="alternative-first-name" name="alternative-name--first-name" type="text">
 
-                <label class="form-label" for="alternative-last-name">And/ or last name</label>
+                <label class="form-label" for="alternative-last-name">Last name</label>
                 <input class="form-control" id="alternative-last-name" name="alternative-name--last-name" type="text">
 
             </div>
@@ -65,7 +65,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
 <!-- AGE -->
 
         <fieldset aria-live="polite">
-            <legend>Do you know the date of birth for this person?</legend>
+            <legend>Do you know their date of birth?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--dob" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's date of birth" >
 
                 <label class="block-label" for="dob__yes">
@@ -107,7 +107,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
 <!-- ADDRESS -->
 
         <fieldset aria-live="polite">
-            <legend>Do you know the address for this person?</legend>
+            <legend>Do you know their address?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's address" >
 
                 <label class="block-label" for="address__yes">
@@ -141,7 +141,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
 <!-- NATIONAL INSURANCE NUMBER -->
 
         <fieldset aria-live="polite">
-            <legend>Do you know the National Insurance number for this person?</legend>
+            <legend>Do you know their National Insurance number?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--nino" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's national insurance number" >
 
                 <label class="block-label" for="nino__yes">
@@ -157,7 +157,7 @@ GOV.UK Reporting benefit fraud: Identify suspect
             <div class="section--nino section--nino__yes toggle-controlled panel-indent validation-group" data-form-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the National Insurance number">
                 <label class="form-label" for="ni-number">
                     Please enter their National Insurance number
-                    <span class="form-hint">For example, QQ123456C</span>
+                    <span class="form-hint">For example QQ123456C</span>
                 </label>
                 <input type="text" class="form-control" id="ni-number" name="ni-number" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid National Insurance number.">
             </div>
@@ -166,42 +166,71 @@ GOV.UK Reporting benefit fraud: Identify suspect
 <!-- ADDITIONAL INFO -->
 
         <fieldset aria-live="polite">
-            <legend>Do you have additional contact details for this person?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--additional-info" data-validation-type="required--one" data-validation-message="Please tell us if have any additional contact information" >
+            <legend>Do you know their telephone number?</legend>
+            <div class="validation-group inline toggle-control" data-toggle-target="section--telephone" data-validation-type="required--one" data-validation-message="Please tell us if you know their telephone number" >
 
-                <label class="block-label" for="additional-info__yes">
-                    <input type="radio" id="additional-info__yes" class="toggle-section" name="helper--additional-info" value="Yes">
-                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I have additional contact details</span>
+                <label class="block-label" for="telephone__yes">
+                    <input type="radio" id="telephone__yes" class="toggle-section" name="helper--telephone" value="Yes">
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know their telephone number</span>
                 </label>
-                <label class="block-label" for="additional-info__no">
-                    <input type="radio" id="additional-info__no" class="toggle-section" name="helper--additional-info" value="No">
-                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't have additional contact details</span>
+                <label class="block-label" for="telephone__no">
+                    <input type="radio" id="telephone__no" class="toggle-section" name="helper--telephone" value="No">
+                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know their telephone number</span>
                 </label>
             </div>
-            <div class="section--additional-info section--additional-info__yes toggle-controlled panel-indent validation-group" data-form-validation-id="additional-info" data-validation-type="required--one-or-more" data-validation-message="Please enter some additional information">
+            <div class="section--telephone section--telephone__yes toggle-controlled panel-indent validation-group" data-form-validation-id="telephone" data-validation-type="required--one-or-more" data-validation-message="Please enter at least one telephone number">
 
-                <label class="form-label" for="telephone-number__home">Home telephone number</label>
-                <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
 
-                <label class="form-label" for="telephone-number__mobile">Mobile telephone number</label>
+                <label class="form-label" for="telephone-number__mobile">Mobile <span class="a11y">telephone number</span></label>
                 <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number">
 
-                <label class="form-label" for="telephone-number__other">Any other telephone numbers</label>
+                <label class="form-label" for="telephone-number__home">Home  <span class="a11y">telephone number</span></label>
+                <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
+
+                <label class="form-label" for="telephone-number__other"><span aria-hidden="true">Other</span><span class="a11y">Other telephone number</label>
                 <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid phone number">
+            </div>
+        </fieldset>
+
+
+        <fieldset aria-live="polite">
+            <legend>Do you know their email address?</legend>
+            <div class="validation-group inline toggle-control" data-toggle-target="section--email" data-validation-type="required--one" data-validation-message="Please tell us if you know their email address" >
+
+                <label class="block-label" for="email__yes">
+                    <input type="radio" id="email__yes" class="toggle-section" name="helper--email" value="Yes">
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know their email address</span>
+                </label>
+                <label class="block-label" for="email__no">
+                    <input type="radio" id="email__no" class="toggle-section" name="helper--email" value="No">
+                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know their email address</span>
+                </label>
+            </div>
+            <div class="section--email section--email__yes toggle-controlled panel-indent validation-group" data-form-validation-id="email" data-validation-type="required--one" data-validation-message="Please enter their email address">
 
                 <label class="form-label" for="email-address">Email address </label>
                 <input class="form-control" name="email-address" id="email-address" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address">
-
-                <label class="form-label" for="social-media">Any social media details</label>
-                <textarea class="form-control" name="social-media" id="social-media"></textarea>
-
             </div>
         </fieldset>
+
+        <fieldset>
+            <legend>Do you know if they have any social media accounts?</legend>
+            <p class="form-hint">eg Twitter, Facebook, Linkedin</p>
+            <div class="validation-group" data-form-validation-id="social-media" data-validation-type="optional--one">
+                <div class="form-group">
+                    <label class="form-label a11y" for="social-media">Any social media details</label>
+                    <textarea class="form-control" name="social-media" id="social-media" rows="4"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+
+
 
         <input type="submit" id="complete" class="button" value="Continue" />
     </form>
 
-    <a href="{{previousPage}}#" class="previousPage">Back</a>
+
 
 </main>
 

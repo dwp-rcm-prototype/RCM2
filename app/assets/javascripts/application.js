@@ -202,7 +202,7 @@
 
                     var fields, setOK, setsOK, sets,
                         validationType = $(el).attr('data-validation-type'),
-                        typesToCheck = ['required--one-or-more', 'required--one', 'required--all', 'optional--one-or-more'],
+                        typesToCheck = ['required--one-or-more', 'required--one', 'required--all', 'optional--one-or-more', 'optional--one'],
                         fieldsWithValidValue = [],
                         allFields = [];
 
@@ -217,6 +217,7 @@
                     switch (validationType) {
                         // it's not required, so don't display error messages. But when there is valid data, mark it as such
                         case 'optional--one-or-more':
+                        case 'optional--one':
                             if (fieldsWithValidValue.length > 0) {
                                 $(el).addClass('valid');
                             }
@@ -287,7 +288,7 @@
                 formErrorMessages['fraud-suspect'] = '<p>Please make sure you enter at least</p>' +
                 '<ul class="list-bullet error-summary-list">' +
                 '<li>A name, approximate age (or date of birth) and an address</li>' +
-                '<li>A name, approximate age (or date of birth) and some additional info</li>' +
+                '<li>A name, approximate age (or date of birth) and some additional info (phone number, email address or social media URL)</li>' +
                 '<li>A National insurance number and an approximate age (or date of birth)</li>' +
                 '<li>A National insurance number and an address</li>' +
                 '</ol>';

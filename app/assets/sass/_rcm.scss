@@ -444,3 +444,17 @@ fieldset.form-group {
 
     }
 }
+
+.margin-bottom-45px {
+    margin-bottom:45px;
+}
+.button.button-get-started {
+    background-image: url("/public/icons/icon-pointer.png");
+}
+
+.back-link {
+    margin:10px 0 0;
+    &+h1.heading-large {
+        margin-top:0.75em
+    }
+}

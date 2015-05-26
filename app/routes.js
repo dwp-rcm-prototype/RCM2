@@ -27,19 +27,20 @@ module.exports = {
       res.render('rcm/dummy');
     });
 
-    // 1. Type of fraud
-    app.get('/rcm/type-of-fraud', function (req, res) {
-      res.render('rcm/type-of-fraud', {
+    // 1. Identify suspect
+    app.post('/rcm/identify-suspect', function (req, res) {
+      res.render('rcm/identify-suspect', {
         'previousPage': 'index'
       });
     });
 
-    // 2. Identify suspect
-    app.post('/rcm/identify-suspect', function (req, res) {
-      res.render('rcm/identify-suspect', {
-        'previousPage': 'type-of-fraud'
+    // 2. Type of fraud
+    app.get('/rcm/type-of-fraud', function (req, res) {
+      res.render('rcm/type-of-fraud', {
+        'previousPage': 'identify-suspect'
       });
     });
+
 
     // 3. Identify partner
     app.post('/rcm/identify-partner', function (req, res) {
@@ -51,7 +52,7 @@ module.exports = {
     // 4. Employment prompt
     app.post('/rcm/employment-prompt', function (req, res) {
       res.render('rcm/employment-prompt', {
-        'previousPage': 'identify-suspect'
+        'previousPage': 'identify-partner'
       });
     });
 
