@@ -9,65 +9,40 @@ GOV.UK Reporting benefit fraud: Employemnt
     <div class="outer-block">
         <div class="inner-block">
             <div class="phase-banner">
-                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – your <a href="dummy">feedback</a> will help us to improve it.</span></p>
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
             </div>
         </div>
     </div>
 
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
     <h1 class="heading-large">
-        <span class="heading-secondary">Reporting benefit fraud</span>
-        Does the suspect or their partner work?
+        Who is working?
     </h1>
 
+    <form method="post" action="employment-suspect-and-partner/" id="form__employment-prompt" class="js-check">
 
-    <ul>
-        <li><form method="post" action="employment-suspect/"><input type="submit" class="button grey" value="The suspect is working"></form></li>
-        <li><form method="post" action="employment-partner/"><input type="submit" class="button grey" value="The partner is working"></form></li>
-        <li><form method="post" action="employment-suspect-partner/"><input type="submit" class="button grey" value="Both the suspect and partner are working"></form></li>
-    </ul>
+        <fieldset aria-live="polite">
+            <legend class="a11y">Select one or both options</span></legend>
 
-    <!--
-    <form method="post" action="{{nextPage}}" id="form__employment-prompt" class="rcm-check">
-
-        <fieldset class="inline">
             <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if the suspect and/ or their partner are working" >
-                <div class="form-group form-group-compound">
-                    <legend>Are they working?</legend>
 
-                    <label class="block-label" for="employment-suspect">
-                        <input id="employment-suspect" type="radio" name="employment" value="Suspect">
-                        The suspect is working
-                    </label>
-                </div>
-                <div class="form-group form-group-compound">
-                    <label class="block-label" for="employment-partner">
-                        <input id="employment-partner" type="radio" name="employment" value="Partner">
-                        The partner is working
-                    </label>
-                </div>
-                <p class="display-block-js">or</p>
-                <div class="form-group form-group-compound">
-                    <label class="block-label" for="employment-both">
-                        <input id="employment-both" type="radio" name="employment" value="Both">
-                        They're both working
-                    </label>
-                </div>
-                <div class="form-group form-group-compound toggle-controlled">
-                    <label class="block-label" for="employment-unknown">
-                        <input id="employment-unknown" type="radio" name="employment" value="Unknown">
-                        I don't know
-                    </label>
-                </div>
+                <label class="block-label" for="employment-suspect">
+                    <input id="employment-suspect" type="checkbox" name="employment" value="Suspect">
+                    The person I suspect of fraud <span class="a11y">is working</span>
+                </label>
+
+                <label class="block-label" for="employment-partner">
+                    <input id="employment-partner" type="checkbox" name="employment" value="Partner">
+                    Their partner <span class="a11y">is working</span>
+                </label>
+
+
             </div>
         </fieldset>
 
-        <input type="submit" id="complete" class="button" value="Continue" />
+        <input type="submit" class="button" value="Continue" />
     </form>
-    -->
-
-    <a href="{{previousPage}}#" class="previousPage">Back</a>
-
 </main>
 
 

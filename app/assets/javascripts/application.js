@@ -350,12 +350,13 @@
             },
 
             postProcessor: function (e) {
-                var partnerSelected,
-                    selected,
-                    partnerOptions = ['livingWithPartner'];
+                var selected;
 
                 switch ($(rcm.form).attr('id')) {
-                    case 'form__fraud-type' : // redirect to new or old website based on user input
+                    case 'form__fraud-type' : // redirect based on user input
+
+                        var partnerSelected,
+                            partnerOptions = ['livingWithPartner'];
 
                         // reset the route cookie
                         docCookies.removeItem('fraud-type');
@@ -374,6 +375,25 @@
                             e.preventDefault();
                             document.location.href = '/rcm/employment-suspect';
                         }
+                        break;
+
+                    case 'form__employment-prompt': // redirect based on user input
+
+
+                        e.preventDefault();
+
+                        selected = $(rcm.form).find('input[type="checkbox"][name="employment"]:checked').map(function () {
+                            return this.value;
+                        }).get();
+
+                        if (selected.length === 2) {
+                            document.location.href = '/rcm/employment-suspect-and-partner';
+                        } else if (selected.indexOf('Suspect') === 0) {
+                            document.location.href = '/rcm/employment-suspect';
+                        } else if (selected.indexOf('Partner') === 0) {
+                            document.location.href = '/rcm/employment-partner';
+                        }
+
                         break;
 
                     case 'form__other-information':

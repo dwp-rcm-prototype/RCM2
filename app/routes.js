@@ -71,8 +71,8 @@ module.exports = {
     });
 
     // 6. employment suspect + partner
-    app.post('/rcm/employment-suspect-partner', function (req, res) {
-      res.render('rcm/employment-suspect-partner', {
+    app.post('/rcm/employment-suspect-and-partner', function (req, res) {
+      res.render('rcm/employment-suspect-and-partner', {
         'previousPage': 'employment-prompt'
       });
     });
