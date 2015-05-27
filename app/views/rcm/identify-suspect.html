@@ -82,24 +82,24 @@ GOV.UK Reporting benefit fraud: Identify the suspect
                 <p class="form-label">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
                 <div class="form-group">
-                    <input type="number" class="form-control" id="dob-day" name="dob-day" pattern="^([1-9]|0[1-9]|[12][0-9]|3[0-1])$" min="1" max="31" maxlength="2">
+                    <input type="number" class="form-control" id="dob-day" name="dob--day" pattern="^([1-9]|0[1-9]|[12][0-9]|3[0-1])$" min="1" max="31" maxlength="2">
                     <label class="form-hint" for="dob-day"><span aria-hidden="true">Day</span><span class="a11y">Day of date of birth</span></label>
                 </div>
 
                 <div class="form-group">
-                    <input type="number" class="form-control" id="dob-month" name="dob-month" pattern="^([1-9]|0[1-9]|1[0-2])$" min="0" max="12" maxlength="2">
+                    <input type="number" class="form-control" id="dob-month" name="dob--month" pattern="^([1-9]|0[1-9]|1[0-2])$" min="0" max="12" maxlength="2">
                     <label class="form-hint" for="dob-month"><span aria-hidden="true">Month</span><span class="a11y">Month of date of birth</span></label>
                 </div>
 
                 <div class="form-group">
-                    <input type="number" class="form-control" id="dob-year" name="dob-year" pattern="^(19[0-9][0-9]|200[0-5])$" min="1900" max="2005">
+                    <input type="number" class="form-control" id="dob-year" name="dob--year" pattern="^(19[0-9][0-9]|200[0-5])$" min="1900" max="2005">
                     <label class="form-hint" for="dob-year"><span aria-hidden="true">Year</span><span class="a11y">Year of date of birth</span></label>
                 </div>
             </div>
 
             <div class="section--dob section--dob__no toggle-controlled panel-indent validation-group" data-form-validation-id="age" data-validation-type="required--one" data-validation-message="Please enter the approximate age">
                 <label class="form-label" for="dob-approx">Enter their approximate age</label>
-                <input class="form-control required" id="dob-approx" name="dob-approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)">
+                <input class="form-control required" id="dob-approx" name="dob--approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)">
             </div>
 
         </fieldset>
@@ -120,21 +120,21 @@ GOV.UK Reporting benefit fraud: Identify the suspect
                 </label>
             </div>
 
-            <div class="section--address section--address__yes toggle-controlled panel-indent validation-group" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address,postcode|address-line-2,town" data-validation-message="Please enter at least either number and postcode or street and town">
+            <div class="section--address section--address__yes toggle-controlled panel-indent validation-group" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
                 <label class="form-label" for="address">Building name or number</label>
-                <input type="text" class="form-control" id="address" name="address">
+                <input type="text" class="form-control" id="address" name="address--line-1">
 
                 <label class="form-label" for="address-line-2">Street</label>
-                <input type="text" class="form-control" id="address-line-2" name="address-line-2">
+                <input type="text" class="form-control" id="address-line-2" name="address--line-2">
 
                 <label class="form-label" for="town">Town or city</label>
-                <input type="text" class="form-control" id="town" name="town">
+                <input type="text" class="form-control" id="town" name="address--town">
 
                 <label class="form-label" for="county">County</label>
-                <input type="text" class="form-control" id="county" name="county">
+                <input type="text" class="form-control" id="county" name="address--county">
 
                 <label class="form-label" for="postcode">Postcode</label>
-                <input type="text" class="form-control width__half" id="postcode" name="postcode" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {0,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$" data-field-error="Please enter a valid postcode">
+                <input type="text" class="form-control width__half" id="postcode" name="address--postcode" data-pattern="^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {0,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$" data-field-error="Please enter a valid postcode">
             </div>
         </fieldset>
 
@@ -155,11 +155,11 @@ GOV.UK Reporting benefit fraud: Identify the suspect
             </div>
 
             <div class="section--nino section--nino__yes toggle-controlled panel-indent validation-group" data-form-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the National Insurance number">
-                <label class="form-label" for="ni-number">
+                <label class="form-label" for="nino--ni-number">
                     Please enter their National Insurance number
                     <span class="form-hint">For example QQ123456C</span>
                 </label>
-                <input type="text" class="form-control" id="ni-number" name="ni-number" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid National Insurance number.">
+                <input type="text" class="form-control" id="nino--ni-number" name="nino--ni-number" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid National Insurance number.">
             </div>
         </fieldset>
 
@@ -181,14 +181,14 @@ GOV.UK Reporting benefit fraud: Identify the suspect
             <div class="section--telephone section--telephone__yes toggle-controlled panel-indent validation-group" data-form-validation-id="telephone" data-validation-type="required--one-or-more" data-validation-message="Please enter at least one telephone number">
 
 
-                <label class="form-label" for="telephone-number__mobile">Mobile <span class="a11y">telephone number</span></label>
-                <input class="form-control" name="telephone-number__mobile" id="telephone-number__mobile" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number">
+                <label class="form-label" for="telephone--mobile">Mobile <span class="a11y">telephone number</span></label>
+                <input class="form-control" name="telephone--mobile" id="telephone--mobile" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number">
 
-                <label class="form-label" for="telephone-number__home">Home  <span class="a11y">telephone number</span></label>
-                <input class="form-control" name="telephone-number__home" id="telephone-number__home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
+                <label class="form-label" for="telephone--home">Home  <span class="a11y">telephone number</span></label>
+                <input class="form-control" name="telephone--home" id="telephone--home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
 
-                <label class="form-label" for="telephone-number__other"><span aria-hidden="true">Other</span><span class="a11y">Other telephone number</label>
-                <input class="form-control" name="telephone-number__other" id="telephone-number__other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid phone number">
+                <label class="form-label" for="telephone--other"><span aria-hidden="true">Other</span><span class="a11y">Other telephone number</label>
+                <input class="form-control" name="telephone--other" id="telephone--other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid phone number">
             </div>
         </fieldset>
 
@@ -208,18 +208,18 @@ GOV.UK Reporting benefit fraud: Identify the suspect
             </div>
             <div class="section--email section--email__yes toggle-controlled panel-indent validation-group" data-form-validation-id="email" data-validation-type="required--one" data-validation-message="Please enter their email address">
 
-                <label class="form-label" for="email-address">Email address </label>
-                <input class="form-control" name="email-address" id="email-address" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address">
+                <label class="form-label" for="email--email">Email address </label>
+                <input class="form-control" name="email--email" id="email--email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address">
             </div>
         </fieldset>
 
         <fieldset>
-            <legend>Do you know if they have any social media accounts?</legend>
-            <p class="form-hint">eg Twitter, Facebook, Linkedin</p>
+            <legend>Do you know their social media profile?</legend>
+            <p class="form-hint">eg Twitter, Facebook and Linkedin - copy and paste URLs</p>
             <div class="validation-group" data-form-validation-id="social-media" data-validation-type="optional--one">
                 <div class="form-group">
-                    <label class="form-label a11y" for="social-media">Any social media details</label>
-                    <textarea class="form-control" name="social-media" id="social-media" rows="4"></textarea>
+                    <label class="form-label a11y" for="social-media--info">Any social media details</label>
+                    <textarea class="form-control" name="social-media--info" id="social-media--info" rows="4"></textarea>
                 </div>
             </div>
         </fieldset>

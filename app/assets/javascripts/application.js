@@ -29,8 +29,9 @@
                                         '</h2>' +
                                         '<p>[customMessage]</p>' +
                                         '[errorMessages]' +
-                                    '</div>'
-
+                                    '</div>',
+                formErrorMessages: [],
+                formErrorMessage: ''
             },
 
             init: function (formClassName) {
@@ -38,6 +39,11 @@
                 rcm.submitButton = 'form.' + formClassName + ' input[type="submit"]';
                 this.disableHTML5validation(formClassName);
                 this.bindUIActions();
+
+                // load the form validation error messages
+                $.getScript('/public/javascripts/formValidationMessages.js', function(data){
+                    rcm.formErrorMessages = initFormErrorMessages();
+                });
 
                 var i = 0;
                 $('form.' + formClassName).each(function() {
@@ -94,32 +100,6 @@
                 //$("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
                 $('#error-summary').focus();
             },
-
-            validateForm: function (e) {
-
-                //e.preventDefault();
-
-                ValidationObject.reset();
-
-                // loop each validation-group
-                $(rcm.form).find('.validation-group').removeClass('invalid valid').each(function () {
-                    ValidationObject.validateGroup(this);
-                });
-
-                if (rcm.errorMessages !== '') {
-                    var message = rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem or problems').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>');
-                    ValidationObject.displayMessageAndBlockSubmit(e, message);
-
-                } else {
-                    ValidationObject.validateFormSets(e);
-                    ValidationObject.postProcessor(e);
-                }
-
-
-
-            },
-
-
 
             fieldValid: function (el) {
                 if (!$(el).is(':visible')) {
@@ -194,8 +174,19 @@
                 rcm.errorCount += 1;
             },
 
+            validateGroups:function(e) {
+                var groupsOK  = true;
+                $(rcm.form).find('.validation-group').removeClass('invalid valid').each(function () {
+                    if (!ValidationObject.validateGroup(this)) {
+                        groupsOK = false;
+                    };
+                });
+                return groupsOK;
+            },
+
             validateGroup: function (el) {
 
+                var groupOK = true;
                 if ($(el).is(':visible')) {
 
                     rcm.validationMessage = $(el).attr('data-validation-message');
@@ -208,7 +199,6 @@
 
 
                     if (typesToCheck.indexOf(validationType) !== -1) {
-
                         fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
                             return ValidationObject.fieldValid(this);
                         }).get());
@@ -226,6 +216,7 @@
                         case 'required--one':
                             if (fieldsWithValidValue.length === 0) {
                                 ValidationObject.invalidateElement(el);
+                                groupOK = false;
                             } else {
                                 $(el).addClass('valid');
                             }
@@ -238,6 +229,7 @@
 
                             if (allFields.length > fieldsWithValidValue.length) {
                                 ValidationObject.invalidateElement(el);
+                                groupOK = false;
                             } else {
                                 $(el).addClass('valid');
                             }
@@ -266,6 +258,7 @@
                             }
                             if (!setsOK) {
                                 ValidationObject.invalidateElement(el);
+                                groupOK = false;
                             }
                             break;
                         default:
@@ -273,35 +266,22 @@
                             break;
                     }
                 }
+
+                return groupOK;
             },
 
 
 
 
-            validateFormSets: function (e) {
-                var groups, groupOK, setsOK, sets,
-                    formValidationType,
-                    formErrorMessage,
+            validateFormSets: function (e) { // Called by validateForm. Checks if the form requirements (sets) have been met
+
+
+                var groups, groupOK, setsOK, sets, formValidationType,
                     formErrorMessages = [];
 
-                // move to external data file
-                formErrorMessages['fraud-suspect'] = '<p>Please make sure you enter at least</p>' +
-                    '<ul class="list-bullet error-summary-list">' +
-                        '<li>A name, approximate age (or date of birth) and an address</li>' +
-                        '<li>A name, approximate age (or date of birth) and some additional info (phone number, email address or social media URL)</li>' +
-                        '<li>A National insurance number and an approximate age (or date of birth)</li>' +
-                        '<li>A National insurance number and an address</li>' +
-                    '</ol>';
-                formErrorMessages['fraud-suspect__3strikes'] = '<p>Having trouble? Call us on 0800 854 440.<br>' +
-                    'Otherwise please make sure you enter at least</p>' +
-                    '<ul class="list-bullet error-summary-list">' +
-                        '<li>A name, approximate age (or date of birth) and either an address or some additional info</li>' +
-                        '<li>A National insurance number and either an approximate age (or date of birth) or an address</li>' +
-                    '</ul>';
+                // Load the messages:
 
 
-
-                // all the validate-groups have been checked - now check if the form requirements (sets) have been met
 
                 formValidationType = $(rcm.form).attr('data-form-validation-type');
 
@@ -327,26 +307,71 @@
                                 }
                             }
                             if (!setsOK) {
-                                e.preventDefault();
-                                var messageIdentifier = $(rcm.form).attr('data-form-validation-message').replace('$message--', '');
-                                formErrorMessage = formErrorMessages[messageIdentifier];
-                                rcm.threeStrikesCount += 1;
-                                if (rcm.threeStrikesCount >= 3) {
-                                    formErrorMessage = (formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : formErrorMessages[messageIdentifier + '__3strikes'];
-                                }
-                                //$(rcm.form).addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
-                                //$(rcm.form).addClass('invalid').before('<div class="validation-message">' + formErrorMessage + '</div>');
-
-                                // NOTE TO SELF: put in function and merge with call in 102
-                                $(rcm.form).addClass('invalid');
-                                ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
-
-                                return false;
+                                return false; // tell the function validateForm that this test failed
                             }
 
                             break;
                     }
                 }
+                return true; // tell the function validateForm that this test passed
+            },
+
+            getFormData: function() {
+                var jsonData = {},
+                    varName,
+                    varValue,
+                    el,
+                    inSub = false,
+                    subName = '',
+                    formID = $(rcm.form).attr('id');
+                jsonData[formID] = {};
+                var values = jsonData[formID];
+
+                for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
+                    el = document.forms[formID].elements[i];
+                    varName = el.name;
+                    varValue = el.value;
+
+                    if (inSub && varName.indexOf(subName + '--') !== 0) {
+                        inSub = false;
+                        subName = '';
+                    }
+
+                    if (varName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+
+                        switch(el.type) {
+                            case 'radio':
+                                if (el.checked) {
+                                    if (inSub) {
+                                        values[subName + '--data'][varName] = varValue;
+                                    } else {
+                                        values[varName] = varValue;
+                                    }
+                                }
+                                break;
+                            default:
+                                if (inSub) {
+                                    values[subName + '--data'][varName] = varValue;
+                                } else {
+                                    values[varName] = varValue;
+                                }
+                                break;
+                        }
+                    }
+
+                    if (varName.indexOf('helper--') === 0) {
+                        // we're diving into a subgroup
+                        inSub = true;
+                        subName = varName.replace('helper--', '');
+                        values[subName + '--data'] = {};
+
+                    }
+                }
+                return jsonData;
+            },
+
+            getFullFormData: function() {
+                return ValidationObject.getFormData(); // getSavedFormData(); // a whole lot of data
             },
 
             postProcessor: function (e) {
@@ -387,7 +412,7 @@
                         }).get();
 
                         if (selected.length === 2) {
-                            document.location.href = '/rcm/employment-suspect-and-partner';
+                            document.location.href = '/rcm/employment-suspect-then-partner';
                         } else if (selected.indexOf('Suspect') === 0) {
                             document.location.href = '/rcm/employment-suspect';
                         } else if (selected.indexOf('Partner') === 0) {
@@ -405,63 +430,14 @@
                         */
                         e.preventDefault();
 
-                        var jsonData = {},
-                            varName,
-                            varValue,
-                            el,
-                            inSub = false,
-                            subName = '',
-                            formID = document.forms[0].id;
-                        jsonData[formID] = {};
-                        var values = jsonData[formID];
-
-                        for (var i = 0, il = document.forms[0].elements.length; i < il; i += 1) {
-                            el = document.forms[0].elements[i];
-                            varName = el.name;
-                            varValue = el.value;
-
-                            if (inSub && varName.indexOf(subName + '--') !== 0) {
-                                inSub = false;
-                                subName = '';
-                            }
-                            if (varName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
-
-                                switch(el.type) {
-                                    case 'radio':
-                                        if (el.checked) {
-                                            if (inSub) {
-                                                values[subName + '--data'][varName] = varValue;
-                                            } else {
-                                                values[varName] = varValue;
-                                            }
-                                        }
-                                        break;
-                                    default:
-                                        if (inSub) {
-                                            values[subName + '--data'][varName] = varValue;
-                                        } else {
-                                            values[varName] = varValue;
-                                        }
-                                        break;
-                                }
-                            }
-
-                            if (varName.indexOf('helper--') === 0) {
-                                // we're diving into a subgroup
-                                inSub = true;
-                                subName = varName.replace('helper--', '');
-                                values[subName + '--data'] = {};
-                            }
-                        }
-
-                        var timestamp = Date(),
-                            formData = {
+                        var formData = {
                                 "caller": "RCM",
-                                "timestamp": timestamp,
-                                "values": jsonData
+                                "timestamp": Date(),
+                                "values": ValidationObject.getFullFormData()
                             };
 
                         $('#submit-cover').show();
+
                         // NB had to install this plugin: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
                         $.ajax({
                             type: "POST",
@@ -479,9 +455,65 @@
                             ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
                         });
 
-                        return false
+                        return false;
                         break;
                 }
+            },
+
+
+
+            storeData: function () {
+
+                /*
+                1. check local storage (user session storage) or cookie
+                2. collect data from form (see submit fxy). If cookie, check max size
+                3. Store in LS or cookie.
+                 */
+                var storageType = (hasLocalStorage()) ? 'LocalStorage' : ((document.body.addBehavior) ? 'UserData' : 'Cookie');
+                var formJSON = ValidationObject.getFormData();
+                //console.log(formJSON);
+
+            },
+
+            validateForm: function (e) {
+
+                //e.preventDefault();
+
+                // initialise the validation object
+                ValidationObject.reset();
+
+                // 1, Validate the validation groups
+                if (!ValidationObject.validateGroups()) {
+
+                    var message = rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem or problems').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>');
+                    ValidationObject.displayMessageAndBlockSubmit(e, message);
+
+                    e.preventDefault();
+                    return;
+                }
+
+                // 2. Validate the form sets
+                if (!ValidationObject.validateFormSets()) {
+
+                    var messageIdentifier = $(rcm.form).attr('data-form-validation-message').replace('$message--', '');
+                    var formErrorMessage = rcm.formErrorMessages[messageIdentifier];
+
+                    rcm.threeStrikesCount += 1;
+                    if (rcm.threeStrikesCount >= 3) {
+                        formErrorMessage = (rcm.formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : rcm.formErrorMessages[messageIdentifier + '__3strikes'];
+                    }
+                    $(rcm.form).addClass('invalid');
+                    ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
+
+                    return;
+                }
+
+                // 3. store data client-side
+                ValidationObject.storeData(); // cookies only last a session
+
+                // 4. anything else?
+                ValidationObject.postProcessor(e);
+
             }
 
         };
@@ -520,6 +552,16 @@
 
         }
 
+    };
+
+    var hasLocalStorage = function () {
+        try {
+            localStorage.setItem('x', 'x');
+            localStorage.removeItem('x');
+            return true;
+        } catch(e) {
+            return false;
+        }
     };
 
     $(document).ready(function () {

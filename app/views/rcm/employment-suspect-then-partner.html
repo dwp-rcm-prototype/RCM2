@@ -1,0 +1,88 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: The suspect's employment
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
+
+    <h1 class="heading-large">
+        The person you’re reporting: their employment
+    </h1>
+
+
+    <form method="post" action="employment-partner/" id="form__employment-suspect" class="js-check">
+
+        <fieldset aria-live="polite">
+            <legend class="a11y">Work location</legend>
+
+            <div class="validation-group" data-form-validation-id="suspect-work-location" data-validation-type="required--one" data-validation-message="Please tell us where they work">
+                <label class="form-label legend" for="work-location">Where does this person work?</label>
+                <textarea id="work-location" class="form-control" rows="5" name="suspect-work-location"></textarea>
+            </div>
+
+
+            <div class="validation-group toggle-control" data-toggle-target="section--suspect--self-employed" data-validation-type="required--one" data-validation-message="Please tell us if this person is self-employed">
+                <legend>Is this person self employed?</legend>
+                <label class="block-label" for="suspect--self-employed__yes">
+                    <input id="suspect--self-employed__yes" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="Yes">
+                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, this person is self-employed</span>
+                </label>
+                <label class="block-label" for="suspect--self-employed__no">
+                    <input id="suspect--self-employed__no" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="No">
+                    <span aria-hidden="true">No</span><span class="a11y"> No, this person is not self-employede</span>
+                </label>
+                <label class="block-label" for="suspect--self-employed__unknown">
+                    <input id="suspect--self-employed__unknown" type="radio" class="toggle-section" name="helper--suspect--self-employed" value="Unknown">
+                    I don't know
+                </label>
+            </div>
+
+            <div class="section--suspect--self-employed section--suspect--self-employed__yes toggle-controlled panel-indent validation-group" data-validation-type="required--one" data-validation-message="Please tell us what kind of work they do">
+                <label class="form-label" for="suspect--type-of-work">What type of work do they do?</label>
+                <input class="form-control" id="suspect--type-of-work" name="suspect--type-of-work" type="text">
+            </div>
+
+
+
+            <div class="validation-group" data-form-validation-id="suspect-work-duration" data-validation-type="optional--one">
+                <label class="form-label legend" for="suspect-work-duration">How long have they been working?</label>
+                <input type="text" id="suspect-work-duration" class="form-control" name="suspect-work-duration">
+            </div>
+
+            <div class="validation-group" data-form-validation-id="suspect-timings" data-validation-type="not-required--one">
+
+                <label class="form-label legend" for="suspect-timings">
+                    What time do they leave and return home?
+                    <span  class="form-hint">Indicate whether their working days or times vary</span>
+                </label>
+                <textarea id="suspect-timings" class="form-control" rows="5" name="suspect-timings"></textarea>
+
+            </div>
+        </fieldset>
+
+        <input type="submit" class="button" value="Continue" />
+
+    </form>
+
+
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}

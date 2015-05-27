@@ -447,10 +447,15 @@ fieldset.form-group {
 
     }
 }
-
-.margin-bottom-45px {
-    margin-bottom:45px;
+.margin-bottom-big {
+    margin-bottom:30px;
 }
+@media (min-width: 641px) {
+    .margin-bottom-big {
+        margin-bottom: 45px;
+    }
+}
+
 .button.button-get-started {
     background-image: url("/public/icons/icon-pointer.png");
 }
