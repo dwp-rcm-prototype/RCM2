@@ -217,6 +217,7 @@ input[type="text"]+label{
     }
     &.validation-group {
         margin-top:0;
+        border-top: 1px solid white; // to keep the focus() box straight
     }
 }
 .form-control.width__half {

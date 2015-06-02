@@ -10,6 +10,16 @@
         };
     }
 
+    var hasLocalStorage = function () {
+        try {
+            localStorage.setItem('x', 'x');
+            localStorage.removeItem('x');
+            return true;
+        } catch(e) {
+            return false;
+        }
+    };
+
     var rcm,
         ValidationObject = {
 
@@ -31,7 +41,9 @@
                                         '[errorMessages]' +
                                     '</div>',
                 formErrorMessages: [],
-                formErrorMessage: ''
+                formErrorMessage: '',
+                localStorage: hasLocalStorage(),
+                userDataStorage: document.body.addBehavior
             },
 
             init: function (formClassName) {
@@ -76,9 +88,15 @@
                 // generic toggle functionality
                 $('.toggle-control input[type="radio"]').on('click', function () {
                     var sections = $(this).parents('.toggle-control').attr('data-toggle-target'),
-                        sectionOn = $(this).parents('.toggle-control').attr('data-toggle-target') + '__' + $(this).val().toLowerCase();
+                        sectionOn = $(this).parents('.toggle-control').attr('data-toggle-target') + '__' + $(this).val().toLowerCase(),
+                        sectionFocus = ($(this).hasClass('toggle--focus')) ? true : false;
                     $('.' + sections).hide();
-                    $('.' + sectionOn).show();
+                    if (sectionFocus) {
+                        $('.' + sectionOn).show().focus();
+                    } else {
+                        $('.' + sectionOn).show();
+                    }
+
                 });
 
             },
@@ -329,7 +347,9 @@
 
                 for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
                     el = document.forms[formID].elements[i];
-                    varName = el.name;
+                    varName = (el.name == null) ? '' : el.name;
+//                    varName = (varName == 'undefined' || varName == '' || varName == null) ? '' : varName ;
+
                     varValue = el.value;
 
                     if (inSub && varName.indexOf(subName + '--') !== 0) {
@@ -359,7 +379,7 @@
                         }
                     }
 
-                    if (varName.indexOf('helper--') === 0) {
+                    if (varName !== '' && varName.indexOf('helper--') === 0) {
                         // we're diving into a subgroup
                         inSub = true;
                         subName = varName.replace('helper--', '');
@@ -370,8 +390,14 @@
                 return jsonData;
             },
 
-            getFullFormData: function() {
-                return ValidationObject.getFormData(); // getSavedFormData(); // a whole lot of data
+            getSavedFormData: function() {
+
+                var formJSON = {},
+                    formIDs = ValidationObject.storageGetItem('formIDs').split(',');
+                for (var i = 0, il = formIDs.length; i < il; i += 1) {
+                    formJSON[formIDs[i]] = JSON.parse(ValidationObject.storageGetItem(formIDs[i]))[formIDs[i]];
+                }
+                return formJSON;
             },
 
             postProcessor: function (e) {
@@ -384,13 +410,13 @@
                             partnerOptions = ['livingWithPartner'];
 
                         // reset the route cookie
-                        docCookies.removeItem('fraud-type');
+                        ValidationObject.storageRemoveItem('fraud-type');
 
                         selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
                             return this.value;
                         }).get();
                         // store the choices in a cookie
-                        docCookies.setItem('fraud-type', selected.join('+'));
+                        ValidationObject.storageSetItem('fraud-type', selected.join('+'));
 
                         partnerSelected = $.grep(selected, function (n) {
                             return (partnerOptions.indexOf(n) !== -1);
@@ -430,13 +456,17 @@
                         */
                         e.preventDefault();
 
+                        var formJSON = ValidationObject.getSavedFormData();
+
                         var formData = {
                                 "caller": "RCM",
                                 "timestamp": Date(),
-                                "values": ValidationObject.getFullFormData()
+                                "values": formJSON
                             };
 
                         $('#submit-cover').show();
+                        // console.log('formData = ');
+                        // console.log(formData);
 
                         // NB had to install this plugin: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
                         $.ajax({
@@ -461,6 +491,35 @@
             },
 
 
+            storageRemoveItem: function (key) {
+                if (rcm.localStorage) {
+                    sessionStorage.removeItem(key, value);
+                } else /*if (rcm.userDataStorage) {
+                 // t.b.i.
+                 } else */{
+                    docCookies.removeItem(key);
+                }
+            },
+
+            storageSetItem: function (key, value) {
+                if (rcm.localStorage) {
+                    sessionStorage.setItem(key, value);
+                } else /*if (rcm.userDataStorage) {
+                    // t.b.i.
+                } else */{
+                    docCookies.setItem(key, value);
+                }
+            },
+
+            storageGetItem: function (key) {
+                if (rcm.localStorage) {
+                    return sessionStorage.getItem(key);
+                } else /*if (rcm.userDataStorage) {
+                 // t.b.i.
+                 } else */{
+                    return docCookies.getItem(value);
+                }
+            },
 
             storeData: function () {
 
@@ -469,9 +528,20 @@
                 2. collect data from form (see submit fxy). If cookie, check max size
                 3. Store in LS or cookie.
                  */
-                var storageType = (hasLocalStorage()) ? 'LocalStorage' : ((document.body.addBehavior) ? 'UserData' : 'Cookie');
-                var formJSON = ValidationObject.getFormData();
-                //console.log(formJSON);
+
+
+                var formJSON = ValidationObject.getFormData(),
+                    formID = $(rcm.form).attr('id'),
+                    formIDsString = ValidationObject.storageGetItem('formIDs'),
+                    formIDs;
+
+                formIDs = (formIDsString == null) ? [] : ValidationObject.storageGetItem('formIDs').split(',');
+                if (formIDs.indexOf(formID) === -1) {
+                    formIDs.push(formID);
+                    ValidationObject.storageSetItem('formIDs', formIDs.join(','));
+                }
+                ValidationObject.storageSetItem(formID, JSON.stringify(formJSON));
+
 
             },
 
@@ -513,7 +583,34 @@
 
                 // 4. anything else?
                 ValidationObject.postProcessor(e);
+            },
 
+            setupUserJourney: function () {
+                // implement how user choices affect their journey
+
+                var myRoute = ValidationObject.storageGetItem('fraud-type');
+
+                if (myRoute !== null && myRoute !== '') {
+                    var cpIndex, newPage,
+                        routes = [],
+                        currentPage = document.location.href.replace();
+
+                    routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
+                    routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
+                    routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
+
+                    currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+                    currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
+
+                    cpIndex = routes[myRoute].indexOf(currentPage);
+                    newPage = routes[myRoute][cpIndex + 1];
+
+                    $('form.js-routed').each(function() {
+                        $(this).attr('action', newPage + '/');
+                    });
+
+
+                }
             }
 
         };
@@ -525,48 +622,16 @@
             window.history.back();
         });
 
-        // implement how user choices affect their journey
-        // SHOULD THIS BE IN PAGESETUP?? DEFINITELY IN OWN FUNCTION
 
-        var myRoute = docCookies.getItem('fraud-type');
-
-        if (myRoute !== null && myRoute !== '') {
-            var cpIndex, newPage,
-                routes = [],
-                currentPage = document.location.href.replace();
-
-            routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
-            routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
-            routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
-
-            currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
-            currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
-
-            cpIndex = routes[myRoute].indexOf(currentPage);
-            newPage = routes[myRoute][cpIndex + 1];
-
-            $('form.js-routed').each(function() {
-                $(this).attr('action', newPage + '/');
-            });
-
-
-        }
 
     };
 
-    var hasLocalStorage = function () {
-        try {
-            localStorage.setItem('x', 'x');
-            localStorage.removeItem('x');
-            return true;
-        } catch(e) {
-            return false;
-        }
-    };
+
 
     $(document).ready(function () {
         pageSetup();
         ValidationObject.init('js-check');
+        ValidationObject.setupUserJourney();
     });
 
 
