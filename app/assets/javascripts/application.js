@@ -11,8 +11,7 @@
     }
 
     var hasLocalStorage = function () {
-        return false;
-
+        
         try {
             localStorage.setItem('x', 'x');
             localStorage.removeItem('x');
@@ -643,7 +642,7 @@
 
                         cpIndex = routes[myRoute].indexOf(currentPage);
                         newPage = routes[myRoute][cpIndex + 1];
-                        
+
                         $('form#' + rcm.formID).attr('action', newPage + '/');
                     }
                 }
