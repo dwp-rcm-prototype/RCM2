@@ -20,6 +20,8 @@ GOV.UK Reporting benefit fraud: Identify the suspect
         Who do you want to report?
     </h1>
 
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
     <form method="post" action="type-of-fraud/" id="form__identify-suspect" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
 
 <!-- NAME -->
@@ -187,7 +189,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
                 <label class="form-label" for="telephone--home">Home  <span class="a11y">telephone number</span></label>
                 <input class="form-control" name="telephone--home" id="telephone--home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number">
 
-                <label class="form-label" for="telephone--other"><span aria-hidden="true">Other</span><span class="a11y">Other telephone number</label>
+                <label class="form-label" for="telephone--other"><span aria-hidden="true">Other</span><span class="a11y">Other telephone number</span></label>
                 <input class="form-control" name="telephone--other" id="telephone--other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid phone number">
             </div>
         </fieldset>
@@ -224,7 +226,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
             </div>
         </fieldset>
 
-        <input type="submit" class="button" value="Continue" />
+        <input id="submit" type="submit" class="button" value="Continue" />
     </form>
 
 

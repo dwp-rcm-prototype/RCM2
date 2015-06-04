@@ -366,13 +366,16 @@ fieldset.form-group {
 }
 /* Overrides to allow for IE6 - 8 to work */
 .lte-ie8 {
-
+    span.IEuserData {
+        behavior:url('#default#userData'); // needed to store form data using userData behaviour - http://www.javascriptkit.com/javatutors/domstorage2.shtml
+        display:none;
+    }
     main#content {
         margin: 0 auto;
-        _width:780px; /* dirty IE6 hack */
+        _width:780px; // dirty IE6 hack
     }
     #content {
-        _padding-left:18px;
+        _padding-left:18px; // dirty IE6 hack
     }
     .text {
         zoom:1;

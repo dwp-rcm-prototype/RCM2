@@ -11,6 +11,8 @@
     }
 
     var hasLocalStorage = function () {
+        return false;
+
         try {
             localStorage.setItem('x', 'x');
             localStorage.removeItem('x');
@@ -43,13 +45,18 @@
                 formErrorMessages: [],
                 formErrorMessage: '',
                 localStorage: hasLocalStorage(),
-                userDataStorage: document.body.addBehavior
+                userDataStorage: document.body.addBehavior,
+                userDataObj: null
             },
 
-            init: function (formClassName) {
+            init: function () {
+
                 rcm = this.settings;
-                rcm.submitButton = 'form.' + formClassName + ' input[type="submit"]';
-                this.disableHTML5validation(formClassName);
+                rcm.form = $('form.js-check');
+                rcm.formID = rcm.form.attr('id');
+                rcm.submitButton = $('form#' + rcm.formID + ' input#submit');
+
+                this.disableHTML5validation();
                 this.bindUIActions();
 
                 // load the form validation error messages
@@ -58,12 +65,41 @@
                 });
 
                 var i = 0;
-                $('form.' + formClassName).each(function() {
-                    $(this).find('.validation-group').each(function() {
-                        $(this).attr('id', 'validation-group--' + i);
-                        i += 1;
-                    });
+                rcm.form.find('.validation-group').each(function() {
+                    $(this).attr('id', 'validation-group--' + i);
+                    i += 1;
                 });
+
+
+                if (rcm.userDataStorage) {
+                    console.log('Here I set the rcm.userDataObj')
+                    rcm.userDataObj = document.getElementById('IEuserData');
+                    if (rcm.userDataObj) {
+
+                        rcm.userDataObj.load('rcmData');
+                        console.log('Here it is loaded, and this is the XMLDocument');
+
+
+                        console.log(rcm.userDataObj.XMLDocument.xml);
+                        rcm.userDataObj.save('rcmData');
+                        console.log('saved again');
+                        //rcm.userDataObj.removeAttribute('formIDs');
+                        //rcm.userDataObj.removeAttribute('form__fraud-type');
+                        //rcm.userDataObj.removeAttribute('form__employment-suspect');
+                        //rcm.userDataObj.removeAttribute('form__other-information');
+                        //rcm.userDataObj.removeAttribute('form__identify-suspect');
+                        //rcm.userDataObj.removeAttribute('form__identify-partner');
+                        //rcm.userDataObj.removeAttribute('fraud-type');
+                        //rcm.userDataObj.removeAttribute('form__employment-prompt');
+                        //rcm.userDataObj.removeAttribute('form__employment-partner');
+                        //
+                        //rcm.userDataObj.save('rcmData');
+                        //console.log('I havve jsut removed all that junk, and this is the XMLDocument');
+                        //console.log(rcm.userDataObj.XMLDocument.xml);
+                        // var forgetMe = ValidationObject.getSavedFormData();
+                    }
+
+                }
             },
 
             reset: function () {
@@ -74,15 +110,21 @@
             },
 
             bindUIActions: function () {
-                $(rcm.submitButton).on("click", function (e) {
+
+                rcm.submitButton.on("click", function (e) {
                     //e.preventDefault();
-                    rcm.form = $(this).parents('form');
                     ValidationObject.validateForm(e);
                 });
 
                 // toggle-controlled is a class that should only work to hide information when javascript is enabled
                 $('.toggle-controlled').hide();
                 $('.display-block-js').show();
+
+                $('.button-get-started').on('click', function() {
+                    console.log('I clicked start now. About to clear userData');
+                    ValidationObject.clearData();
+                });
+
 
 
                 // generic toggle functionality
@@ -101,10 +143,10 @@
 
             },
 
-            disableHTML5validation: function (formClassName) {
+            disableHTML5validation: function () {
                 // disable html5 form checking (if we have js)
                 if (!$('html').hasClass('lte-ie8')) { // we can't have attr('novalidate) for IE7 - see https://www.google.co.uk/search?q=jquery%20ie7%20member%20not%20found - but this line is not required for IE8 and less anyway.
-                    $('form.' + formClassName).attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function () {
+                    rcm.form.attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function () {
                         $(this).attr('type', 'text');
                     });
                 }
@@ -341,7 +383,7 @@
                     el,
                     inSub = false,
                     subName = '',
-                    formID = $(rcm.form).attr('id');
+                    formID = rcm.formID;
                 jsonData[formID] = {};
                 var values = jsonData[formID];
 
@@ -392,10 +434,29 @@
 
             getSavedFormData: function() {
 
-                var formJSON = {},
-                    formIDs = ValidationObject.storageGetItem('formIDs').split(',');
-                for (var i = 0, il = formIDs.length; i < il; i += 1) {
-                    formJSON[formIDs[i]] = JSON.parse(ValidationObject.storageGetItem(formIDs[i]))[formIDs[i]];
+                var tmpJSON, tmpValue,
+                    formJSON = {},
+                    formIDsString = ValidationObject.storageGetItem('formIDs'),
+                    formIDs;
+
+                console.log('I am in getSavedFormData(). formIDsString = ' + formIDsString);
+
+                if (formIDsString !== null) {
+                    formIDs = formIDsString.split(',');
+
+
+                    for (var i = 0, il = formIDs.length; i < il; i += 1) {
+                        tmpValue = ValidationObject.storageGetItem(formIDs[i]);
+                        console.log('In getSavedFormData. For key = ' + formIDs[i] + ', the value is ' + tmpValue);
+                        if (tmpValue !== null) {
+                            tmpJSON = JSON.parse(tmpValue);
+                            console.log('getSavedFormData. formJSON[' + formIDs[i] + '] = ' + tmpJSON[formIDs[i]]);
+
+                            formJSON[formIDs[i]] = tmpJSON[formIDs[i]];
+                        } else {
+                            console.log('getSavedFormData. Error - no data for formJSON[' + formIDs[i] + ']');
+                        }
+                    }
                 }
                 return formJSON;
             },
@@ -403,7 +464,7 @@
             postProcessor: function (e) {
                 var selected;
 
-                switch ($(rcm.form).attr('id')) {
+                switch (rcm.formID) {
                     case 'form__fraud-type' : // redirect based on user input
 
                         var partnerSelected,
@@ -455,7 +516,7 @@
                         4. if false: display error message & try again
                         */
                         e.preventDefault();
-
+                        console.log('----- Collecting the saved data using getSavedFormData()');
                         var formJSON = ValidationObject.getSavedFormData();
 
                         var formData = {
@@ -465,8 +526,10 @@
                             };
 
                         $('#submit-cover').show();
-                        // console.log('formData = ');
-                        // console.log(formData);
+                        console.log('Submitting data. formData = ');
+                        console.log(JSON.stringify(formData));
+
+                        alert(JSON.stringify(formData));
 
                         // NB had to install this plugin: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
                         $.ajax({
@@ -493,10 +556,13 @@
 
             storageRemoveItem: function (key) {
                 if (rcm.localStorage) {
-                    sessionStorage.removeItem(key, value);
-                } else /*if (rcm.userDataStorage) {
-                 // t.b.i.
-                 } else */{
+                    sessionStorage.removeItem(key);
+                } else if (rcm.userDataStorage) {
+
+                    rcm.userDataObj.removeAttribute(key);
+                    rcm.userDataObj.save('rcmData');
+
+                 } else {
                     docCookies.removeItem(key);
                 }
             },
@@ -504,9 +570,14 @@
             storageSetItem: function (key, value) {
                 if (rcm.localStorage) {
                     sessionStorage.setItem(key, value);
-                } else /*if (rcm.userDataStorage) {
-                    // t.b.i.
-                } else */{
+                } else if (rcm.userDataStorage) {
+
+                    console.log('storageSetItem. Saving data for key = ' + key + ' and value = ' + value);
+
+                    rcm.userDataObj.setAttribute(key, value);
+                    rcm.userDataObj.save('rcmData');
+
+                } else {
                     docCookies.setItem(key, value);
                 }
             },
@@ -514,10 +585,13 @@
             storageGetItem: function (key) {
                 if (rcm.localStorage) {
                     return sessionStorage.getItem(key);
-                } else /*if (rcm.userDataStorage) {
-                 // t.b.i.
-                 } else */{
-                    return docCookies.getItem(value);
+                } else if (rcm.userDataStorage) {
+
+                    var value = rcm.userDataObj.getAttribute(key);
+                    console.log('storageGetItem. Retrieving data for key = ' + key + '. The value = ' + value);
+                    return value;
+                 } else {
+                    return docCookies.getItem(key);
                 }
             },
 
@@ -531,24 +605,25 @@
 
 
                 var formJSON = ValidationObject.getFormData(),
-                    formID = $(rcm.form).attr('id'),
                     formIDsString = ValidationObject.storageGetItem('formIDs'),
                     formIDs;
 
-                formIDs = (formIDsString == null) ? [] : ValidationObject.storageGetItem('formIDs').split(',');
-                if (formIDs.indexOf(formID) === -1) {
-                    formIDs.push(formID);
+                formIDs = (formIDsString == null) ? [] : formIDsString.split(',');
+                if (formIDs.indexOf(rcm.formID) === -1) {
+                    formIDs.push(rcm.formID);
                     ValidationObject.storageSetItem('formIDs', formIDs.join(','));
+                    console.log('storeData. Just saved to key formIDs, value  ' + formIDs.join(','));
                 }
-                ValidationObject.storageSetItem(formID, JSON.stringify(formJSON));
-
+                var jsonString = JSON.stringify(formJSON);
+                ValidationObject.storageSetItem(rcm.formID, jsonString);
+                console.log('storeData. Just saved to key ' + rcm.formID + ', value ' + ValidationObject.storageGetItem(rcm.formID));
 
             },
 
             validateForm: function (e) {
 
-                //e.preventDefault();
-
+            //    e.preventDefault();
+console.log('--------------- Starting form validation')
                 // initialise the validation object
                 ValidationObject.reset();
 
@@ -578,9 +653,11 @@
                     return;
                 }
 
+                console.log('--------------- Save form data to local storage')
                 // 3. store data client-side
                 ValidationObject.storeData(); // cookies only last a session
 
+                console.log('--------------- call post processor')
                 // 4. anything else?
                 ValidationObject.postProcessor(e);
             },
@@ -589,8 +666,9 @@
                 // implement how user choices affect their journey
 
                 var myRoute = ValidationObject.storageGetItem('fraud-type');
+                console.log('setupUserJourney. MyRoute  = ' + myRoute);
 
-                if (myRoute !== null && myRoute !== '') {
+                if (myRoute != null && myRoute != '') {
                     var cpIndex, newPage,
                         routes = [],
                         currentPage = document.location.href.replace();
@@ -605,18 +683,36 @@
                     cpIndex = routes[myRoute].indexOf(currentPage);
                     newPage = routes[myRoute][cpIndex + 1];
 
-                    $('form.js-routed').each(function() {
-                        $(this).attr('action', newPage + '/');
-                    });
-
+                    $('form#' + rcm.formID).attr('action', newPage + '/');
 
                 }
+            },
+
+            clearData: function () {
+
+                var formIDsString = ValidationObject.storageGetItem('formIDs'),
+                    keys;
+
+
+// form__fraud-type,form__identify-partner,form__employment-prompt,form__employment-suspect,form__other-information,form__identify-suspect
+
+
+                keys = (formIDsString == null) ? [] : formIDsString.split(',');
+                keys.push('fraud-type');
+                keys.push('formIDs');
+                console.log('clearData. Hoping to clear these keys: ' + ValidationObject.storageGetItem('formIDs') + ',fraud-type, formIDs');
+
+                for (var k = 0, kl = keys.length; k < kl; k += 1) {
+                    ValidationObject.storageRemoveItem(keys[k]);
+                    console.log('clearData. Cleared this key: ' + keys[k]);
+                }
+                return false;
             }
 
         };
 
     var pageSetup = function () {
-
+console.log('--------a fresh page----------');
         $('a.previousPage').on('click', function (e) {
             e.preventDefault();
             window.history.back();
@@ -628,9 +724,11 @@
 
 
 
+
+
     $(document).ready(function () {
         pageSetup();
-        ValidationObject.init('js-check');
+        ValidationObject.init();
         ValidationObject.setupUserJourney();
     });
 

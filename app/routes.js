@@ -17,11 +17,14 @@ module.exports = {
     });
 
     // add your routes here
+
+
+
     app.get('/rcm', function (req, res) {
-      res.render('rcm/index');
+      res.redirect('rcm/report-benefit-fraud');
     });
-    app.get('/rcm/apptest1', function (req, res) {
-      res.render('rcm/apptest1');
+    app.get('/rcm/report-benefit-fraud', function (req, res) {
+      res.render('rcm/report-benefit-fraud');
     });
     app.get('/rcm/dummy', function (req, res) {
       res.render('rcm/dummy');
