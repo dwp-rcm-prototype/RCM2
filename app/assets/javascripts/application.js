@@ -46,7 +46,7 @@
                 formErrorMessage: '',
                 localStorage: hasLocalStorage(),
                 userDataStorage: document.body.addBehavior,
-                userDataObj: null
+                userDataObj: {}
             },
 
             init: function () {
@@ -71,7 +71,7 @@
                 });
 
 
-                if (rcm.userDataStorage) {
+                if (!rcm.localStorage && rcm.userDataStorage) {
                     rcm.userDataObj = document.getElementById('IEuserData');
                     if (rcm.userDataObj) {
                         rcm.userDataObj.load('rcmData');
@@ -643,7 +643,7 @@
 
                         cpIndex = routes[myRoute].indexOf(currentPage);
                         newPage = routes[myRoute][cpIndex + 1];
-                        console.log('newPage = ' + newPage);
+                        
                         $('form#' + rcm.formID).attr('action', newPage + '/');
                     }
                 }
