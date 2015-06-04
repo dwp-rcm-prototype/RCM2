@@ -72,31 +72,9 @@
 
 
                 if (rcm.userDataStorage) {
-                    console.log('Here I set the rcm.userDataObj')
                     rcm.userDataObj = document.getElementById('IEuserData');
                     if (rcm.userDataObj) {
-
                         rcm.userDataObj.load('rcmData');
-                        console.log('Here it is loaded, and this is the XMLDocument');
-
-
-                        console.log(rcm.userDataObj.XMLDocument.xml);
-                        rcm.userDataObj.save('rcmData');
-                        console.log('saved again');
-                        //rcm.userDataObj.removeAttribute('formIDs');
-                        //rcm.userDataObj.removeAttribute('form__fraud-type');
-                        //rcm.userDataObj.removeAttribute('form__employment-suspect');
-                        //rcm.userDataObj.removeAttribute('form__other-information');
-                        //rcm.userDataObj.removeAttribute('form__identify-suspect');
-                        //rcm.userDataObj.removeAttribute('form__identify-partner');
-                        //rcm.userDataObj.removeAttribute('fraud-type');
-                        //rcm.userDataObj.removeAttribute('form__employment-prompt');
-                        //rcm.userDataObj.removeAttribute('form__employment-partner');
-                        //
-                        //rcm.userDataObj.save('rcmData');
-                        //console.log('I havve jsut removed all that junk, and this is the XMLDocument');
-                        //console.log(rcm.userDataObj.XMLDocument.xml);
-                        // var forgetMe = ValidationObject.getSavedFormData();
                     }
 
                 }
@@ -121,7 +99,6 @@
                 $('.display-block-js').show();
 
                 $('.button-get-started').on('click', function() {
-                    console.log('I clicked start now. About to clear userData');
                     ValidationObject.clearData();
                 });
 
@@ -439,22 +416,16 @@
                     formIDsString = ValidationObject.storageGetItem('formIDs'),
                     formIDs;
 
-                console.log('I am in getSavedFormData(). formIDsString = ' + formIDsString);
-
                 if (formIDsString !== null) {
                     formIDs = formIDsString.split(',');
 
 
                     for (var i = 0, il = formIDs.length; i < il; i += 1) {
                         tmpValue = ValidationObject.storageGetItem(formIDs[i]);
-                        console.log('In getSavedFormData. For key = ' + formIDs[i] + ', the value is ' + tmpValue);
+
                         if (tmpValue !== null) {
                             tmpJSON = JSON.parse(tmpValue);
-                            console.log('getSavedFormData. formJSON[' + formIDs[i] + '] = ' + tmpJSON[formIDs[i]]);
-
                             formJSON[formIDs[i]] = tmpJSON[formIDs[i]];
-                        } else {
-                            console.log('getSavedFormData. Error - no data for formJSON[' + formIDs[i] + ']');
                         }
                     }
                 }
@@ -508,17 +479,17 @@
 
                         break;
 
-                    case 'form__other-information':
+                    case 'DISABLED--form__other-information':
                         /* final submit
                         1. collect data; form JSON
                         2. Use Ajax to submit data
                         3. if result = ok: proceed
                         4. if false: display error message & try again
                         */
-                        e.preventDefault();
-                        console.log('----- Collecting the saved data using getSavedFormData()');
-                        var formJSON = ValidationObject.getSavedFormData();
 
+                        e.preventDefault();
+
+                        var formJSON = ValidationObject.getSavedFormData();
                         var formData = {
                                 "caller": "RCM",
                                 "timestamp": Date(),
@@ -526,10 +497,8 @@
                             };
 
                         $('#submit-cover').show();
-                        console.log('Submitting data. formData = ');
-                        console.log(JSON.stringify(formData));
-
-                        alert(JSON.stringify(formData));
+//                        console.log('Submitting data. formData = ');
+//                        console.log(JSON.stringify(formData));
 
                         // NB had to install this plugin: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
                         $.ajax({
@@ -572,8 +541,6 @@
                     sessionStorage.setItem(key, value);
                 } else if (rcm.userDataStorage) {
 
-                    console.log('storageSetItem. Saving data for key = ' + key + ' and value = ' + value);
-
                     rcm.userDataObj.setAttribute(key, value);
                     rcm.userDataObj.save('rcmData');
 
@@ -587,9 +554,7 @@
                     return sessionStorage.getItem(key);
                 } else if (rcm.userDataStorage) {
 
-                    var value = rcm.userDataObj.getAttribute(key);
-                    console.log('storageGetItem. Retrieving data for key = ' + key + '. The value = ' + value);
-                    return value;
+                    return rcm.userDataObj.getAttribute(key);
                  } else {
                     return docCookies.getItem(key);
                 }
@@ -612,18 +577,15 @@
                 if (formIDs.indexOf(rcm.formID) === -1) {
                     formIDs.push(rcm.formID);
                     ValidationObject.storageSetItem('formIDs', formIDs.join(','));
-                    console.log('storeData. Just saved to key formIDs, value  ' + formIDs.join(','));
                 }
                 var jsonString = JSON.stringify(formJSON);
                 ValidationObject.storageSetItem(rcm.formID, jsonString);
-                console.log('storeData. Just saved to key ' + rcm.formID + ', value ' + ValidationObject.storageGetItem(rcm.formID));
 
             },
 
             validateForm: function (e) {
 
             //    e.preventDefault();
-console.log('--------------- Starting form validation')
                 // initialise the validation object
                 ValidationObject.reset();
 
@@ -653,11 +615,10 @@ console.log('--------------- Starting form validation')
                     return;
                 }
 
-                console.log('--------------- Save form data to local storage')
-                // 3. store data client-side
-                ValidationObject.storeData(); // cookies only last a session
 
-                console.log('--------------- call post processor')
+                // 3. store data client-side
+//                ValidationObject.storeData();
+
                 // 4. anything else?
                 ValidationObject.postProcessor(e);
             },
@@ -665,26 +626,26 @@ console.log('--------------- Starting form validation')
             setupUserJourney: function () {
                 // implement how user choices affect their journey
 
-                var myRoute = ValidationObject.storageGetItem('fraud-type');
-                console.log('setupUserJourney. MyRoute  = ' + myRoute);
+                if (rcm.form.hasClass('js-routed')) {
+                    var myRoute = ValidationObject.storageGetItem('fraud-type');
 
-                if (myRoute != null && myRoute != '') {
-                    var cpIndex, newPage,
-                        routes = [],
-                        currentPage = document.location.href.replace();
+                    if (myRoute != null && myRoute != '') {
+                        var cpIndex, newPage,
+                            routes = [],
+                            currentPage = document.location.href.replace();
 
-                    routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
-                    routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
-                    routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
+                        routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
+                        routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
+                        routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
 
-                    currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
-                    currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
+                        currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+                        currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
-                    cpIndex = routes[myRoute].indexOf(currentPage);
-                    newPage = routes[myRoute][cpIndex + 1];
-
-                    $('form#' + rcm.formID).attr('action', newPage + '/');
-
+                        cpIndex = routes[myRoute].indexOf(currentPage);
+                        newPage = routes[myRoute][cpIndex + 1];
+                        console.log('newPage = ' + newPage);
+                        $('form#' + rcm.formID).attr('action', newPage + '/');
+                    }
                 }
             },
 
@@ -694,17 +655,15 @@ console.log('--------------- Starting form validation')
                     keys;
 
 
-// form__fraud-type,form__identify-partner,form__employment-prompt,form__employment-suspect,form__other-information,form__identify-suspect
+                // form__fraud-type,form__identify-partner,form__employment-prompt,form__employment-suspect,form__other-information,form__identify-suspect
 
 
                 keys = (formIDsString == null) ? [] : formIDsString.split(',');
                 keys.push('fraud-type');
                 keys.push('formIDs');
-                console.log('clearData. Hoping to clear these keys: ' + ValidationObject.storageGetItem('formIDs') + ',fraud-type, formIDs');
 
                 for (var k = 0, kl = keys.length; k < kl; k += 1) {
                     ValidationObject.storageRemoveItem(keys[k]);
-                    console.log('clearData. Cleared this key: ' + keys[k]);
                 }
                 return false;
             }
@@ -712,7 +671,6 @@ console.log('--------------- Starting form validation')
         };
 
     var pageSetup = function () {
-console.log('--------a fresh page----------');
         $('a.previousPage').on('click', function (e) {
             e.preventDefault();
             window.history.back();
