@@ -11,7 +11,7 @@
     }
 
     var hasLocalStorage = function () {
-        
+
         try {
             localStorage.setItem('x', 'x');
             localStorage.removeItem('x');
@@ -478,7 +478,7 @@
 
                         break;
 
-                    case 'DISABLED--form__other-information':
+                    case 'form__other-information':
                         /* final submit
                         1. collect data; form JSON
                         2. Use Ajax to submit data
@@ -488,12 +488,18 @@
 
                         e.preventDefault();
 
-                        var formJSON = ValidationObject.getSavedFormData();
-                        var formData = {
-                                "caller": "RCM",
-                                "timestamp": Date(),
-                                "values": formJSON
-                            };
+                        var formData,
+                            ms,
+                            time = new Date(),
+                            formJSON = ValidationObject.getSavedFormData();
+
+                        formData = {
+                            "caller": "RCM",
+                            "timestamp": Date(),
+                            "values": formJSON
+                        };
+
+                        ms = time.getTime();
 
                         $('#submit-cover').show();
 //                        console.log('Submitting data. formData = ');
@@ -502,13 +508,18 @@
                         // NB had to install this plugin: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
                         $.ajax({
                             type: "POST",
-                            url: "https://alphagov-rcmfrontend.herokuapp.com/submitEvidence",
+                            url: "/submitEvidence",
                             dataType: 'text',
                             data: JSON.stringify(formData),
                             crossDomain: true
                         }).done(function(returnData) {
-                            $('#submit-cover .clock').remove();
-                            document.location.href = document.forms[0].action;
+                            time = new Date();
+                            ms = time.getTime() - ms;
+                            // make sure that at least 2 seconds pass so that it looks like the system really has been busy
+                            setTimeout(function() {
+                                $('#submit-cover .clock').remove();
+                                document.location.href = document.forms[0].action;
+                            }, 2000 - ms);
 
                         }).fail(function() {
                             e.preventDefault();
@@ -616,7 +627,7 @@
 
 
                 // 3. store data client-side
-//                ValidationObject.storeData();
+                ValidationObject.storeData();
 
                 // 4. anything else?
                 ValidationObject.postProcessor(e);

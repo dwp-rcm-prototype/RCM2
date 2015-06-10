@@ -3,10 +3,12 @@ var path = require('path'),
     routes = require(__dirname + '/app/routes.js'),
     app = express(),
     port = (process.env.PORT || 3000),
+    serverRequest = require('request'),
 
 // Grab environment variables specified in Procfile or as Heroku config vars
     username = process.env.USERNAME,
     password = process.env.PASSWORD,
+    submitEvidenceUrl = process.env.BACKEND_SUBMIT_URL || 'http://localhost:9292/submitEvidence'
     env = process.env.NODE_ENV || 'development';
 
 // Authenticate against the environment-provided credentials, if running
@@ -60,6 +62,70 @@ app.get(/^\/([^.]+)$/, function (req, res) {
 	});
 
 });
+
+/**
+ * Read the JSON from the POST request.
+ *
+ * For now this just reads up to a maximum size (arbitrarily set to 10000k for now).
+ * Returns
+ *
+ * @param req
+ */
+function readJsonFromRequest(req, completeCallback) {
+    var content = '';
+    var limit = 10000;
+
+    req.on('data', function (data) {
+        // Append data.
+        if (content.length < limit) {
+            content += data;
+        } else {
+            console.log('Content is too big, closing');
+            req.close();
+        }
+
+    });
+
+    req.on('end', function () {
+        console.log('Got all the data, running callback');
+        completeCallback(content);
+    });
+}
+
+/**
+ * Add a handler for POST requests to submit evidence.
+ *
+ * This makes a call to the server and then returns any response back to the client
+ * TODO: This needs ALOT of tidying up!
+ * TODO: This needs tests!
+ * TODO: This needs someone competent to have written it!
+ */
+app.post('/submitEvidence', function(req, res) {
+    console.log('Submitting evidence ...');
+
+    readJsonFromRequest(req, function(bodyContent) {
+
+        console.log('Submitting this body: ' + bodyContent);
+        serverRequest.post({ url: submitEvidenceUrl, body: bodyContent }, function(err, serverRes, serverBody) {
+
+            if(!err) {
+                console.log('Server return code: ' + serverRes.statusCode);
+                console.log('Server body: ' + serverBody);
+                res.send('All worked!');
+
+            } else {
+                console.log('Error submitting evidence: ' + err);
+                res.send('Error connecting to server: ' + err);
+            }
+
+        });
+    });
+
+    console.log()
+});
+
+console.log('The App object: ' + app);
+console.log('The App Stack: ' + app.stack);
 
 // start the app
 
