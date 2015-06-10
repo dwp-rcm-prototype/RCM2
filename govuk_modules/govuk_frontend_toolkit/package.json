@@ -18,9 +18,5 @@
   "readmeFilename": "README.md",
   "homepage": "https://github.com/alphagov/govuk_frontend_toolkit_npm",
   "_id": "govuk_frontend_toolkit@3.4.2",
-  "dist": {
-    "shasum": "d110efa546eea226a56965e48d30adf5d530ed91"
-  },
-  "_from": "govuk_frontend_toolkit@~3.4.1",
-  "_resolved": "https://registry.npmjs.org/govuk_frontend_toolkit/-/govuk_frontend_toolkit-3.4.2.tgz"
+  "_from": "govuk_frontend_toolkit@~3.4.1"
 }
