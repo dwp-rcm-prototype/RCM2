@@ -502,10 +502,12 @@
                         ms = time.getTime();
 
                         $('#submit-cover').show();
-//                        console.log('Submitting data. formData = ');
-//                        console.log(JSON.stringify(formData));
+                        console.log('Submitting data. formData = ');
+                        console.log(JSON.stringify(formData));
+
 
                         // NB install this plugin if you need to post directly to a different domain/ port: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
+                        $.support.cors = true; // for IE7
                         $.ajax({
                             type: "POST",
                             url: "/submitEvidence",
@@ -513,6 +515,7 @@
                             data: JSON.stringify(formData),
                             crossDomain: true
                         }).done(function(returnData) {
+
                             time = new Date();
                             ms = time.getTime() - ms;
                             // make sure that at least 2 seconds pass so that it looks like the system really has been busy
@@ -521,8 +524,8 @@
                                 document.location.href = document.forms[0].action;
                             }, 2000 - ms);
 
-                        }).fail(function() {
-                            e.preventDefault();
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
                             $('#submit-cover').hide();
                             ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
                         });
@@ -538,6 +541,11 @@
                     sessionStorage.removeItem(key);
                 } else if (rcm.userDataStorage) {
 
+                    var timestamp = new Date(); // set the data to expire in an hour
+                    timestamp.setMinutes(timestamp.getMinutes() + 60);
+                    var expirationDate = timestamp.toUTCString();
+                    rcm.userDataObj.expires = expirationDate;
+
                     rcm.userDataObj.removeAttribute(key);
                     rcm.userDataObj.save('rcmData');
 
@@ -550,6 +558,12 @@
                 if (rcm.localStorage) {
                     sessionStorage.setItem(key, value);
                 } else if (rcm.userDataStorage) {
+
+
+                    var timestamp = new Date(); // set the data to expire in an hour
+                    timestamp.setMinutes(timestamp.getMinutes() + 60);
+                    var expirationDate = timestamp.toUTCString();
+                    rcm.userDataObj.expires = expirationDate;
 
                     rcm.userDataObj.setAttribute(key, value);
                     rcm.userDataObj.save('rcmData');
@@ -589,13 +603,15 @@
                     ValidationObject.storageSetItem('formIDs', formIDs.join(','));
                 }
                 var jsonString = JSON.stringify(formJSON);
+
                 ValidationObject.storageSetItem(rcm.formID, jsonString);
+
 
             },
 
             validateForm: function (e) {
 
-            //    e.preventDefault();
+                //e.preventDefault();
                 // initialise the validation object
                 ValidationObject.reset();
 
