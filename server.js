@@ -8,8 +8,8 @@ var path = require('path'),
 // Grab environment variables specified in Procfile or as Heroku config vars
     username = process.env.USERNAME,
     password = process.env.PASSWORD,
-    submitEvidenceUrl = process.env.BACKEND_SUBMIT_URL || 'https://alphagov-rcmserver.herokuapp.com/submitEvidence'
-    env = process.env.NODE_ENV || 'development';
+    submitEvidenceUrl = process.env.BACKEND_SUBMIT_URL || 'https://rcmserver.herokuapp.com/submitEvidence'
+    env = process.env.NODE_ENV || 'development'; 
 
 // Authenticate against the environment-provided credentials, if running
 // the app in production (Heroku, effectively)
