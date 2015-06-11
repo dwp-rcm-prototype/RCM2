@@ -502,8 +502,8 @@
                         ms = time.getTime();
 
                         $('#submit-cover').show();
-                        console.log('Submitting data. formData = ');
-                        console.log(JSON.stringify(formData));
+                        //console.log('Submitting data. formData = ');
+                        //console.log(JSON.stringify(formData));
 
 
                         // NB install this plugin if you need to post directly to a different domain/ port: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
