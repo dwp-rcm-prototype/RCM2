@@ -505,7 +505,7 @@
 //                        console.log('Submitting data. formData = ');
 //                        console.log(JSON.stringify(formData));
 
-                        // NB had to install this plugin: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
+                        // NB install this plugin if you need to post directly to a different domain/ port: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
                         $.ajax({
                             type: "POST",
                             url: "/submitEvidence",
