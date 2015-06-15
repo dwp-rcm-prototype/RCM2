@@ -408,14 +408,14 @@
                 return jsonData;
             },
 
-            getSavedFormData: function() {
+            getSavedFormData: function(formID) {
 
                 var tmpJSON, tmpValue,
                     formJSON = {},
-                    formIDsString = ValidationObject.storageGetItem('formIDs'),
+                    formIDsString = (formID === null) ? ValidationObject.storageGetItem('formIDs') : formID,
                     formIDs;
 
-                if (formIDsString !== null) {
+                if (formIDsString != null) {
                     formIDs = formIDsString.split(',');
 
 
@@ -491,7 +491,7 @@
                         var formData,
                             ms,
                             time = new Date(),
-                            formJSON = ValidationObject.getSavedFormData();
+                            formJSON = ValidationObject.getSavedFormData(null);
 
                         formData = {
                             "caller": "RCM",
@@ -549,9 +549,9 @@
                     rcm.userDataObj.removeAttribute(key);
                     rcm.userDataObj.save('rcmData');
 
-                 } else {
+                 } /*else {
                     docCookies.removeItem(key);
-                }
+                }*/
             },
 
             storageSetItem: function (key, value) {
@@ -568,9 +568,9 @@
                     rcm.userDataObj.setAttribute(key, value);
                     rcm.userDataObj.save('rcmData');
 
-                } else {
+                } /*else {
                     docCookies.setItem(key, value);
-                }
+                } */
             },
 
             storageGetItem: function (key) {
@@ -579,19 +579,12 @@
                 } else if (rcm.userDataStorage) {
 
                     return rcm.userDataObj.getAttribute(key);
-                 } else {
+                 } /*else {
                     return docCookies.getItem(key);
-                }
+                }*/
             },
 
             storeData: function () {
-
-                /*
-                1. check local storage (user session storage) or cookie
-                2. collect data from form (see submit fxy). If cookie, check max size
-                3. Store in LS or cookie.
-                 */
-
 
                 var formJSON = ValidationObject.getFormData(),
                     formIDsString = ValidationObject.storageGetItem('formIDs'),
@@ -675,6 +668,64 @@
                 }
             },
 
+            retrieveFormData: function() {
+
+                var jsonData = ValidationObject.getSavedFormData(rcm.formID),
+                    elName,
+                    elValue,
+                    el,
+                    inSub = false,
+                    subName = '',
+                    formID = rcm.formID
+
+
+                // console.log(jsonData[formID]); console.log('------------------');
+
+                if (jsonData[formID]) { // if there is any data
+
+                    for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
+                        el = document.forms[formID].elements[i];
+                        elName = (el.name == null || el.name == '') ? null : el.name;
+                        //                    varName = (varName == 'undefined' || varName == '' || varName == null) ? '' : varName ;
+
+                        if (elName !== null) {
+
+                            if (elName.indexOf(subName) === -1) {
+                                inSub = false;
+                                subName = '';
+                            }
+
+
+                            if (inSub) {
+                                elValue = jsonData[formID][subName + '--data'][elName];
+                            } else {
+                                elValue = jsonData[formID][elName];
+                            }
+
+                           //  console.log('About to repopulate: inSub = ' + inSub + ' and jsonData[' + formID + '][' + subName + '--data][' + elName + '] = ' + elValue)
+
+
+
+                            if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+                                switch (el.type) {
+                                    case 'radio':
+                                        // console.log('in radio  ' + elName + '. My JSON vValue = ' + elValue + ' and my input value = ' + el.value);
+                                        if (el.value === elValue) {
+                                            $(el).trigger('click');
+                                            inSub = true;
+                                            subName = elName.replace('helper--', '');
+                                        }
+                                        break;
+                                    default:
+                                        el.value = elValue;
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
             clearData: function () {
 
                 var formIDsString = ValidationObject.storageGetItem('formIDs'),
@@ -714,6 +765,7 @@
         pageSetup();
         ValidationObject.init();
         ValidationObject.setupUserJourney();
+        ValidationObject.retrieveFormData();
     });
 
 
