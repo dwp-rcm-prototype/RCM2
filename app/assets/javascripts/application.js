@@ -356,6 +356,7 @@
                 var jsonData = {},
                     varName,
                     varValue,
+                    target,
                     el,
                     inSub = false,
                     subName = '',
@@ -376,23 +377,26 @@
                     }
 
                     if (varName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
-
+                        // console.log(el.type + ' ' + el.name + ' ' + el.value + ' ' + el.checked)
+                        target = (inSub) ? values[subName + '--data'] : values;
                         switch(el.type) {
                             case 'radio':
                                 if (el.checked) {
-                                    if (inSub) {
-                                        values[subName + '--data'][varName] = varValue;
+                                    target[varName] = varValue;
+                                }
+                                break;
+                            case 'checkbox':
+                                if (el.checked) {
+                                    if (target[varName] != null) {
+                                        target[varName][target[varName].length] = varValue;
                                     } else {
-                                        values[varName] = varValue;
+                                        target[varName] = [];
+                                        target[varName][0] = varValue;
                                     }
                                 }
                                 break;
                             default:
-                                if (inSub) {
-                                    values[subName + '--data'][varName] = varValue;
-                                } else {
-                                    values[varName] = varValue;
-                                }
+                               target[varName] = varValue;
                                 break;
                         }
                     }
@@ -596,15 +600,13 @@
                     ValidationObject.storageSetItem('formIDs', formIDs.join(','));
                 }
                 var jsonString = JSON.stringify(formJSON);
-
                 ValidationObject.storageSetItem(rcm.formID, jsonString);
-
-
             },
 
             validateForm: function (e) {
 
-                //e.preventDefault();
+                // e.preventDefault();
+
                 // initialise the validation object
                 ValidationObject.reset();
 
@@ -702,9 +704,7 @@
                                 elValue = jsonData[formID][elName];
                             }
 
-                           //  console.log('About to repopulate: inSub = ' + inSub + ' and jsonData[' + formID + '][' + subName + '--data][' + elName + '] = ' + elValue)
-
-
+                             //console.log('About to repopulate: inSub = ' + inSub + ' and elValue = ' + elValue)
 
                             if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
                                 switch (el.type) {
@@ -714,6 +714,11 @@
                                             $(el).trigger('click');
                                             inSub = true;
                                             subName = elName.replace('helper--', '');
+                                        }
+                                        break;
+                                    case 'checkbox':
+                                        if (elValue.indexOf(el.value) !== -1) {
+                                            el.checked = true;
                                         }
                                         break;
                                     default:
