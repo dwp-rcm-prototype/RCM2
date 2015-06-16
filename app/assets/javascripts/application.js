@@ -519,7 +519,7 @@
                             data: JSON.stringify(formData),
                             crossDomain: true
                         }).done(function(returnData) {
-
+                            ValidationObject.clearData();
                             time = new Date();
                             ms = time.getTime() - ms;
                             // make sure that at least 2 seconds pass so that it looks like the system really has been busy
