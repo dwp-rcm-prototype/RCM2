@@ -417,6 +417,9 @@ fieldset.form-group {
     .error-summary-list a{
         color:$error-colour;
     }
+    .form-submitted  .heading-xlarge {
+        padding-top: 0;
+    }
 }
 
 .a11y {
@@ -483,6 +486,11 @@ fieldset.form-group {
     }
 }
 
-.form-submitted .heading-xlarge {
+.form-submitted  .heading-xlarge {
     padding-top: 0.625em;
+    span {
+        padding-right:1ex;
+        _display:none; // dirty IE6 hack
+    }
+
 }
