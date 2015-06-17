@@ -14,6 +14,8 @@ GOV.UK Reporting benefit fraud: The partner's employment
         </div>
     </div>
 
+    <div id="submit-cover"><div class="bg"></div><div class="clock"><p>Please wait while we're submitting your report</p></div></div>
+
     <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
     <h1 class="heading-large">
@@ -22,7 +24,7 @@ GOV.UK Reporting benefit fraud: The partner's employment
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="other-information/" id="form__employment-partner" class="js-check">
+    <form method="post" action="complete/" id="form__employment-partner" class="js-check">
 
         <fieldset aria-live="polite">
             <legend class="a11y">Work location</legend>
@@ -72,7 +74,9 @@ GOV.UK Reporting benefit fraud: The partner's employment
             </div>
         </fieldset>
 
-        <input id="submit" type="submit" class="button" value="Continue" />
+        <p>You've now answered all the questions and can submit your report.</p>
+        <input type="submit" id="send-report" class="button" value="Send report" />
+
 
     </form>
 

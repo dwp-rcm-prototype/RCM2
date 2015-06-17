@@ -446,8 +446,12 @@ fieldset.form-group {
     }
 
 }
-
-
+input.button {
+    position:relative;  /* mainly for IE6*/
+}
+.submit__send-report {
+    display: none;
+}
 
 
 

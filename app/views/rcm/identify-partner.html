@@ -14,6 +14,8 @@ GOV.UK Reporting benefit fraud: Identify the partner
         </div>
     </div>
 
+    <div id="submit-cover"><div class="bg"></div><div class="clock"><p>Please wait while we're submitting your report</p></div></div>
+
     <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
     <h1 class="heading-large">
@@ -237,7 +239,13 @@ GOV.UK Reporting benefit fraud: Identify the partner
             </div>
         </fieldset>
 
-        <input id="submit" type="submit" class="button" value="Continue" />
+        <div class="submit__continue">
+            <input type="submit" id="submit" class="button" value="Continue" />
+        </div>
+        <div class="submit__send-report">
+            <p>You've now answered all the questions and can submit your report.</p>
+            <input type="submit" id="send-report" class="button" value="Send report" />
+        </div>
     </form>
 
 
