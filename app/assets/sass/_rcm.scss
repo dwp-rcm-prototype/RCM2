@@ -506,3 +506,11 @@ strong {
 .form-submitted .heading-xlarge {
     padding-top: 0.625em;
 }
+.form-submitted .heading-xlarge span {
+    padding-right: 1ex;
+    _display: none; }
+
+input.button {
+    position: relative; /* mainly for IE6*/
+}
+
