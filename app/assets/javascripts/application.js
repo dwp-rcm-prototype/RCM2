@@ -75,7 +75,41 @@
                     if (rcm.userDataObj) {
                         rcm.userDataObj.load('rcmData');
                     }
+                }
 
+                if(rcm.formID === 'form__review') {
+                    var reviewHtml,
+                        typeHTML = '',
+                        suspect,
+                        formJSON = ValidationObject.getSavedFormData(null);
+
+                    if (formJSON['form__identify-suspect']) {
+                        suspect = formJSON['form__identify-suspect']['first-name'] + ' ' + formJSON['form__identify-suspect']['last-name'];
+
+                        reviewHtml = '<p>You\'re telling us that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' is</p>';
+
+
+                        if (formJSON['form__reporting-income'] && formJSON['form__reporting-income']['reporting-earnings-suspect'] === 'No') {
+                            typeHTML += '<li>Not reporting the money they earn</li> ';
+                        }
+                        ;
+                        if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
+                            typeHTML += '<li>Living with a partner but saying they live alone</li> ';
+                        }
+                        ;
+
+                        if (typeHTML !== '') {
+                            reviewHtml = '<ol class="list-bullet">' + typeHTML + '</ol>';
+                        } else {
+                            reviewHtml = 'You haven\'t identified any fraudulent activities. ' +
+                            'If you want, you can click on the \'back\' button at the top to step back through the form and review your answers.';;
+                        }
+
+                    } else {
+                        reviewHtml = '<strong>We\'re really sorry but something seems to have go wrong.</strong><br>' +
+                                    'Please <a href="identify-suspect">return to the first page</a> and fill in any missing information.';
+                    }
+                    document.getElementById('review-text').innerHTML = reviewHtml;
                 }
             },
 
@@ -108,6 +142,7 @@
                     var sections = $(this).parents('.toggle-control').attr('data-toggle-target'),
                         sectionOn = $(this).parents('.toggle-control').attr('data-toggle-target') + '__' + $(this).val().toLowerCase(),
                         sectionFocus = ($(this).hasClass('toggle--focus')) ? true : false;
+
                     $('.' + sections).hide();
                     if (sectionFocus) {
                         $('.' + sectionOn).show().focus();
@@ -439,50 +474,64 @@
                 var selected;
 
                 switch (rcm.formID) {
-                    case 'form__fraud-type' : // redirect based on user input
-
-                        var partnerSelected,
-                            partnerOptions = ['livingWithPartner'];
-
-                        // reset the route cookie
-                        ValidationObject.storageRemoveItem('fraud-type');
-
-                        selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
-                            return this.value;
-                        }).get();
-                        // store the choices in a cookie
-                        ValidationObject.storageSetItem('fraud-type', selected.join('+'));
-
-                        partnerSelected = $.grep(selected, function (n) {
-                            return (partnerOptions.indexOf(n) !== -1);
-                        });
-
-                        if (partnerSelected.length === 0) {
-                            e.preventDefault();
-                            document.location.href = '/rcm/employment-suspect';
-                        }
-                        break;
+                    //case 'form__fraud-type' : // redirect based on user input
+                    //
+                    //    var partnerSelected,
+                    //        partnerOptions = ['livingWithPartner'];
+                    //
+                    //    // reset the route cookie
+                    //    ValidationObject.storageRemoveItem('fraud-type');
+                    //
+                    //    selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
+                    //        return this.value;
+                    //    }).get();
+                    //    // store the choices in a cookie
+                    //    ValidationObject.storageSetItem('fraud-type', selected.join('+'));
+                    //
+                    //    partnerSelected = $.grep(selected, function (n) {
+                    //        return (partnerOptions.indexOf(n) !== -1);
+                    //    });
+                    //
+                    //    if (partnerSelected.length === 0) {
+                    //        e.preventDefault();
+                    //        document.location.href = '/rcm/employment-suspect';
+                    //    }
+                    //    break;
 
                     case 'form__employment-prompt': // redirect based on user input
 
 
                         e.preventDefault();
 
-                        selected = $(rcm.form).find('input[type="checkbox"][name="employment"]:checked').map(function () {
-                            return this.value;
-                        }).get();
-
-                        if (selected.length === 2) {
-                            document.location.href = '/rcm/employment-suspect-then-partner';
-                        } else if (selected.indexOf('Suspect') === 0) {
+                        if (document.forms[rcm.formID].elements['employment'][0].checked) {
                             document.location.href = '/rcm/employment-suspect';
-                        } else if (selected.indexOf('Partner') === 0) {
-                            document.location.href = '/rcm/employment-partner';
+                        } else {
+                            document.location.href = '/rcm/living-arrangement';
                         }
 
                         break;
+                    case 'form__living-arrangement' :
+                        e.preventDefault();
 
-                    case 'form__other-information':
+                        if (document.forms[rcm.formID].elements['living-together'][0].checked) {
+                            document.location.href = '/rcm/identify-partner';
+                        } else {
+                            document.location.href = '/rcm/review';
+                        }
+                        break;
+
+                    case 'form__identify-partner' :
+                        e.preventDefault();
+
+                        if (document.forms[rcm.formID].elements['employment'][0].checked) {
+                            document.location.href = '/rcm/employment-partner';
+                        } else {
+                            document.location.href = '/rcm/review';
+                        }
+                        break;
+
+                    case 'form__review':
+
                         /* final submit
                         1. collect data; form JSON
                         2. Use Ajax to submit data
@@ -518,15 +567,20 @@
                             data: JSON.stringify(formData),
                             crossDomain: true
                         }).done(function(returnData) {
-                            ValidationObject.clearData();
-                            time = new Date();
-                            ms = time.getTime() - ms;
-                            // make sure that at least 2 seconds pass so that it looks like the system really has been busy
-                            setTimeout(function() {
-                                $('#submit-cover .clock').remove();
-                                document.location.href = document.forms[0].action;
-                            }, 2000 - ms);
+                            if (returnData !== 'Error connecting to server: Error: getaddrinfo ENOTFOUND') {
+                                // ValidationObject.clearData();
+                                time = new Date();
+                                ms = time.getTime() - ms;
+                                // make sure that at least 2 seconds pass so that it looks like the system really has been busy
+                                setTimeout(function () {
+                                    $('#submit-cover .clock').remove();
+                                    document.location.href = document.forms[0].action;
+                                }, 2000 - ms);
+                            } else {
 
+                                $('#submit-cover').hide();
+                                ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
+                            }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
 
                             $('#submit-cover').hide();
@@ -645,6 +699,8 @@
 
             setupUserJourney: function () {
                 // implement how user choices affect their journey
+                return false;
+
 
                 if (rcm.form.hasClass('js-routed')) {
                     var myRoute = ValidationObject.storageGetItem('fraud-type');

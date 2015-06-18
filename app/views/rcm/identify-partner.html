@@ -16,18 +16,20 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
     <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
-    <h1 class="heading-large">
-        About their partner
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Section 3 of 4</span>
+        Living arrangement
     </h1>
+
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="employment-prompt/" id="form__identify-partner" class="js-check js-routed" DISABLED-data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="employment-partner/" id="form__identify-partner" class="js-check js-routed" DISABLED-data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
 
         <!-- NAME -->
 
         <fieldset aria-live="polite">
-            <legend class="a11y">The partner's name</legend>
+            <legend class="margin-bottom-medium">Partner’s personal details</legend>
 
             <div class="validation-group" data-form-validation-id="name" data-validation-type="optional--one-or-more">
 
@@ -110,21 +112,21 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
         <fieldset aria-live="polite">
             <legend>Do they live at the same address?</legend>
-            <div class="validation-group toggle-control" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if the suspect and their partner live at the same address" >
+            <div class="validation-group toggle-control separate" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if the suspect and their partner live at the same address" >
 
                 <label class="block-label" for="address__yes">
                     <input id="address__yes" class="toggle-section" type="radio" name="helper--address" value="Yes">
                     <span aria-hidden="true">Yes</span><span class="a11y"> Yes, they live at the same address</span>
                 </label>
-                <label class="block-label clear-both-important" for="address__no-yes">
+                <label class="block-label" for="address__no-yes">
                     <input id="address__no-yes" class="toggle-section toggle--focus" type="radio" name="helper--address" value="No__address-yes">
                     No, but I know the address
                 </label>
-                <label class="block-label clear-both-important" for="address__no-no">
+                <label class="block-label" for="address__no-no">
                     <input id="address__no-no" class="toggle-section" type="radio" name="helper--address" value="No">
                     No, and I don't know the address
                 </label>
-                <label class="block-label clear-both-important" for="address__unknown">
+                <label class="block-label" for="address__unknown">
                     <input id="address__unknown" class="toggle-section" type="radio" name="helper--address" value="No">
                     I don't know
                 </label>
@@ -232,6 +234,24 @@ GOV.UK Reporting benefit fraud: Identify the partner
                     <label class="form-label a11y" for="social-media--info">Any social media details</label>
                     <textarea class="form-control" name="social-media--info" id="social-media--info" rows="4"></textarea>
                 </div>
+            </div>
+        </fieldset>
+
+        <fieldset aria-live="polite">
+            <legend>Does this person work?</legend>
+
+            <div class="validation-group inline" data-validation-type="required--one" data-validation-message="Please tell us if the suspect is working" >
+
+                <label class="block-label" for="employment-partner-yes">
+                    <input id="employment-partner-yes" type="radio" name="employment" value="Yes">
+                    <span aria-hidden="true">Yes</span><span class="a11y">Yes, this person works</span>
+                </label>
+
+                <label class="block-label" for="employment-partner-no">
+                    <input id="employment-partner-no" type="radio" name="employment" value="No">
+                    <span aria-hidden="true">No</span><span class="a11y"> No, this person doesn't work</span>
+                </label>
+
             </div>
         </fieldset>
 

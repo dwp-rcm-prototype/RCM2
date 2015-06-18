@@ -1,0 +1,56 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Living arrangement
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
+
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Section 3 of 4</span>
+        Living arrangement
+    </h1>
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="living-arrangement/" id="form__living-arrangement" class="js-check">
+        <fieldset aria-live="polite">
+            <legend>Are they living with a partner but saying they live alone?</legend>
+
+            <div class="validation-group inline" data-validation-type="required--one" data-validation-message="Please tell us if the suspect is living with a partner but claiming not to" >
+
+                <label class="block-label" for="living-together-yes">
+                    <input id="living-together-yes" type="radio" name="living-together" value="Yes">
+                    Yes
+                </label>
+
+                <label class="block-label" for="living-together-no">
+                    <input id="living-together-no" type="radio" name="living-together" value="No">
+                    No
+                </label>
+
+            </div>
+        </fieldset>
+
+        <input id="submit" type="submit" class="button" value="Continue" >
+    </form>
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}

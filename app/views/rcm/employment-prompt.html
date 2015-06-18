@@ -16,33 +16,30 @@ GOV.UK Reporting benefit fraud: Who is working?
 
     <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
-    <h1 class="heading-large">
-        Employment
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Section 2 of 4</span>
+        Work and income
     </h1>
+
+    <h2 class="heading-large">Their employment</h2>
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="employment-suspect-then-partner/" id="form__employment-prompt" class="js-check">
-
-
+    <form method="post" action="employment-suspect/" id="form__employment-prompt" class="js-check">
         <fieldset aria-live="polite">
-            <legend>
-                Who is working?
-                <span>Select all that apply</span>
-            </legend>
+            <legend>Does this person work?</legend>
 
-            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us if the suspect and/ or their partner are working" >
+            <div class="validation-group inline" data-validation-type="required--one" data-validation-message="Please tell us if the suspect is working" >
 
-                <label class="block-label" for="employment-suspect">
-                    <input id="employment-suspect" type="checkbox" name="employment" value="Suspect">
-                    The person I suspect of fraud <span class="a11y">is working</span>
+                <label class="block-label" for="employment-suspect-yes">
+                    <input id="employment-suspect-yes" type="radio" name="employment" value="Yes">
+                    <span aria-hidden="true">Yes</span><span class="a11y">Yes, this person works</span>
                 </label>
 
-                <label class="block-label" for="employment-partner">
-                    <input id="employment-partner" type="checkbox" name="employment" value="Partner">
-                    Their partner <span class="a11y">is working</span>
+                <label class="block-label" for="employment-suspect-no">
+                    <input id="employment-suspect-no" type="radio" name="employment" value="No">
+                    <span aria-hidden="true">No</span><span class="a11y"> No, this person doesn't work</span>
                 </label>
-
 
             </div>
         </fieldset>

@@ -16,18 +16,19 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
     <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
 
-    <h1 class="heading-large">
-        Who do you want to report?
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Section 1 of 4</span>
+        Who you’re reporting
     </h1>
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="type-of-fraud/" id="form__identify-suspect" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="employment-prompt/" id="form__identify-suspect" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
 
 <!-- NAME -->
 
         <fieldset aria-live="polite">
-            <legend class="a11y">Suspect's name</legend>
+            <legend class="margin-bottom-medium">Personal details</legend>
 
             <div class="validation-group" data-form-validation-id="name" data-validation-type="optional--one-or-more">
 
@@ -41,7 +42,9 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
             <div class="validation-group toggle-control" data-toggle-target="section--alternative-name" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
 
-                <p class="legend">Do you know this person by another name?</p>
+                <p class="legend">Do you know this person by another name?<br>
+                    <span class="form-hint">For example nickname, professional name or maiden name</span>
+                </p>
                 <label class="block-label" for="alternative-name__yes">
                     <input type="radio" id="alternative-name__yes" name="helper--alternative-name" value="Yes">
                     <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know this person by another name</span>

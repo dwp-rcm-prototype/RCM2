@@ -179,7 +179,6 @@ p.legend, legend {
         display:block;
         font-weight:normal;
         font-size: 19px;
-        XXXpadding-bottom:1em;
     }
 }
 
@@ -319,6 +318,10 @@ input[type="submit"].block-label {
     .block-label {
         clear: none;
         margin-right: 15px;
+
+    }
+    &.separate .block-label{
+        clear:left
     }
 }
 .toggle-controlled {
@@ -330,18 +333,24 @@ input[type="submit"].block-label {
     margin-bottom:10px;
 }
 
+p.legend span.form-hint {
+    margin-top: 3px;
+}
+
+legend + p.form-hint, .validation-group label.legend + p.form-hint {
+    margin-top: 3px;
+    padding-bottom: 5px;
+}
+
 .nb {
     .heading-medium {
         margin-top:0
     }
-
     position: relative;
     background: #dee0e2;
     padding: 18px 30px 15px 30px;
     margin-top: 30px;
-
 }
-
 
 fieldset.form-group {
     float:none;
@@ -365,6 +374,10 @@ fieldset.form-group {
     &:visited {
         background: #dee0e2;
     }
+}
+
+strong {
+    font-weight:bold;
 }
 /* Overrides to allow for IE6 - 8 to work */
 .lte-ie8 {
@@ -466,10 +479,17 @@ fieldset.form-group {
 .margin-bottom-big {
     margin-bottom:30px;
 }
+.margin-bottom-medium {
+    margin-bottom:15px;
+}
 @media (min-width: 641px) {
     .margin-bottom-big {
         margin-bottom: 45px;
     }
+    .margin-bottom-medium {
+        margin-bottom:15px;
+    }
+
 }
 
 .button.button-get-started {

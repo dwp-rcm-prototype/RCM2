@@ -1,0 +1,58 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Work and income /
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
+
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">Section 2 of 4</span>
+        Work and income
+    </h1>
+
+    <h2 class="heading-large">Their employment</h2>
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="living-arrangement/" id="form__reporting-income" class="js-check">
+        <fieldset aria-live="polite">
+            <legend>Are they reporting the money they earn?</legend>
+
+            <div class="validation-group inline" data-validation-type="required--one" data-validation-message="Please tell us if the suspect is reporting the money they earn" >
+
+                <label class="block-label" for="reporting-earnings-suspect-yes">
+                    <input id="reporting-earnings-suspect-yes" type="radio" name="reporting-earnings-suspect" value="Yes">
+                    <span aria-hidden="true">Yes</span><span class="a11y">Yes, they are reporting the money they earn</span>
+                </label>
+
+                <label class="block-label" for="reporting-earnings-suspect-no">
+                    <input id="reporting-earnings-suspect-no" type="radio" name="reporting-earnings-suspect" value="No">
+                    <span aria-hidden="true">No</span><span class="a11y"> No, they're not reporting the money they earn</span>
+                </label>
+
+            </div>
+        </fieldset>
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+    </form>
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}
