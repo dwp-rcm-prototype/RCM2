@@ -99,7 +99,7 @@
                         ;
 
                         if (typeHTML !== '') {
-                            reviewHtml = '<ol class="list-bullet">' + typeHTML + '</ol>';
+                            reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
                         } else {
                             reviewHtml = 'You haven\'t identified any fraudulent activities. ' +
                             'If you want, you can click on the \'back\' button at the top to step back through the form and review your answers.';;
