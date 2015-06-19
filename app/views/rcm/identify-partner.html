@@ -112,27 +112,27 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
         <fieldset aria-live="polite">
             <legend>Does this person regularly live at another address?</legend>
-            <div class="validation-group toggle-control separate" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if the suspect and their partner live at the same address" >
+            <div class="validation-group toggle-control separate" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if the partner regularly lives at a different address" >
 
                 <label class="block-label" for="address__yes">
-                    <input id="address__yes" class="toggle-section" type="radio" name="helper--address" value="Yes">
-                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, they live at the same address</span>
+                    <input id="address__yes" class="toggle-section toggle--focus" type="radio" name="helper--address" value="Yes__address-yes">
+                    Yes and I know the address
                 </label>
                 <label class="block-label" for="address__no-yes">
-                    <input id="address__no-yes" class="toggle-section toggle--focus" type="radio" name="helper--address" value="No__address-yes">
-                    No, but I know the address
+                    <input id="address__no-yes" class="toggle-section" type="radio" name="helper--address" value="Yes__address-no">
+                    Yes but I don't know the address
                 </label>
                 <label class="block-label" for="address__no-no">
                     <input id="address__no-no" class="toggle-section" type="radio" name="helper--address" value="No">
-                    No, and I don't know the address
+                    No
                 </label>
                 <label class="block-label" for="address__unknown">
-                    <input id="address__unknown" class="toggle-section" type="radio" name="helper--address" value="No">
+                    <input id="address__unknown" class="toggle-section" type="radio" name="helper--address" value="Unknown">
                     I don't know
                 </label>
             </div>
 
-            <div class="section--address section--address__no__address-yes toggle-controlled panel-indent validation-group" aria-describedby="address__no-yes" tabindex="0" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
+            <div class="section--address section--address__yes__address-yes toggle-controlled panel-indent validation-group" aria-describedby="address__no-yes" tabindex="0" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
                 <label class="form-label" for="address">Building name or number</label>
                 <input type="text" class="form-control" id="address" name="address--line-1" autocomplete="off">
 
