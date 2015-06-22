@@ -320,7 +320,11 @@ input[type="submit"].block-label {
         clear: none;
         margin-right: 15px;
     }
+    &.separate .block-label {
+        clear: left;
+    }
 }
+
 .toggle-controlled {
     display:block;
     position:relative;
