@@ -97,7 +97,7 @@
                 $('.toggle-controlled').hide();
                 $('.display-block-js').show();
 
-                $('.button-get-started').on('click', function() {
+                $('.button-get-started, .clear-data').on('click', function() {
                     ValidationObject.clearData();
                 });
 
