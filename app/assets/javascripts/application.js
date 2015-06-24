@@ -53,7 +53,7 @@
                 rcm = this.settings;
                 rcm.form = $('form.js-check');
                 rcm.formID = rcm.form.attr('id');
-                rcm.submitButton = $('form#' + rcm.formID + ' input[type="submit"]');
+                rcm.submitButton = $('form#' + rcm.formID + ' input#submit');
 
                 this.disableHTML5validation();
                 this.bindUIActions();
@@ -75,6 +75,7 @@
                     if (rcm.userDataObj) {
                         rcm.userDataObj.load('rcmData');
                     }
+
                 }
             },
 
@@ -480,60 +481,60 @@
                         }
 
                         break;
-                }
 
-                if (e.currentTarget.id === 'send-report') {
+                    case 'form__other-information':
+                        /* final submit
+                        1. collect data; form JSON
+                        2. Use Ajax to submit data
+                        3. if result = ok: proceed
+                        4. if false: display error message & try again
+                        */
 
-                    /* final submit
-                    1. collect data; form JSON
-                    2. Use Ajax to submit data
-                    3. if result = ok: proceed
-                    4. if false: display error message & try again
-                    */
+                        e.preventDefault();
 
-                    e.preventDefault();
+                        var formData,
+                            ms,
+                            time = new Date(),
+                            formJSON = ValidationObject.getSavedFormData(null);
 
-                    var formData,
-                        ms,
-                        time = new Date(),
-                        formJSON = ValidationObject.getSavedFormData(null);
+                        formData = {
+                            "caller": "RCM",
+                            "timestamp": Date(),
+                            "values": formJSON
+                        };
 
-                    formData = {
-                        "caller": "RCM",
-                        "timestamp": Date(),
-                        "values": formJSON
-                    };
+                        ms = time.getTime();
 
-                    ms = time.getTime();
+                        $('#submit-cover').show();
+                        //console.log('Submitting data. formData = ');
+                        //console.log(JSON.stringify(formData));
 
-                    $('#submit-cover').show();
-                    //console.log('Submitting data. formData = ');
-                    //console.log(JSON.stringify(formData));
+                        // NB install this plugin if you need to post directly to a different domain/ port: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
+                        $.support.cors = true; // for IE7
+                        $.ajax({
+                            type: "POST",
+                            url: "/submitEvidence",
+                            dataType: 'text',
+                            data: JSON.stringify(formData),
+                            crossDomain: true
+                        }).done(function(returnData) {
+                            ValidationObject.clearData();
+                            time = new Date();
+                            ms = time.getTime() - ms;
+                            // make sure that at least 2 seconds pass so that it looks like the system really has been busy
+                            setTimeout(function() {
+                                $('#submit-cover .clock').remove();
+                                document.location.href = document.forms[rcm.formID].action;
+                            }, 2000 - ms);
 
-                    // NB install this plugin if you need to post directly to a different domain/ port: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
-                    $.support.cors = true; // for IE7
-                    $.ajax({
-                        type: "POST",
-                        url: "/submitEvidence",
-                        dataType: 'text',
-                        data: JSON.stringify(formData),
-                        crossDomain: true
-                    }).done(function(returnData) {
-                        ValidationObject.clearData();
-                        time = new Date();
-                        ms = time.getTime() - ms;
-                        // make sure that at least 2 seconds pass so that it looks like the system really has been busy
-                        setTimeout(function() {
-                            $('#submit-cover .clock').remove();
-                            document.location.href = document.forms[rcm.formID].action;
-                        }, 2000 - ms);
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
 
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                            $('#submit-cover').hide();
+                            ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
+                        });
 
-                        $('#submit-cover').hide();
-                        ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
-                    });
-
+                        return false;
+                        break;
                 }
             },
 
@@ -653,9 +654,9 @@
                             routes = [],
                             currentPage = document.location.href.replace();
 
-                        routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'complete'];
-                        routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'complete'];
-                        routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'complete'];
+                        routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
+                        routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
+                        routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
 
                         currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
                         currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
@@ -664,12 +665,6 @@
                         newPage = routes[myRoute][cpIndex + 1];
 
                         $('form#' + rcm.formID).attr('action', newPage + '/');
-
-                        if (myRoute === 'livingWithPartner' && currentPage === 'identify-partner') {
-                            $('.submit__continue').hide();
-                            $('.submit__send-report').show();
-                            rcm.submitButton = $('form#' + rcm.formID + ' input#send-report');
-                        }
                     }
                 }
             },
