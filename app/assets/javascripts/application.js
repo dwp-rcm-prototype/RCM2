@@ -135,6 +135,16 @@
                 $("html, body").animate({scrollTop:$('#error-summary').position().top}, '500', 'swing');
                 //$("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
                 $('#error-summary').focus();
+
+                $('#error-summary a').click(function(e){
+                    $(this).blur();
+                    e.preventDefault();
+                    var target = $(this).attr('href');
+                    target = target.substr(target.indexOf('#'), target.length); // remove the whole path if included (e.g. in IE6)
+                    $('html, body').animate({
+                        scrollTop: $(target).offset().top
+                    }, 500);
+                });
             },
 
             fieldValid: function (el) {
@@ -473,10 +483,13 @@
                         }).get();
 
                         if (selected.length === 2) {
+                            ValidationObject.storageSetItem('employment', 'suspect+partner');
                             document.location.href = '/rcm/employment-suspect-then-partner';
                         } else if (selected.indexOf('Suspect') === 0) {
+                            ValidationObject.storageSetItem('employment', 'suspect');
                             document.location.href = '/rcm/employment-suspect';
                         } else if (selected.indexOf('Partner') === 0) {
+                            ValidationObject.storageSetItem('employment', 'partner');
                             document.location.href = '/rcm/employment-partner';
                         }
 
@@ -654,9 +667,9 @@
                             routes = [],
                             currentPage = document.location.href.replace();
 
-                        routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
-                        routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
-                        routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
+                        routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information'];
+                        routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information'];
+                        routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information'];
 
                         currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
                         currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
@@ -667,6 +680,8 @@
                         $('form#' + rcm.formID).attr('action', newPage + '/');
                     }
                 }
+
+
             },
 
             retrieveFormData: function() {
@@ -741,6 +756,7 @@
 
                 keys = (formIDsString == null) ? [] : formIDsString.split(',');
                 keys.push('fraud-type');
+                keys.push('employment');
                 keys.push('formIDs');
 
                 for (var k = 0, kl = keys.length; k < kl; k += 1) {
@@ -752,16 +768,38 @@
         };
 
     var pageSetup = function () {
-        $('a.previousPage').on('click', function (e) {
+        $('a.previousPage.js-routed').on('click', function (e) {
             e.preventDefault();
-            window.history.back();
+
+            var myRoute = ValidationObject.storageGetItem('fraud-type');
+            if (myRoute != null && myRoute != '') {
+                var cpIndex, newPage,
+                    employment = ValidationObject.storageGetItem('employment'),
+                    routes = [],
+                    currentPage = document.location.href.replace();
+
+                routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
+                routes['livingWithPartner'] = ['other-information', 'identify-partner'];
+                routes['workEarning+livingWithPartner'] = [];
+                routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
+                routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
+                routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
+
+                currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+                currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
+
+                if (myRoute === 'workEarning+livingWithPartner') {
+                    cpIndex = routes[myRoute][employment].indexOf(currentPage);
+                    newPage = routes[myRoute][employment][cpIndex + 1];
+                } else {
+                    cpIndex = routes[myRoute].indexOf(currentPage);
+                    newPage = routes[myRoute][cpIndex + 1];
+                }
+
+                document.location.href = newPage;
+            }
         });
-
-
-
     };
-
-
 
 
 
