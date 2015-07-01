@@ -207,6 +207,7 @@ textarea {
 }
 
 input[type="text"]+input[type="text"],
+textarea + label,
 input[type="text"]+label{
     margin-top:8px
 }

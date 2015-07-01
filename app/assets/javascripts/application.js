@@ -11,7 +11,6 @@
     }
 
     var hasLocalStorage = function () {
-
         try {
             localStorage.setItem('x', 'x');
             localStorage.removeItem('x');
@@ -102,7 +101,6 @@
                 });
 
 
-
                 // generic toggle functionality
                 $('.toggle-control input[type="radio"]').on('click', function () {
                     var sections = $(this).parents('.toggle-control').attr('data-toggle-target'),
@@ -110,13 +108,11 @@
                         sectionFocus = ($(this).hasClass('toggle--focus')) ? true : false;
                     $('.' + sections).hide();
                     if (sectionFocus) {
-                        $('.' + sectionOn).show().focus();
+                        $('.' + sectionOn).show().focus().blur(); // focus but then remove the blue box
                     } else {
                         $('.' + sectionOn).show();
                     }
-
                 });
-
             },
 
             disableHTML5validation: function () {
@@ -127,7 +123,6 @@
                     });
                 }
             },
-
 
             displayMessageAndBlockSubmit: function (e, message) {
                 e.preventDefault();
@@ -316,9 +311,6 @@
                 return groupOK;
             },
 
-
-
-
             validateFormSets: function (e) { // Called by validateForm. Checks if the form requirements (sets) have been met
 
 
@@ -326,8 +318,6 @@
                     formErrorMessages = [];
 
                 // Load the messages:
-
-
 
                 formValidationType = $(rcm.form).attr('data-form-validation-type');
 
@@ -550,7 +540,6 @@
                         break;
                 }
             },
-
 
             storageRemoveItem: function (key) {
                 if (rcm.localStorage) {
@@ -800,8 +789,6 @@
             }
         });
     };
-
-
 
     $(document).ready(function () {
         pageSetup();
