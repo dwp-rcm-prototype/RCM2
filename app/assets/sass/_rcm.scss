@@ -220,7 +220,17 @@ input[type="text"]+label{
         margin-top:0;
         border-top: 1px solid white; // to keep the focus() box straight
     }
+
+    .toggle-control .block-label {
+        padding: 13px 25px 10px 40px;
+        input {
+            top:13px;
+            left:10px;
+        }
+    }
 }
+
+
 .form-control.width__half {
     width:25%
 }
@@ -324,6 +334,13 @@ input[type="submit"].block-label {
     &.separate .block-label {
         clear: left;
     }
+}
+
+@media (max-width: 640px) {
+    .panel-indent .toggle-control .block-label,
+    .toggle-control .block-label,
+    .block-label {margin-right:0}
+
 }
 
 .toggle-controlled {

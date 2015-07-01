@@ -37,7 +37,7 @@ GOV.UK Reporting benefit fraud: The suspect's employment
                     Self employed
                 </label>
                 <label class="block-label" for="employment-status__unknown">
-                    <input id="employment-status__unknown" type="radio" class="toggle-section" name="helper--employment-status" value="unknown">
+                    <input id="employment-status__unknown" type="radio" class="toggle-section toggle--focus" name="helper--employment-status" value="unknown">
                     I don't know
                 </label>
             </div>
@@ -47,14 +47,44 @@ GOV.UK Reporting benefit fraud: The suspect's employment
                     <label class="form-label" for="employer-name">Employer name</label>
                     <input type="text" class="form-control" id="employer-name" name="employer-name" autocomplete="off">
                 </div>
-                <div class="form-group">
+
+
+
+
+                <div class="validation-group inline toggle-control" data-toggle-target="section--employer-address" data-validation-type="required--one" data-validation-message="Please tell us if you know the employer's address" >
+                    <p>Do you know the employer's address?</p>
+                    <label class="block-label" for="employer-address__yes">
+                        <input id="employer-address__yes" class="toggle-section" type="radio" name="helper--employer-address" value="Yes">
+                        <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know the employeer's address</span>
+                    </label>
+                    <label class="block-label" for="employer-address__no">
+                        <input id="employer-address__no" class="toggle-section" type="radio" name="helper--employer-address" value="No">
+                        <span aria-hidden="true">No</span><span class="a11y"> No, I don't know the employer's address</span>
+                    </label>
+                </div>
+
+                <div class="section--employer-address section--employer-address__yes toggle-controlled validation-group" aria-describedby="employer-address__yes" data-validation-type="required--one" data-validation-message="Please tell us as much as you can about the employer's address">
                     <label class="form-label" for="employer-address">Employer address</label>
                     <textarea id="employer-address" class="form-control" rows="5" name="employer-address"></textarea>
                 </div>
+
+                <div class="section--employer-address section--employer-address__no toggle-controlled validation-group" aria-describedby="employer-address__no" data-validation-type="required--one" data-validation-message="Please tell us as much as you can about the employer">
+                    <label class="form-label" for="employer-information">Please give as much information as you can about the location of the business</label>
+                    <textarea id="employer-information" class="form-control" rows="5" name="employer-information"></textarea>
+                </div>
+
+
+
                 <div class="form-group">
                     <label class="form-label" for="work-duration">TIme with employer</label>
                     <input type="text" id="work-duration" class="form-control" name="work-duration" autocomplete="off">
                 </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="employer-timings">What time do they leave and return from work?</label>
+                    <textarea id="employer-timings" class="form-control" rows="5" name="timings"></textarea>
+                </div>
+
             </div>
 
             <div class="section--employment-status section--employment-status__self-employed toggle-controlled panel-indent validation-group" aria-describedby="employment-status__self-employed" tabindex="0" data-validation-type="required--one-or-more" data-validation-message="Please give us some information about what they do">
@@ -66,16 +96,22 @@ GOV.UK Reporting benefit fraud: The suspect's employment
                     <label class="form-label" for="self-employed-address">Work address</label>
                     <textarea id="self-employed-address" class="form-control" rows="5" name="self-employed-address"></textarea>
                 </div>
+                <div class="form-group">
+                    <label class="form-label" for="self-employed-timings">What time do they work each day?</label>
+                    <textarea id="self-employed-timings" class="form-control" rows="5" name="timings"></textarea>
+                </div>
+            </div>
+
+            <div class="section--employment-status section--employment-status__unknown toggle-controlled panel-indent validation-group" aria-describedby="employment-status__unknown" tabindex="0" data-validation-type="required--one-or-more" data-validation-message="Please give us as much information about what they do as you can">
+                <div class="form-group">
+                    <label class="form-label" for="employment-other">Please tell us everything you know about employment that you think is relevant</label>
+                    <textarea id="employment-other" class="form-control" rows="5" name="employment-other"></textarea>
+                </div>
             </div>
 
 
 
-            <div class="validation-group" data-form-validation-id="timings" data-validation-type="optional--one">
 
-                <label class="form-label legend" for="timings">What time do they work each day?</label>
-                <textarea id="timings" class="form-control" rows="5" name="timings"></textarea>
-
-            </div>
         </fieldset>
 
         <input id="submit" type="submit" class="button" value="Continue" />
