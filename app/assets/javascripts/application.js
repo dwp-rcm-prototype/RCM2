@@ -168,12 +168,6 @@
                             return (value !== '') ? el.name : null;
                         } else {
 
-                            /*if ($(el).next('p.sticky').get(0) != null) {
-                             defaultTooltip = $(el).next('p.sticky').attr('data-default-text');
-                             $(el).removeClass('invalid').next('p.sticky').html(defaultTooltip);
-                             } else {
-                             $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
-                             }*/
                             $(el).removeClass('invalid').parent().find('.error-message').remove();
 
                             regexObj = new RegExp(pattern, "gi");
@@ -181,8 +175,9 @@
                             if (result) {
                                 return el.name;
                             } else {
-                                if ($(el).val() !== '') {
-
+                                if ($(el).val() === '') {
+                                    $(el).addClass('invalid');
+                                } else {
                                     tooltip = $(el).attr('data-field-error');
                                     if (tooltip != null) {
                                         if ($(el).prev('label') !== null) {
@@ -210,7 +205,6 @@
                 if (id === null) { id = $(el).parents('.validation-group').attr('id')};
                 $(el).addClass('invalid');
 
-                // NOTE TO SELF: Change the anchor to a jQuery animation
                 rcm.errorMessages += '<li><a href="#' + id + '">' + rcm.validationMessage + '</a></li>';
                 rcm.errorCount += 1;
             },
@@ -241,7 +235,8 @@
 
                     if (typesToCheck.indexOf(validationType) !== -1) {
                         fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
-                            return ValidationObject.fieldValid(this);
+                            return ValidationObject.fieldValid(this); // RE: What if a field is required but doesn't have a pattern. It should show red, but does it?
+                            // Also, is class="required" required on required fields? Must research
                         }).get());
                     }
 
