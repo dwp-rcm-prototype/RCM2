@@ -27,61 +27,107 @@ GOV.UK Reporting benefit fraud: The suspect's employment
         <fieldset aria-live="polite">
             <legend>Employment status</legend>
 
+            <!-- employed/ self-employed/ unknown -->
             <div class="validation-group toggle-control separate" data-toggle-target="section--employment-status" data-validation-type="required--one" data-validation-message="Please tell us about this person's employment">
+                <!-- employed-->
                 <label class="block-label" for="employment-status__employed">
                     <input id="employment-status__employed" type="radio" class="toggle-section toggle--focus" name="helper--employment-status" value="employed">
                     Employed
                 </label>
+                <!-- self-employed-->
                 <label class="block-label" for="employment-status__self-employed">
                     <input id="employment-status__self-employed" type="radio" class="toggle-section toggle--focus" name="helper--employment-status" value="self-employed">
                     Self employed
                 </label>
+                <!-- unknown -->
                 <label class="block-label" for="employment-status__unknown">
-                    <input id="employment-status__unknown" type="radio" class="toggle-section" name="helper--employment-status" value="unknown">
+                    <input id="employment-status__unknown" type="radio" class="toggle-section toggle--focus" name="helper--employment-status" value="unknown">
                     I don't know
                 </label>
             </div>
 
+            <!-- employed -->
             <div class="section--employment-status section--employment-status__employed toggle-controlled panel-indent validation-group" aria-describedby="employment-status__employed" tabindex="0" data-validation-type="required--one-or-more" data-validation-message="Please give us some information about the employer">
+
+                <!-- employer name -->
                 <div class="form-group">
                     <label class="form-label" for="employer-name">Employer name</label>
                     <input type="text" class="form-control" id="employer-name" name="employer-name" autocomplete="off">
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="employer-address">Employer address</label>
-                    <textarea id="employer-address" class="form-control" rows="5" name="employer-address"></textarea>
+
+                <!-- address yes/ no-->
+                <div aria-live="polite">
+                    <div class="validation-group inline toggle-control" data-toggle-target="section--employer-address" data-validation-type="required--one" data-validation-message="Please tell us if you know the employer's address" >
+                        <p>Do you know the employer's address?</p>
+                        <label class="block-label" for="employer-address__yes">
+                            <input id="employer-address__yes" class="toggle-section" type="radio" name="helper--employer-address" value="Yes">
+                            <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know the employeer's address</span>
+                        </label>
+                        <label class="block-label" for="employer-address__no">
+                            <input id="employer-address__no" class="toggle-section" type="radio" name="helper--employer-address" value="No">
+                            <span aria-hidden="true">No</span><span class="a11y"> No, I don't know the employer's address</span>
+                        </label>
+                    </div>
+
+                    <!-- address yes -->
+                    <div class="section--employer-address section--employer-address__yes toggle-controlled validation-group" aria-describedby="employer-address__yes" data-validation-type="required--one" data-validation-message="Please tell us as much as you can about the employer's address">
+                        <label class="form-label" for="employer-address">Employer address</label>
+                        <textarea id="employer-address" class="form-control" rows="5" name="employer-address"></textarea>
+                    </div>
+                    <!-- address no -->
+                    <div class="section--employer-address section--employer-address__no toggle-controlled validation-group" aria-describedby="employer-address__no" data-validation-type="required--one" data-validation-message="Please tell us as much as you can about the employer">
+                        <label class="form-label" for="employer-information">Please give as much information as you can about the location of the business</label>
+                        <textarea id="employer-information" class="form-control" rows="5" name="employer-information"></textarea>
+                    </div>
                 </div>
+
+                <!-- duration -->
                 <div class="form-group">
                     <label class="form-label" for="work-duration">TIme with employer</label>
                     <input type="text" id="work-duration" class="form-control" name="work-duration" autocomplete="off">
                 </div>
+
+                <!-- timings -->
+                <div class="form-group">
+                    <label class="form-label" for="employer-timings">What time do they leave and return from work?</label>
+                    <textarea id="employer-timings" class="form-control" rows="5" name="timings"></textarea>
+                </div>
             </div>
 
+            <!-- self-employed -->
             <div class="section--employment-status section--employment-status__self-employed toggle-controlled panel-indent validation-group" aria-describedby="employment-status__self-employed" tabindex="0" data-validation-type="required--one-or-more" data-validation-message="Please give us some information about what they do">
+
+                <!-- type of work -->
                 <div class="form-group">
-                    <label class="form-label" for="type-of-work">Employer name</label>
+                    <label class="form-label" for="type-of-work">Type of work</label>
                     <input type="text" class="form-control" id="type-of-work" name="type-of-work" autocomplete="off">
                 </div>
+
+                <!-- address -->
                 <div class="form-group">
                     <label class="form-label" for="self-employed-address">Work address</label>
                     <textarea id="self-employed-address" class="form-control" rows="5" name="self-employed-address"></textarea>
                 </div>
+
+                <!-- timings -->
+                <div class="form-group">
+                    <label class="form-label" for="self-employed-timings">What time do they work each day?</label>
+                    <textarea id="self-employed-timings" class="form-control" rows="5" name="timings"></textarea>
+                </div>
             </div>
 
-
-
-            <div class="validation-group" data-form-validation-id="timings" data-validation-type="optional--one">
-
-                <label class="form-label legend" for="timings">What time do they work each day?</label>
-                <textarea id="timings" class="form-control" rows="5" name="timings"></textarea>
-
+            <!-- unknown -->
+            <div class="section--employment-status section--employment-status__unknown toggle-controlled panel-indent validation-group" aria-describedby="employment-status__unknown" tabindex="0" data-validation-type="required--one-or-more" data-validation-message="Please give us as much information about what they do as you can">
+                <div class="form-group">
+                    <label class="form-label" for="employment-other">Describe what you know about their employment</label>
+                    <textarea id="employment-other" class="form-control" rows="5" name="employment-other"></textarea>
+                </div>
             </div>
         </fieldset>
 
         <input id="submit" type="submit" class="button" value="Continue" />
 
     </form>
-
 
 </main>
 
