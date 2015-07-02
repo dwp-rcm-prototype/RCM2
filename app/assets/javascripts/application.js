@@ -349,59 +349,93 @@
 
             getFormData: function() {
                 var jsonData = {},
-                    varName,
-                    varValue,
+                    elName,
+                    elValue,
                     target,
                     el,
                     inSub = false,
                     subName = '',
+                    inSubSub = false,
+                    subSubName = '',
                     formID = rcm.formID;
                 jsonData[formID] = {};
                 var values = jsonData[formID];
 
                 for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
+
                     el = document.forms[formID].elements[i];
-                    varName = (el.name == null) ? '' : el.name;
+                    elName = (el.name == null) ? '' : el.name;
 //                    varName = (varName == 'undefined' || varName == '' || varName == null) ? '' : varName ;
 
-                    varValue = el.value;
+                    // console.log('----------- ' + elName + ' ----------')
 
-                    if (inSub && varName.indexOf(subName + '--') !== 0) {
+                    elValue = el.value;
+
+                    if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
+                        // console.log("we've left a sub subgroup");
+                        inSubSub = false;
+                        subSubName = '';
+                    }
+                    if (inSub && (elName.indexOf(subName + '--') !== 0 && elName.indexOf('helper--' + subName + '--') !== 0)) {
+                        // console.log("we've left a subgroup");
                         inSub = false;
                         subName = '';
                     }
 
-                    if (varName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+                    if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+
+                        /*
+                        console.log('Data for field ' + elName + ' = ' + elValue);
+                        console.log('inSub = ' + inSub + ' // inSubSub = ' + inSubSub)
+                        if (inSubSub) {
+                            console.log('so saving data to ' + subSubName + '--data')
+                        } else if (inSub) {
+                            console.log('so saving data to ' + subName + '--data')
+                        } else {
+                            console.log('so saving data to root ' )
+                        }
+                        */
                         // console.log(el.type + ' ' + el.name + ' ' + el.value + ' ' + el.checked)
-                        target = (inSub) ? values[subName + '--data'] : values;
+                        target = (inSubSub) ? values[subName + '--data'][subSubName + '--data'] : ((inSub) ? values[subName + '--data'] : values);
+
                         switch(el.type) {
                             case 'radio':
                                 if (el.checked) {
-                                    target[varName] = varValue;
+                                    target[elName] = elValue;
+                                    // console.log('saved: ' + elValue);
                                 }
                                 break;
                             case 'checkbox':
                                 if (el.checked) {
-                                    if (target[varName] != null) {
-                                        target[varName][target[varName].length] = varValue;
+                                    if (target[elName] != null) {
+                                        target[elName][target[elName].length] = elValue;
                                     } else {
-                                        target[varName] = [];
-                                        target[varName][0] = varValue;
+                                        target[elName] = [];
+                                        target[elName][0] = elValue;
                                     }
+                                    // console.log('saved: ' + elValue);
                                 }
                                 break;
                             default:
-                               target[varName] = varValue;
+                               target[elName] = elValue;
+                                 // console.log('saved: ' + elValue);
                                 break;
                         }
                     }
 
-                    if (varName !== '' && varName.indexOf('helper--') === 0) {
-                        // we're diving into a subgroup
-                        inSub = true;
-                        subName = varName.replace('helper--', '');
-                        values[subName + '--data'] = {};
+                    if (elName !== '' && elName.indexOf('helper--') === 0) {
 
+                        if (inSub) {
+                            inSubSub = true;
+                            subSubName = elName.replace('helper--', '');
+                            values[subName + '--data'][subSubName + '--data'] = {};
+                            // console.log("we're diving into a sub subgroup for subSubName = " + subSubName);
+                        } else {
+                            inSub = true;
+                            subName = elName.replace('helper--', '');
+                            values[subName + '--data'] = {};
+                            // console.log("we're diving into a subgroup for subName = " + subName);
+                        }
                     }
                 }
                 return jsonData;
@@ -590,6 +624,7 @@
                     formIDsString = ValidationObject.storageGetItem('formIDs'),
                     formIDs;
 
+
                 formIDs = (formIDsString == null) ? [] : formIDsString.split(',');
                 if (formIDs.indexOf(rcm.formID) === -1) {
                     formIDs.push(rcm.formID);
@@ -676,8 +711,10 @@
                     el,
                     inSub = false,
                     subName = '',
+                    inSubSub = false,
+                    subSubName = '',
                     formID = rcm.formID
-
+//console.log(jsonData);
 
                 // console.log(jsonData[formID]); console.log('------------------');
 
@@ -686,23 +723,39 @@
                     for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
                         el = document.forms[formID].elements[i];
                         elName = (el.name == null || el.name == '') ? null : el.name;
-                        //                    varName = (varName == 'undefined' || varName == '' || varName == null) ? '' : varName ;
+
 
                         if (elName !== null) {
-
-                            if (elName.indexOf(subName) === -1) {
+//console.log('--------' + elName + '-------')
+                            //if (elName.indexOf(subName) === -1) {
+                            //    inSub = false;
+                            //    subName = '';
+                            //}
+                            if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
+                                // console.log("we've left a sub subgroup");
+                                inSubSub = false;
+                                subSubName = '';
+                            }
+                            if (inSub && (elName.indexOf(subName + '--') !== 0 && elName.indexOf('helper--' + subName + '--') !== 0)) {
+                                // console.log("we've left a subgroup");
                                 inSub = false;
                                 subName = '';
                             }
 
 
-                            if (inSub) {
+
+                            if (inSubSub) {
+                             //   console.log('SubSub: jsonData[formID][' + subName + '--data][' + subSubName + '--data][' + elName + ']');
+                                elValue = jsonData[formID][subName + '--data'][subSubName + '--data'][elName];
+                            } else if (inSub) {
+                             //   console.log('sub: jsonData[formID][' + subName + '--data][' + elName + ']');
                                 elValue = jsonData[formID][subName + '--data'][elName];
                             } else {
+                             //   console.log('root: jsonData[formID][' + elName + ']');
                                 elValue = jsonData[formID][elName];
                             }
 
-                             //console.log('About to repopulate: inSub = ' + inSub + ' and elValue = ' + elValue)
+                            // console.log(elName + ' = ' + elValue);
 
                             if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
                                 switch (el.type) {
@@ -710,8 +763,6 @@
                                         // console.log('in radio  ' + elName + '. My JSON vValue = ' + elValue + ' and my input value = ' + el.value);
                                         if (el.value === elValue) {
                                             $(el).trigger('click');
-                                            inSub = true;
-                                            subName = elName.replace('helper--', '');
                                         }
                                         break;
                                     case 'checkbox':
@@ -722,6 +773,21 @@
                                     default:
                                         el.value = elValue;
                                         break;
+                                }
+
+                                if (elName.indexOf('helper--') === 0) {
+
+                                    if (inSub) {
+                                        inSubSub = true;
+                                        subSubName = elName.replace('helper--', '');
+
+                                        //console.log("we're diving into a sub subgroup for subSubName = " + subSubName);
+                                    } else {
+                                        inSub = true;
+                                        subName = elName.replace('helper--', '');
+
+                                        //console.log("we're diving into a subgroup for subName = " + subName);
+                                    }
                                 }
                             }
                         }
