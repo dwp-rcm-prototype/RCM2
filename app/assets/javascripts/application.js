@@ -347,98 +347,121 @@
                 return true; // tell the function validateForm that this test passed
             },
 
-            getFormData: function() {
-                var jsonData = {},
-                    elName,
-                    elValue,
-                    target,
-                    el,
-                    inSub = false,
-                    subName = '',
-                    inSubSub = false,
-                    subSubName = '',
-                    formID = rcm.formID;
-                jsonData[formID] = {};
-                var values = jsonData[formID];
+            getFormData: function(fromLocalStorage) {
 
-                for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
+                var formData, jsonData, elName, elValue, target, el, inSub, subName, inSubSub, subSubName, formID, values;
 
-                    el = document.forms[formID].elements[i];
-                    elName = (el.name == null) ? '' : el.name;
-//                    varName = (varName == 'undefined' || varName == '' || varName == null) ? '' : varName ;
+                inSub = false;
+                subName = '';
+                inSubSub = false;
+                subSubName = '';
+                formID = rcm.formID;
 
-                    // console.log('----------- ' + elName + ' ----------')
+                formData = (fromLocalStorage === true) ? false: true;
+                jsonData = (formData) ? {} : ValidationObject.getSavedFormData(formID);
 
-                    elValue = el.value;
+                if (formData) {
+                    jsonData[formID] = {};
+                    values = jsonData[formID];
+                }
 
-                    if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
-                        // console.log("we've left a sub subgroup");
-                        inSubSub = false;
-                        subSubName = '';
-                    }
-                    if (inSub && (elName.indexOf(subName + '--') !== 0 && elName.indexOf('helper--' + subName + '--') !== 0)) {
-                        // console.log("we've left a subgroup");
-                        inSub = false;
-                        subName = '';
-                    }
+                if ((!formData && jsonData[formID]) || formData) { //
 
-                    if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+                    for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
 
-                        /*
-                        console.log('Data for field ' + elName + ' = ' + elValue);
-                        console.log('inSub = ' + inSub + ' // inSubSub = ' + inSubSub)
-                        if (inSubSub) {
-                            console.log('so saving data to ' + subSubName + '--data')
-                        } else if (inSub) {
-                            console.log('so saving data to ' + subName + '--data')
-                        } else {
-                            console.log('so saving data to root ' )
-                        }
-                        */
-                        // console.log(el.type + ' ' + el.name + ' ' + el.value + ' ' + el.checked)
-                        target = (inSubSub) ? values[subName + '--data'][subSubName + '--data'] : ((inSub) ? values[subName + '--data'] : values);
+                        el = document.forms[formID].elements[i];
+                        elName = (el.name === null || el.name === '' || el.name === undefined) ? null : el.name;
 
-                        switch(el.type) {
-                            case 'radio':
-                                if (el.checked) {
-                                    target[elName] = elValue;
-                                    // console.log('saved: ' + elValue);
+                        if (elName !== null) {
+
+                            if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
+                                inSubSub = false;
+                                subSubName = '';
+                            }
+                            if (inSub && (elName.indexOf(subName + '--') !== 0 && elName.indexOf('helper--' + subName + '--') !== 0)) {
+                                inSub = false;
+                                subName = '';
+                            }
+
+                            if (formData) {
+                                elValue = el.value;
+                            } else {
+                                if (inSubSub) {
+                                    elValue = jsonData[formID][subName + '--data'][subSubName + '--data'][elName];
+                                } else if (inSub) {
+                                    elValue = jsonData[formID][subName + '--data'][elName];
+                                } else {
+                                    elValue = jsonData[formID][elName];
                                 }
-                                break;
-                            case 'checkbox':
-                                if (el.checked) {
-                                    if (target[elName] != null) {
-                                        target[elName][target[elName].length] = elValue;
-                                    } else {
-                                        target[elName] = [];
-                                        target[elName][0] = elValue;
-                                    }
-                                    // console.log('saved: ' + elValue);
+                            }
+
+                            if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+
+                                if (formData) {
+                                    target = (inSubSub) ? values[subName + '--data'][subSubName + '--data'] : ((inSub) ? values[subName + '--data'] : values);
                                 }
-                                break;
-                            default:
-                               target[elName] = elValue;
-                                 // console.log('saved: ' + elValue);
-                                break;
+
+                                switch (el.type) {
+                                    case 'radio':
+                                        if (formData) {
+                                            if (el.checked) {
+                                                target[elName] = elValue;
+                                            }
+                                        } else {
+                                            if (el.value === elValue) {
+                                                $(el).trigger('click');
+                                            }
+                                        }
+                                        break;
+                                    case 'checkbox':
+                                        if (formData) {
+                                            if (el.checked) {
+                                                if (target[elName] != null) {
+                                                    target[elName][target[elName].length] = elValue;
+                                                } else {
+                                                    target[elName] = [];
+                                                    target[elName][0] = elValue;
+                                                }
+                                            }
+                                        } else {
+                                           if (elValue.indexOf(el.value) !== -1) {
+                                                el.checked = true;
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        if (formData) {
+                                            target[elName] = elValue;
+                                        } else {
+                                            el.value = elValue;
+                                        }
+                                        break;
+                                }
+                            }
                         }
-                    }
 
-                    if (elName !== '' && elName.indexOf('helper--') === 0) {
+                        if (elName !== null && elName.indexOf('helper--') === 0) {
 
-                        if (inSub) {
-                            inSubSub = true;
-                            subSubName = elName.replace('helper--', '');
-                            values[subName + '--data'][subSubName + '--data'] = {};
-                            // console.log("we're diving into a sub subgroup for subSubName = " + subSubName);
-                        } else {
-                            inSub = true;
-                            subName = elName.replace('helper--', '');
-                            values[subName + '--data'] = {};
-                            // console.log("we're diving into a subgroup for subName = " + subName);
+                            if (inSub) {
+                                inSubSub = true;
+                                subSubName = elName.replace('helper--', '');
+                                if (formData) {
+                                    values[subName + '--data'][subSubName + '--data'] = {};
+                                }
+                            } else {
+                                inSub = true;
+                                subName = elName.replace('helper--', '');
+                                if (formData) {
+                                    values[subName + '--data'] = {};
+                                }
+                            }
                         }
                     }
                 }
-                return jsonData;
+
+                if (formData) {
+                    return jsonData;
+                }
             },
 
             getSavedFormData: function(formID) {
@@ -702,7 +725,7 @@
 
 
             },
-
+/*
             retrieveFormData: function() {
 
                 var jsonData = ValidationObject.getSavedFormData(rcm.formID),
@@ -721,16 +744,13 @@
                 if (jsonData[formID]) { // if there is any data
 
                     for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
+
                         el = document.forms[formID].elements[i];
                         elName = (el.name == null || el.name == '') ? null : el.name;
 
 
                         if (elName !== null) {
-//console.log('--------' + elName + '-------')
-                            //if (elName.indexOf(subName) === -1) {
-                            //    inSub = false;
-                            //    subName = '';
-                            //}
+
                             if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
                                 // console.log("we've left a sub subgroup");
                                 inSubSub = false;
@@ -794,6 +814,7 @@
                     }
                 }
             },
+*/
 
             clearData: function () {
 
@@ -855,7 +876,7 @@
         pageSetup();
         ValidationObject.init();
         ValidationObject.setupUserJourney();
-        ValidationObject.retrieveFormData();
+        ValidationObject.getFormData(true);
     });
 
 
