@@ -107,8 +107,16 @@ input.invalid:focus {
     outline: 0;
 }
 */
-.invalid:focus {
+.invalid:focus,
+.validation-group.invalid .empty,
+.validation-group.invalid .empty.focus,
+.validation-group .validation-group.invalid .empty,
+.validation-group .validation-group.invalid .empty:focus {
     @extend .invalid;
+}
+.validation-group.valid .empty,
+.validation-group.valid .empty:focus {
+    outline:0;
 }
 
 label span.error-message {

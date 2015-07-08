@@ -164,11 +164,19 @@
 
                         pattern = (pattern != null) ? pattern : $(el).attr('pattern');
 
+
                         if (pattern == null) {
-                            return (value !== '') ? el.name : null;
+//                            return (value !== '') ? el.name : null;
+                            if (value !== '') {
+                                $(el).removeClass('empty');
+                                return el.name;
+                            } else {
+                                $(el).addClass('empty');
+                                return null;
+                            }
                         } else {
 
-                            $(el).removeClass('invalid').parent().find('.error-message').remove();
+                            $(el).removeClass('invalid empty').parent().find('.error-message').remove();
 
                             regexObj = new RegExp(pattern, "gi");
                             result = regexObj.test(value);
@@ -176,7 +184,7 @@
                                 return el.name;
                             } else {
                                 if ($(el).val() === '') {
-                                    $(el).addClass('invalid');
+                                    $(el).addClass('empty');
                                 } else {
                                     tooltip = $(el).attr('data-field-error');
                                     if (tooltip != null) {
@@ -580,7 +588,7 @@
                             setTimeout(function() {
                                 $('#submit-cover .clock').remove();
                                 document.location.href = document.forms[rcm.formID].action;
-                            }, 2000 - ms);
+                            }, 1000 - ms);
 
                         }).fail(function(jqXHR, textStatus, errorThrown) {
 
@@ -722,99 +730,7 @@
                         $('form#' + rcm.formID).attr('action', newPage + '/');
                     }
                 }
-
-
             },
-/*
-            retrieveFormData: function() {
-
-                var jsonData = ValidationObject.getSavedFormData(rcm.formID),
-                    elName,
-                    elValue,
-                    el,
-                    inSub = false,
-                    subName = '',
-                    inSubSub = false,
-                    subSubName = '',
-                    formID = rcm.formID
-//console.log(jsonData);
-
-                // console.log(jsonData[formID]); console.log('------------------');
-
-                if (jsonData[formID]) { // if there is any data
-
-                    for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
-
-                        el = document.forms[formID].elements[i];
-                        elName = (el.name == null || el.name == '') ? null : el.name;
-
-
-                        if (elName !== null) {
-
-                            if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
-                                // console.log("we've left a sub subgroup");
-                                inSubSub = false;
-                                subSubName = '';
-                            }
-                            if (inSub && (elName.indexOf(subName + '--') !== 0 && elName.indexOf('helper--' + subName + '--') !== 0)) {
-                                // console.log("we've left a subgroup");
-                                inSub = false;
-                                subName = '';
-                            }
-
-
-
-                            if (inSubSub) {
-                             //   console.log('SubSub: jsonData[formID][' + subName + '--data][' + subSubName + '--data][' + elName + ']');
-                                elValue = jsonData[formID][subName + '--data'][subSubName + '--data'][elName];
-                            } else if (inSub) {
-                             //   console.log('sub: jsonData[formID][' + subName + '--data][' + elName + ']');
-                                elValue = jsonData[formID][subName + '--data'][elName];
-                            } else {
-                             //   console.log('root: jsonData[formID][' + elName + ']');
-                                elValue = jsonData[formID][elName];
-                            }
-
-                            // console.log(elName + ' = ' + elValue);
-
-                            if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
-                                switch (el.type) {
-                                    case 'radio':
-                                        // console.log('in radio  ' + elName + '. My JSON vValue = ' + elValue + ' and my input value = ' + el.value);
-                                        if (el.value === elValue) {
-                                            $(el).trigger('click');
-                                        }
-                                        break;
-                                    case 'checkbox':
-                                        if (elValue.indexOf(el.value) !== -1) {
-                                            el.checked = true;
-                                        }
-                                        break;
-                                    default:
-                                        el.value = elValue;
-                                        break;
-                                }
-
-                                if (elName.indexOf('helper--') === 0) {
-
-                                    if (inSub) {
-                                        inSubSub = true;
-                                        subSubName = elName.replace('helper--', '');
-
-                                        //console.log("we're diving into a sub subgroup for subSubName = " + subSubName);
-                                    } else {
-                                        inSub = true;
-                                        subName = elName.replace('helper--', '');
-
-                                        //console.log("we're diving into a subgroup for subName = " + subName);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-*/
 
             clearData: function () {
 
@@ -877,6 +793,11 @@
         ValidationObject.init();
         ValidationObject.setupUserJourney();
         ValidationObject.getFormData(true);
+
+
+        var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
+        new GOVUK.SelectionButtons($blockLabels);
+
     });
 
 
