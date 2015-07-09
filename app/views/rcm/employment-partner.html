@@ -56,6 +56,7 @@ GOV.UK Reporting benefit fraud: The partner's employment
                 </div>
 
                 <!-- address yes/ no-->
+                <!--
                 <div aria-live="polite">
                     <div class="validation-group inline toggle-control" data-toggle-target="section--employer-address" data-validation-type="required--one" data-validation-message="Please tell us if you know the employer's address" >
                         <p>Do you know the employer's address?</p>
@@ -69,16 +70,22 @@ GOV.UK Reporting benefit fraud: The partner's employment
                         </label>
                     </div>
 
-                    <!-- address yes -->
+
                     <div class="section--employer-address section--employer-address__yes toggle-controlled validation-group" aria-describedby="employer-address__yes" data-validation-type="required--one" data-validation-message="Please tell us as much as you can about the employer's address">
                         <label class="form-label" for="employer-address">Employer address</label>
                         <textarea id="employer-address" class="form-control" rows="5" name="employment-status--employer-address--yes"></textarea>
                     </div>
-                    <!-- address no -->
+
                     <div class="section--employer-address section--employer-address__no toggle-controlled validation-group" aria-describedby="employer-address__no" data-validation-type="required--one" data-validation-message="Please tell us as much as you can about the employer">
                         <label class="form-label" for="employer-information">Please give as much information as you can about the location of the business</label>
                         <textarea id="employer-information" class="form-control" rows="5" name="employment-status--employer-address--no"></textarea>
                     </div>
+                </div>
+                -->
+                <!-- Address -->
+                <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us as much as you can about the employer's address or location">
+                    <label class="form-label" for="employer-address">Employer address or location</label>
+                    <textarea id="employer-address" class="form-control" rows="4" name="employment-status--employer-address"></textarea>
                 </div>
 
                 <!-- duration -->
@@ -87,11 +94,12 @@ GOV.UK Reporting benefit fraud: The partner's employment
                     <input type="text" id="work-duration" class="form-control" name="employment-status--work-duration" autocomplete="off">
                 </div>
 
-                <!-- timings -->
+                <!-- timings
                 <div class="form-group">
                     <label class="form-label" for="employer-timings">What time do they leave and return from work?</label>
                     <textarea id="employer-timings" class="form-control" rows="5" name="employment-status--timings"></textarea>
                 </div>
+                 -->
             </div>
 
             <!-- self-employed -->
@@ -106,14 +114,15 @@ GOV.UK Reporting benefit fraud: The partner's employment
                 <!-- address -->
                 <div class="form-group">
                     <label class="form-label" for="self-employed-address">Work address</label>
-                    <textarea id="self-employed-address" class="form-control" rows="5" name="employment-status--self-employed-address"></textarea>
+                    <textarea id="self-employed-address" class="form-control" rows="4" name="employment-status--self-employed-address"></textarea>
                 </div>
 
-                <!-- timings -->
+                <!-- timings
                 <div class="form-group">
                     <label class="form-label" for="self-employed-timings">What time do they work each day?</label>
                     <textarea id="self-employed-timings" class="form-control" rows="5" name="employment-status--self-employed-timings"></textarea>
                 </div>
+                 -->
             </div>
 
             <!-- unknown -->
@@ -123,10 +132,10 @@ GOV.UK Reporting benefit fraud: The partner's employment
                     <textarea id="employment-other" class="form-control" rows="5" name="employment-status--employment-other"></textarea>
                 </div>
             </div>
+
         </fieldset>
 
         <input id="submit" type="submit" class="button" value="Continue" />
-
 
     </form>
 

@@ -22,7 +22,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="employment-prompt/" id="form__identify-partner" class="js-check js-routed" DISABLED-data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="employment-prompt/" id="form__identify-partner" class="js-check js-routed" DISABLED-data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email" data-form-validation-message="$message--fraud-suspect">
 
         <!-- NAME -->
 
@@ -133,7 +133,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
                 </label>
             </div>
 
-            <div class="section--address section--address__yes__address-yes toggle-controlled panel-indent validation-group" aria-describedby="address__yes" aria-describedby="address__no-yes" tabindex="0" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town" id="validation-group--7" style="display: block;">
+            <div class="section--address section--address__yes__address-yes toggle-controlled panel-indent validation-group" aria-describedby="address__no-yes" tabindex="0" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
                 <label class="form-label" for="address">Building name or number</label>
                 <input type="text" class="form-control" id="address" name="address--line-1" autocomplete="off">
 
@@ -193,16 +193,8 @@ GOV.UK Reporting benefit fraud: Identify the partner
                 </label>
             </div>
             <div class="section--telephone section--telephone__yes toggle-controlled panel-indent validation-group" aria-describedby="telephone__yes" data-form-validation-id="telephone" data-validation-type="required--one-or-more" data-validation-message="Please enter at least one telephone number">
-
-
-                <label class="form-label" for="telephone--mobile">Mobile <span class="a11y">telephone number</span></label>
-                <input class="form-control" name="telephone--mobile" id="telephone--mobile" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number" autocomplete="off">
-
-                <label class="form-label" for="telephone--home">Home  <span class="a11y">telephone number</span></label>
-                <input class="form-control" name="telephone--home" id="telephone--home" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid telephone number" autocomplete="off">
-
-                <label class="form-label" for="telephone--other"><span aria-hidden="true">Other</span><span class="a11y">Other telephone number</span></label>
-                <input class="form-control" name="telephone--other" id="telephone--other" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid phone number" autocomplete="off">
+                <label class="form-label" for="telephone--number">Telephone number</label>
+                <input class="form-control" name="telephone--number" id="telephone--number" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number" autocomplete="off">
             </div>
         </fieldset>
 
@@ -227,7 +219,8 @@ GOV.UK Reporting benefit fraud: Identify the partner
                 <input class="form-control" name="email--email" id="email--email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address" autocomplete="off">
             </div>
         </fieldset>
-
+<!--
+NB: If this question is reintroduced, the following 2 sets may beed to be added back to data-form-validation-set: name,age,social-media|name,dob,social-media
         <fieldset>
             <legend>Do you know the address of their Facebook or Twitter page?</legend>
             <div class="validation-group" data-form-validation-id="social-media" data-validation-type="optional--one">
@@ -237,6 +230,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
                 </div>
             </div>
         </fieldset>
+-->
 
         <input id="submit" type="submit" class="button" value="Continue" />
     </form>

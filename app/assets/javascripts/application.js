@@ -581,15 +581,20 @@
                             data: JSON.stringify(formData),
                             crossDomain: true
                         }).done(function(returnData) {
-                            ValidationObject.clearData();
-                            time = new Date();
-                            ms = time.getTime() - ms;
-                            // make sure that at least 2 seconds pass so that it looks like the system really has been busy
-                            setTimeout(function() {
-                                $('#submit-cover .clock').remove();
-                                document.location.href = document.forms[rcm.formID].action;
-                            }, 1000 - ms);
+                            if (returnData !== 'Error connecting to server: Error: getaddrinfo ENOTFOUND') {
+                                ValidationObject.clearData();
+                                time = new Date();
+                                ms = time.getTime() - ms;
+                                // make sure that at least 2 seconds pass so that it looks like the system really has been busy
+                                setTimeout(function () {
+                                    $('#submit-cover .clock').remove();
+                                    document.location.href = document.forms[rcm.formID].action;
+                                }, 1000 - ms);
+                            } else {
 
+                                $('#submit-cover').hide();
+                                ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
+                            }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
 
                             $('#submit-cover').hide();
