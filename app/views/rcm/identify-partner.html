@@ -24,7 +24,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="employment-partner/" id="form__identify-partner" class="js-check js-routed" DISABLED-data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email|name,age,social-media|name,dob,social-media" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="employment-partner/" id="form__identify-partner" class="js-check js-routed" DISABLED-data-form-validation-type="required--set" data-form-validation-sets="nino,name|nino,age|nino,dob|nino,address|name,age,address|name,dob,address|name,age,telephone|name,dob,telephone|name,age,email|name,dob,email" data-form-validation-message="$message--fraud-suspect">
 
         <!-- NAME -->
 
@@ -221,7 +221,8 @@ GOV.UK Reporting benefit fraud: Identify the partner
                 <input class="form-control" name="email--email" id="email--email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address" autocomplete="off">
             </div>
         </fieldset>
-
+<!--
+NB: If this question is reintroduced, the following 2 sets may beed to be added back to data-form-validation-set: name,age,social-media|name,dob,social-media
         <fieldset>
             <legend>Do you know the address of their Facebook or Twitter page?</legend>
             <div class="validation-group" data-form-validation-id="social-media" data-validation-type="optional--one">
@@ -231,7 +232,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
                 </div>
             </div>
         </fieldset>
-
+-->
         <fieldset aria-live="polite">
             <legend>Does this person work?</legend>
 

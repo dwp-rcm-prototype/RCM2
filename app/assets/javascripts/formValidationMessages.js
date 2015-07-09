@@ -5,7 +5,7 @@ function initFormErrorMessages() {
     '<p>Please make sure you enter at least</p>' +
     '<ul class="list-bullet error-summary-list">' +
     '<li>A name, approximate age (or date of birth) and an address</li>' +
-    '<li>A name, approximate age (or date of birth) and some additional info (phone number, email address or social media URL)</li>' +
+    '<li>A name, approximate age (or date of birth) and either a phone number or email address</li>' +
     '<li>A National insurance number and an approximate age (or date of birth)</li>' +
     '<li>A National insurance number and an address</li>' +
     '</ol>';
@@ -16,7 +16,7 @@ function initFormErrorMessages() {
     'Otherwise please make sure you enter at least' +
     '</p>' +
     '<ul class="list-bullet error-summary-list">' +
-    '<li>A name, approximate age (or date of birth) and either an address or some additional info</li>' +
+    '<li>A name, approximate age (or date of birth) and either an address, phone number or email address</li>' +
     '<li>A National insurance number and either an approximate age (or date of birth) or an address</li>' +
     '</ul>';
 
