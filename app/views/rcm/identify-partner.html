@@ -41,9 +41,12 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
             </div>
 
-            <div class="validation-group toggle-control" data-toggle-target="section--alternative-name" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
+            <!-- Alternative name -->
+            <div class="validation-group toggle-control" data-toggle-target="section--alternative-name" data-validation-type="optional--one" data-validation-message="Please tell us if you know this person by another name" >
 
-                <p class="legend">Do you know this person by another name?</p>
+                <p class="legend">Do you know this person by another name?<br>
+                    <span class="form-hint">For example nickname, professional name or maiden name</span>
+                </p>
                 <label class="block-label" for="alternative-name__yes">
                     <input type="radio" id="alternative-name__yes" name="helper--alternative-name" value="Yes">
                     <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know this person by another name</span>
@@ -112,7 +115,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
         <fieldset aria-live="polite">
             <legend>Does this person regularly live at another address?</legend>
-            <div class="validation-group toggle-control separate" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if the partner regularly lives at a different address" >
+            <div class="validation-group toggle-control separate" data-toggle-target="section--address" data-validation-type="required--one" data-validation-message="Please tell us if the partner regularly lives at a different address" id="validation-group--6">
 
                 <label class="block-label" for="address__yes">
                     <input id="address__yes" class="toggle-section toggle--focus" type="radio" name="helper--address" value="Yes__address-yes">
@@ -155,7 +158,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
         <fieldset aria-live="polite">
             <legend>Do you know their National Insurance number?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--nino" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's national insurance number" >
+            <div class="validation-group inline toggle-control" data-toggle-target="section--nino" data-validation-type="optional--one" data-validation-message="Please tell us if you know this person's national insurance number" >
 
                 <label class="block-label" for="nino__yes">
                     <input id="nino__yes" type="radio" class="toggle-section" name="helper--nino" value="Yes">
@@ -180,7 +183,7 @@ GOV.UK Reporting benefit fraud: Identify the partner
 
         <fieldset aria-live="polite">
             <legend>Do you know their telephone number?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--telephone" data-validation-type="required--one" data-validation-message="Please tell us if you know their telephone number" >
+            <div class="validation-group inline toggle-control" data-toggle-target="section--telephone" data-validation-type="optional--one" data-validation-message="Please tell us if you know their telephone number" >
 
                 <label class="block-label" for="telephone__yes">
                     <input type="radio" id="telephone__yes" class="toggle-section" name="helper--telephone" value="Yes">
@@ -206,9 +209,10 @@ GOV.UK Reporting benefit fraud: Identify the partner
         </fieldset>
 
 
+        <!-- Email -->
         <fieldset aria-live="polite">
             <legend>Do you know their email address?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--email" data-validation-type="required--one" data-validation-message="Please tell us if you know their email address" >
+            <div class="validation-group inline toggle-control" data-toggle-target="section--email" data-validation-type="optional--one" data-validation-message="Please tell us if you know their email address" >
 
                 <label class="block-label" for="email__yes">
                     <input type="radio" id="email__yes" class="toggle-section" name="helper--email" value="Yes">

@@ -107,8 +107,16 @@ input.invalid:focus {
     outline: 0;
 }
 */
-.invalid:focus {
+.invalid:focus,
+.validation-group.invalid .empty,
+.validation-group.invalid .empty.focus,
+.validation-group .validation-group.invalid .empty,
+.validation-group .validation-group.invalid .empty:focus {
     @extend .invalid;
+}
+.validation-group.valid .empty,
+.validation-group.valid .empty:focus {
+    outline:0;
 }
 
 label span.error-message {
@@ -179,6 +187,7 @@ p.legend, legend {
         display:block;
         font-weight:normal;
         font-size: 19px;
+        XXXpadding-bottom:1em;
     }
 }
 
@@ -206,6 +215,7 @@ textarea {
 }
 
 input[type="text"]+input[type="text"],
+textarea + label,
 input[type="text"]+label{
     margin-top:8px
 }
@@ -218,7 +228,17 @@ input[type="text"]+label{
         margin-top:0;
         border-top: 1px solid white; // to keep the focus() box straight
     }
+
+    .toggle-control .block-label {
+        padding: 13px 25px 10px 40px;
+        input {
+            top:13px;
+            left:10px;
+        }
+    }
 }
+
+
 .form-control.width__half {
     width:25%
 }
@@ -318,25 +338,30 @@ input[type="submit"].block-label {
     .block-label {
         clear: none;
         margin-right: 15px;
-
     }
-    &.separate .block-label{
-        clear:left
+    &.separate .block-label {
+        clear: left;
     }
 }
+
+@media (max-width: 640px) {
+    .panel-indent .toggle-control .block-label,
+    .toggle-control .block-label,
+    .block-label {margin-right:0}
+
+}
+
 .toggle-controlled {
     display:block;
     position:relative;
 }
 
 .panel-indent p:only-child, .panel-indent p.form-hint:last-child {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
-
 p.legend span.form-hint {
-    margin-top: 3px;
+    margin-top:3px;
 }
-
 legend + p.form-hint, .validation-group label.legend + p.form-hint {
     margin-top: 3px;
     padding-bottom: 5px;
@@ -346,11 +371,14 @@ legend + p.form-hint, .validation-group label.legend + p.form-hint {
     .heading-medium {
         margin-top:0
     }
+
     position: relative;
     background: #dee0e2;
     padding: 18px 30px 15px 30px;
     margin-top: 30px;
+
 }
+
 
 fieldset.form-group {
     float:none;
@@ -453,14 +481,35 @@ strong {
 
 .form-submitted .heading-xlarge {
     padding-top: 0.625em;
+    span {
+        padding-right:1ex;
+        _display:none; // dirty IE6 hack
+    }
 }
 .form-submitted .heading-xlarge span {
     padding-right: 1ex;
     _display: none; }
 
 input.button {
-    position: relative; /* mainly for IE6*/
+    position:relative;  /* mainly for IE6*/
 }
+.submit__send-report {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Overrides to allow for IE6 - 8 to work */
@@ -514,7 +563,7 @@ input.button {
     .error-summary-list a{
         color:$error-colour;
     }
-    .form-submitted .heading-xlarge {
+    .form-submitted  .heading-xlarge {
         padding-top: 0;
     }
 }

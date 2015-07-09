@@ -131,10 +131,9 @@
                 $('.toggle-controlled').hide();
                 $('.display-block-js').show();
 
-                $('.button-get-started').on('click', function() {
+                $('.button-get-started, .clear-data').on('click', function() {
                     ValidationObject.clearData();
                 });
-
 
 
                 // generic toggle functionality
@@ -142,16 +141,13 @@
                     var sections = $(this).parents('.toggle-control').attr('data-toggle-target'),
                         sectionOn = $(this).parents('.toggle-control').attr('data-toggle-target') + '__' + $(this).val().toLowerCase(),
                         sectionFocus = ($(this).hasClass('toggle--focus')) ? true : false;
-
                     $('.' + sections).hide();
                     if (sectionFocus) {
-                        $('.' + sectionOn).show().focus();
+                        $('.' + sectionOn).show().focus().blur(); // focus but then remove the blue box
                     } else {
                         $('.' + sectionOn).show();
                     }
-
                 });
-
             },
 
             disableHTML5validation: function () {
@@ -163,13 +159,22 @@
                 }
             },
 
-
             displayMessageAndBlockSubmit: function (e, message) {
                 e.preventDefault();
                 $('h1').prepend(message);
                 $("html, body").animate({scrollTop:$('#error-summary').position().top}, '500', 'swing');
                 //$("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
                 $('#error-summary').focus();
+
+                $('#error-summary a').click(function(e){
+                    $(this).blur();
+                    e.preventDefault();
+                    var target = $(this).attr('href');
+                    target = target.substr(target.indexOf('#'), target.length); // remove the whole path if included (e.g. in IE6)
+                    $('html, body').animate({
+                        scrollTop: $(target).offset().top
+                    }, 500);
+                });
             },
 
             fieldValid: function (el) {
@@ -194,25 +199,28 @@
 
                         pattern = (pattern != null) ? pattern : $(el).attr('pattern');
 
+
                         if (pattern == null) {
-                            return (value !== '') ? el.name : null;
+//                            return (value !== '') ? el.name : null;
+                            if (value !== '') {
+                                $(el).removeClass('empty');
+                                return el.name;
+                            } else {
+                                $(el).addClass('empty');
+                                return null;
+                            }
                         } else {
 
-                            /*if ($(el).next('p.sticky').get(0) != null) {
-                             defaultTooltip = $(el).next('p.sticky').attr('data-default-text');
-                             $(el).removeClass('invalid').next('p.sticky').html(defaultTooltip);
-                             } else {
-                             $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
-                             }*/
-                            $(el).removeClass('invalid').parent().find('.error-message').remove();
+                            $(el).removeClass('invalid empty').parent().find('.error-message').remove();
 
                             regexObj = new RegExp(pattern, "gi");
                             result = regexObj.test(value);
                             if (result) {
                                 return el.name;
                             } else {
-                                if ($(el).val() !== '') {
-
+                                if ($(el).val() === '') {
+                                    $(el).addClass('empty');
+                                } else {
                                     tooltip = $(el).attr('data-field-error');
                                     if (tooltip != null) {
                                         if ($(el).prev('label') !== null) {
@@ -240,7 +248,6 @@
                 if (id === null) { id = $(el).parents('.validation-group').attr('id')};
                 $(el).addClass('invalid');
 
-                // NOTE TO SELF: Change the anchor to a jQuery animation
                 rcm.errorMessages += '<li><a href="#' + id + '">' + rcm.validationMessage + '</a></li>';
                 rcm.errorCount += 1;
             },
@@ -271,7 +278,8 @@
 
                     if (typesToCheck.indexOf(validationType) !== -1) {
                         fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
-                            return ValidationObject.fieldValid(this);
+                            return ValidationObject.fieldValid(this); // RE: What if a field is required but doesn't have a pattern. It should show red, but does it?
+                            // Also, is class="required" required on required fields? Must research
                         }).get());
                     }
 
@@ -341,9 +349,6 @@
                 return groupOK;
             },
 
-
-
-
             validateFormSets: function (e) { // Called by validateForm. Checks if the form requirements (sets) have been met
 
 
@@ -351,8 +356,6 @@
                     formErrorMessages = [];
 
                 // Load the messages:
-
-
 
                 formValidationType = $(rcm.form).attr('data-form-validation-type');
 
@@ -387,64 +390,121 @@
                 return true; // tell the function validateForm that this test passed
             },
 
-            getFormData: function() {
-                var jsonData = {},
-                    varName,
-                    varValue,
-                    target,
-                    el,
-                    inSub = false,
-                    subName = '',
-                    formID = rcm.formID;
-                jsonData[formID] = {};
-                var values = jsonData[formID];
+            getFormData: function(fromLocalStorage) {
 
-                for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
-                    el = document.forms[formID].elements[i];
-                    varName = (el.name == null) ? '' : el.name;
-//                    varName = (varName == 'undefined' || varName == '' || varName == null) ? '' : varName ;
+                var formData, jsonData, elName, elValue, target, el, inSub, subName, inSubSub, subSubName, formID, values;
 
-                    varValue = el.value;
+                inSub = false;
+                subName = '';
+                inSubSub = false;
+                subSubName = '';
+                formID = rcm.formID;
 
-                    if (inSub && varName.indexOf(subName + '--') !== 0) {
-                        inSub = false;
-                        subName = '';
-                    }
+                formData = (fromLocalStorage === true) ? false: true;
+                jsonData = (formData) ? {} : ValidationObject.getSavedFormData(formID);
 
-                    if (varName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
-                        // console.log(el.type + ' ' + el.name + ' ' + el.value + ' ' + el.checked)
-                        target = (inSub) ? values[subName + '--data'] : values;
-                        switch(el.type) {
-                            case 'radio':
-                                if (el.checked) {
-                                    target[varName] = varValue;
+                if (formData) {
+                    jsonData[formID] = {};
+                    values = jsonData[formID];
+                }
+
+                if ((!formData && jsonData[formID]) || formData) { //
+
+                    for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
+
+                        el = document.forms[formID].elements[i];
+                        elName = (el.name === null || el.name === '' || el.name === undefined) ? null : el.name;
+
+                        if (elName !== null) {
+
+                            if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
+                                inSubSub = false;
+                                subSubName = '';
+                            }
+                            if (inSub && (elName.indexOf(subName + '--') !== 0 && elName.indexOf('helper--' + subName + '--') !== 0)) {
+                                inSub = false;
+                                subName = '';
+                            }
+
+                            if (formData) {
+                                elValue = el.value;
+                            } else {
+                                if (inSubSub) {
+                                    elValue = jsonData[formID][subName + '--data'][subSubName + '--data'][elName];
+                                } else if (inSub) {
+                                    elValue = jsonData[formID][subName + '--data'][elName];
+                                } else {
+                                    elValue = jsonData[formID][elName];
                                 }
-                                break;
-                            case 'checkbox':
-                                if (el.checked) {
-                                    if (target[varName] != null) {
-                                        target[varName][target[varName].length] = varValue;
-                                    } else {
-                                        target[varName] = [];
-                                        target[varName][0] = varValue;
-                                    }
+                            }
+
+                            if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+
+                                if (formData) {
+                                    target = (inSubSub) ? values[subName + '--data'][subSubName + '--data'] : ((inSub) ? values[subName + '--data'] : values);
                                 }
-                                break;
-                            default:
-                               target[varName] = varValue;
-                                break;
+
+                                switch (el.type) {
+                                    case 'radio':
+                                        if (formData) {
+                                            if (el.checked) {
+                                                target[elName] = elValue;
+                                            }
+                                        } else {
+                                            if (el.value === elValue) {
+                                                $(el).trigger('click');
+                                            }
+                                        }
+                                        break;
+                                    case 'checkbox':
+                                        if (formData) {
+                                            if (el.checked) {
+                                                if (target[elName] != null) {
+                                                    target[elName][target[elName].length] = elValue;
+                                                } else {
+                                                    target[elName] = [];
+                                                    target[elName][0] = elValue;
+                                                }
+                                            }
+                                        } else {
+                                           if (elValue.indexOf(el.value) !== -1) {
+                                                el.checked = true;
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        if (formData) {
+                                            target[elName] = elValue;
+                                        } else {
+                                            el.value = elValue;
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+
+                        if (elName !== null && elName.indexOf('helper--') === 0) {
+
+                            if (inSub) {
+                                inSubSub = true;
+                                subSubName = elName.replace('helper--', '');
+                                if (formData) {
+                                    values[subName + '--data'][subSubName + '--data'] = {};
+                                }
+                            } else {
+                                inSub = true;
+                                subName = elName.replace('helper--', '');
+                                if (formData) {
+                                    values[subName + '--data'] = {};
+                                }
+                            }
                         }
                     }
-
-                    if (varName !== '' && varName.indexOf('helper--') === 0) {
-                        // we're diving into a subgroup
-                        inSub = true;
-                        subName = varName.replace('helper--', '');
-                        values[subName + '--data'] = {};
-
-                    }
                 }
-                return jsonData;
+
+                if (formData) {
+                    return jsonData;
+                }
             },
 
             getSavedFormData: function(formID) {
@@ -568,14 +628,14 @@
                             crossDomain: true
                         }).done(function(returnData) {
                             if (returnData !== 'Error connecting to server: Error: getaddrinfo ENOTFOUND') {
-                                // ValidationObject.clearData();
+                                ValidationObject.clearData();
                                 time = new Date();
                                 ms = time.getTime() - ms;
                                 // make sure that at least 2 seconds pass so that it looks like the system really has been busy
                                 setTimeout(function () {
                                     $('#submit-cover .clock').remove();
-                                    document.location.href = document.forms[0].action;
-                                }, 2000 - ms);
+                                    document.location.href = document.forms[rcm.formID].action;
+                                }, 1000 - ms);
                             } else {
 
                                 $('#submit-cover').hide();
@@ -591,7 +651,6 @@
                         break;
                 }
             },
-
 
             storageRemoveItem: function (key) {
                 if (rcm.localStorage) {
@@ -646,6 +705,7 @@
                 var formJSON = ValidationObject.getFormData(),
                     formIDsString = ValidationObject.storageGetItem('formIDs'),
                     formIDs;
+
 
                 formIDs = (formIDsString == null) ? [] : formIDsString.split(',');
                 if (formIDs.indexOf(rcm.formID) === -1) {
@@ -725,67 +785,6 @@
                 }
             },
 
-            retrieveFormData: function() {
-
-                var jsonData = ValidationObject.getSavedFormData(rcm.formID),
-                    elName,
-                    elValue,
-                    el,
-                    inSub = false,
-                    subName = '',
-                    formID = rcm.formID
-
-
-                // console.log(jsonData[formID]); console.log('------------------');
-
-                if (jsonData[formID]) { // if there is any data
-
-                    for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
-                        el = document.forms[formID].elements[i];
-                        elName = (el.name == null || el.name == '') ? null : el.name;
-                        //                    varName = (varName == 'undefined' || varName == '' || varName == null) ? '' : varName ;
-
-                        if (elName !== null) {
-
-                            if (elName.indexOf(subName) === -1) {
-                                inSub = false;
-                                subName = '';
-                            }
-
-
-                            if (inSub) {
-                                elValue = jsonData[formID][subName + '--data'][elName];
-                            } else {
-                                elValue = jsonData[formID][elName];
-                            }
-
-                             //console.log('About to repopulate: inSub = ' + inSub + ' and elValue = ' + elValue)
-
-                            if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
-                                switch (el.type) {
-                                    case 'radio':
-                                        // console.log('in radio  ' + elName + '. My JSON vValue = ' + elValue + ' and my input value = ' + el.value);
-                                        if (el.value === elValue) {
-                                            $(el).trigger('click');
-                                            inSub = true;
-                                            subName = elName.replace('helper--', '');
-                                        }
-                                        break;
-                                    case 'checkbox':
-                                        if (elValue.indexOf(el.value) !== -1) {
-                                            el.checked = true;
-                                        }
-                                        break;
-                                    default:
-                                        el.value = elValue;
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-
             clearData: function () {
 
                 var formIDsString = ValidationObject.storageGetItem('formIDs'),
@@ -808,24 +807,49 @@
         };
 
     var pageSetup = function () {
-        $('a.previousPage').on('click', function (e) {
-            e.preventDefault();
-            window.history.back();
-        });
-
-
-
+        //$('a.previousPage.js-routed').on('click', function (e) {
+        //    e.preventDefault();
+        //
+        //    var myRoute = ValidationObject.storageGetItem('fraud-type');
+        //    if (myRoute != null && myRoute != '') {
+        //        var cpIndex, newPage,
+        //            employment = ValidationObject.storageGetItem('employment'),
+        //            routes = [],
+        //            currentPage = document.location.href.replace();
+        //
+        //        routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
+        //        routes['livingWithPartner'] = ['other-information', 'identify-partner'];
+        //        routes['workEarning+livingWithPartner'] = [];
+        //        routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
+        //        routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
+        //        routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
+        //
+        //        currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+        //        currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
+        //
+        //        if (myRoute === 'workEarning+livingWithPartner') {
+        //            cpIndex = routes[myRoute][employment].indexOf(currentPage);
+        //            newPage = routes[myRoute][employment][cpIndex + 1];
+        //        } else {
+        //            cpIndex = routes[myRoute].indexOf(currentPage);
+        //            newPage = routes[myRoute][cpIndex + 1];
+        //        }
+        //
+        //        document.location.href = newPage;
+        //    }
+        //});
     };
-
-
-
-
 
     $(document).ready(function () {
         pageSetup();
         ValidationObject.init();
         ValidationObject.setupUserJourney();
-        ValidationObject.retrieveFormData();
+        ValidationObject.getFormData(true);
+
+
+        var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
+        new GOVUK.SelectionButtons($blockLabels);
+
     });
 
 
