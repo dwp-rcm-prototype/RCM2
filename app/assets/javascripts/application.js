@@ -271,7 +271,7 @@
 
                     var fields, setOK, setsOK, sets,
                         validationType = $(el).attr('data-validation-type'),
-                        typesToCheck = ['required--one-or-more', 'required--one', 'required--all', 'optional--one-or-more', 'optional--one'],
+                        typesToCheck = ['required--one-or-more', 'required--one', 'required--valid-or-empty', 'required--all', 'optional--one-or-more', 'optional--one'],
                         fieldsWithValidValue = [],
                         allFields = [];
 
@@ -279,7 +279,6 @@
                     if (typesToCheck.indexOf(validationType) !== -1) {
                         fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
                             return ValidationObject.fieldValid(this); // RE: What if a field is required but doesn't have a pattern. It should show red, but does it?
-                            // Also, is class="required" required on required fields? Must research
                         }).get());
                     }
 
@@ -288,6 +287,14 @@
                         case 'optional--one-or-more':
                         case 'optional--one':
                             if (fieldsWithValidValue.length > 0) {
+                                $(el).addClass('valid');
+                            }
+                            break;
+                        case 'required--valid-or-empty':
+                            if (fieldsWithValidValue.length === 0 && $(el).find('input').val() !== '') {
+                                ValidationObject.invalidateElement(el);
+                                groupOK = false;
+                            } else {
                                 $(el).addClass('valid');
                             }
                             break;
