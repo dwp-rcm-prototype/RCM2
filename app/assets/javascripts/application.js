@@ -637,9 +637,7 @@
                 rcm.userDataObj.removeAttribute(key);
                 rcm.userDataObj.save('rcmData');
 
-             } /*else {
-                docCookies.removeItem(key);
-            }*/
+             }
         },
 
         storageSetItem: function (key, value) {
@@ -656,9 +654,7 @@
                 rcm.userDataObj.setAttribute(key, value);
                 rcm.userDataObj.save('rcmData');
 
-            } /*else {
-                docCookies.setItem(key, value);
-            } */
+            }
         },
 
         storageGetItem: function (key) {
@@ -667,9 +663,7 @@
             } else if (rcm.userDataStorage) {
 
                 return rcm.userDataObj.getAttribute(key);
-             } /*else {
-                return docCookies.getItem(key);
-            }*/
+             }
         },
 
         storeData: function () {
