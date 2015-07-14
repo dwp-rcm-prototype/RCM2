@@ -747,9 +747,9 @@
                 currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
-                var formAction = validationObject.getNextPage(fraudTypes, currentPage);
-                console.log('currentPage = ' + currentPage);
-                console.log('formAction = ' + formAction)
+                var formAction = ValidationObject.getNextPage(fraudTypes, currentPage);
+                //console.log('currentPage = ' + currentPage);
+                //console.log('formAction = ' + formAction)
                 $('form#' + rcm.formID).attr('action', formAction + '/');
             }
         },
@@ -777,37 +777,60 @@
     };
 
     var pageSetup = function () {
-        $('a.previousPage.js-routed').on('click', function (e) {
-            e.preventDefault();
-
-            var myRoute = ValidationObject.storageGetItem('fraud-type');
-            if (myRoute != null && myRoute != '') {
-                var cpIndex, newPage,
-                    employment = ValidationObject.storageGetItem('employment'),
-                    routes = [],
-                    currentPage = document.location.href.replace();
-
-                routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
-                routes['livingWithPartner'] = ['other-information', 'identify-partner'];
-                routes['workEarning+livingWithPartner'] = [];
-                routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
-                routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
-                routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
-
-                currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
-                currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
-
-                if (myRoute === 'workEarning+livingWithPartner') {
-                    cpIndex = routes[myRoute][employment].indexOf(currentPage);
-                    newPage = routes[myRoute][employment][cpIndex + 1];
-                } else {
-                    cpIndex = routes[myRoute].indexOf(currentPage);
-                    newPage = routes[myRoute][cpIndex + 1];
-                }
-
-                document.location.href = newPage;
-            }
-        });
+        //$('a.previousPage.js-routed').on('click', function (e) {
+        //    e.preventDefault();
+        //
+        //    var newPage, fraudType = ValidationObject.storageGetItem('fraud-type');
+        //    if (fraudType != null && fraudType != '') {
+        //        var employment = ValidationObject.storageGetItem('employment'),
+        //            currentPage = document.location.href.replace();
+        //
+        //        currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+        //        currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
+        //
+        //        if (currentPage === 'other-information') {
+        //            if (['identity-fraud'].indexOf(fraudType) !== -1) {
+        //                newPage = '/rcm/identity-fraud';
+        //            } else if (['undeclared-income'].indexOf(fraudType) !== -1) {
+        //                newPage = '/rcm/undeclared-income';
+        //            } else if (['living-abroad'].indexOf(fraudType) !== -1) {
+        //                newPage = '/rcm/living-abroad';
+        //            } else if (['disability-or-carers-benefit'].indexOf(fraudType) !== -1) {
+        //                newPage = '/rcm/disability-or-carers-benefit';
+        //            } else if (['livingWithPartner'].indexOf(fraudType) !== -1) {
+        //                if
+        //
+        //                    newPage = '/rcm/living abroad';
+        //            } else if (['living-abroad'].indexOf(fraudType) !== -1) {
+        //                    newPage = '/rcm/living abroad';
+        //                }
+        //            }
+        //
+        //
+        //        }
+        //            ['identify-partner','employment-suspect', 'employment-partner', 'disability-or-carers-benefit', 'living-abroad',
+        //
+        //
+        //        routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
+        //        routes['livingWithPartner'] = ['other-information', 'identify-partner'];
+        //        routes['workEarning+livingWithPartner'] = [];
+        //        routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
+        //        routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
+        //        routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
+        //
+        //
+        //
+        //        if (myRoute === 'workEarning+livingWithPartner') {
+        //            cpIndex = routes[myRoute][employment].indexOf(currentPage);
+        //            newPage = routes[myRoute][employment][cpIndex + 1];
+        //        } else {
+        //            cpIndex = routes[myRoute].indexOf(currentPage);
+        //            newPage = routes[myRoute][cpIndex + 1];
+        //        }
+        //
+        //        document.location.href = newPage;
+        //    }
+        //});
     };
 
     $(document).ready(function () {
