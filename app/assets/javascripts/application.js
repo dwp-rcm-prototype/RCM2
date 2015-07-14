@@ -82,21 +82,32 @@
                         typeHTML = '',
                         suspect,
                         formJSON = ValidationObject.getSavedFormData(null);
-
+console.log(formJSON);
                     if (formJSON['form__identify-suspect']) {
                         suspect = formJSON['form__identify-suspect']['first-name'] + ' ' + formJSON['form__identify-suspect']['last-name'];
 
                         reviewHtml = '<p>You\'re telling us that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' is</p>';
 
 
+                        if (formJSON['form__living-abroad']['helper--living-abroad'] === 'Yes') {
+                            typeHTML += '<li>claiming whilst living abroad</li> ';
+                        };
+                        if (formJSON['form__disability-or-carers']['helper--disability-or-carers'] === 'Yes') {
+                            typeHTML += '<li>dishonestly claiming a disability or carers benefit</li> ';
+                        };
+                        if (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'Yes') {
+                            typeHTML += '<li>committing identity fraud</li> ';
+                        };
                         if (formJSON['form__reporting-income'] && formJSON['form__reporting-income']['reporting-earnings-suspect'] === 'No') {
-                            typeHTML += '<li>Not reporting the money they earn</li> ';
-                        }
-                        ;
+                            typeHTML += '<li>not reporting the money they earn</li> ';
+                        };
+                        if (formJSON['form__undeclared-income']['helper--undeclared-income'] === 'Yes') {
+                            typeHTML += '<li>has undeclared other income or savings</li> ';
+                        };
                         if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
-                            typeHTML += '<li>Living with a partner but saying they live alone</li> ';
-                        }
-                        ;
+                            typeHTML += '<li>living with a partner but saying they live alone</li> ';
+                        };
+
 
                         if (typeHTML !== '') {
                             reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
@@ -642,7 +653,7 @@
                                 setTimeout(function () {
                                     $('#submit-cover .clock').remove();
                                     document.location.href = document.forms[rcm.formID].action;
-                                }, 1000 - ms);
+                                }, 500 - ms);
                             } else {
 
                                 $('#submit-cover').hide();
@@ -764,34 +775,6 @@
                 ValidationObject.postProcessor(e);
             },
 
-            setupUserJourney: function () {
-                // implement how user choices affect their journey
-                return false;
-
-
-                if (rcm.form.hasClass('js-routed')) {
-                    var myRoute = ValidationObject.storageGetItem('fraud-type');
-
-                    if (myRoute != null && myRoute != '') {
-                        var cpIndex, newPage,
-                            routes = [],
-                            currentPage = document.location.href.replace();
-
-                        routes['workEarning'] = ['type-of-fraud', 'employment-suspect', 'other-information', 'complete'];
-                        routes['livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'other-information', 'complete'];
-                        routes['workEarning+livingWithPartner'] = ['type-of-fraud', 'identify-partner', 'employment-prompt', 'other-information', 'complete'];
-
-                        currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
-                        currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
-
-                        cpIndex = routes[myRoute].indexOf(currentPage);
-                        newPage = routes[myRoute][cpIndex + 1];
-
-                        $('form#' + rcm.formID).attr('action', newPage + '/');
-                    }
-                }
-            },
-
             clearData: function () {
 
                 var formIDsString = ValidationObject.storageGetItem('formIDs'),
@@ -850,7 +833,6 @@
     $(document).ready(function () {
         pageSetup();
         ValidationObject.init();
-        ValidationObject.setupUserJourney();
         ValidationObject.getFormData(true);
 
 

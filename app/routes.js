@@ -81,9 +81,9 @@ module.exports = {
     });
 
     // 8. Vehicle
-    app.post('/rcm/vehicle', function (req, res) {
-      res.render('rcm/vehicle', {
-        'previousPage': 'javascript:window.history.back()',
+    app.post('/rcm/living-abroad', function (req, res) {
+      res.render('rcm/living-abroad', {
+
         'nextPage': 'other-information'});
     });
 

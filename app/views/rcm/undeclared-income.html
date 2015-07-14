@@ -1,0 +1,67 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Undeclared income
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="back-link"><a href="type-of-fraud" class="previousPage js-routed">Back</a></div>
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Section 2 of 4</span>
+        Work and other income
+    </h1>
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="living-arrangement/" id="form__undeclared-income" class="js-check">
+        <fieldset>
+            <legend>Are they failing to report other income or savings?</legend>
+            <p>For example investments, inheritance or property related</p>
+
+            <div class="validation-group inline toggle-control" data-toggle-target="section--undeclared-income" data-validation-type="required--one" data-validation-message="Please tell us if you think this person is not reporting all their income or savings">
+                <label class="block-label" for="undeclared-income__yes">
+                    <input id="undeclared-income__yes" type="radio" class="toggle-section toggle--focus" name="helper--undeclared-income" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="undeclared-income__no">
+                    <input id="undeclared-income__no" type="radio" name="helper--undeclared-income" value="No">
+                    No
+                </label>
+            </div>
+
+
+            <div class="section--undeclared-income section--undeclared-income__yes toggle-controlled panel-indent validation-group" aria-describedby="undeclared-income__yes" tabindex="0" data-validation-type="required--one" data-validation-message="Please tell us why you think this person is not reporting all their income or savings">
+                <label class="form-label legend" for="undeclared-income">
+                    What are the details?
+                    <span>Include approximate values if you know them</span>
+                </label>
+                <textarea class="form-control" id="undeclared-income" rows="5" name="undeclared-income"></textarea>
+            </div>
+
+        </fieldset>
+
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}

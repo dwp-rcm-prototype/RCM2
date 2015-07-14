@@ -1,0 +1,84 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Living abroad
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="back-link"><a href="type-of-fraud" class="previousPage js-routed">Back</a></div>
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Section 1 of 4</span>
+        About this person
+    </h1>
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="disability-or-carers-benefit/" id="form__living-abroad" class="js-check js-routed">
+
+
+
+        <fieldset aria-live="polite">
+            <legend>Are they living abroad and claiming benefits </legend>
+
+            <div class="validation-group inline toggle-control" data-toggle-target="section--living-abroad" data-validation-type="required--one" data-validation-message="Please tell us if you think this person is living abroad and claiming benefits">
+                <label class="block-label" for="living-abroad__yes">
+                    <input id="living-abroad__yes" type="radio" class="toggle-section toggle--focus" name="helper--living-abroad" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="living-abroad__no">
+                    <input id="living-abroad__no" type="radio" name="helper--living-abroad" value="No">
+                    No
+                </label>
+            </div>
+
+
+            <div class="section--living-abroad section--living-abroad__yes toggle-controlled panel-indent" aria-describedby="living-abroad__yes" tabindex="0" >
+                <div class="validation-group" data-validation-type="required--one" data-validation-message="Please tell us at least where they are">
+
+                    <div class="form-group">
+                        <label class="form-label legend" for="abroad-when-and-where">Where and when did they go?</label>
+                        <textarea class="form-control" id="abroad-when-and-where" rows="4" name="abroad-when-and-where"></textarea>
+                    </div>
+                </div>
+                <div class="validation-group">
+
+                    <div class="form-group">
+                        <label class="form-label legend" for="abroad-why">Why did they go?</label>
+                        <textarea class="form-control" id="abroad-why" rows="4" name="abroad-why"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label legend" for="abroad-when-return">When will they return?</label>
+                        <textarea class="form-control" id="abroad-when-return" rows="4" name="abroad-when-return"></textarea>
+                    </div>
+                </div>
+            </div>
+
+
+        </fieldset>
+
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}

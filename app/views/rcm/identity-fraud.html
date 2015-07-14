@@ -1,0 +1,63 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Identity fraud
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="back-link"><a href="living-abroad" class="previousPage js-routed">Back</a></div>
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Section 1 of 4</span>
+        About this person
+    </h1>
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="employment-suspect/" id="form__identity-fraud" class="js-check">
+
+        <fieldset aria-live="polite">
+            <legend>Are they committing identity fraud?</legend>
+
+            <div class="validation-group inline toggle-control" data-toggle-target="section--identity-fraud" data-validation-type="required--one" data-validation-message="Please tell us if you think this person is committing identity fraud">
+                <label class="block-label" for="identity-fraud__yes">
+                    <input id="identity-fraud__yes" type="radio" class="toggle-section toggle--focus" name="helper--identity-fraud" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="identity-fraud__no">
+                    <input id="identity-fraud__no" type="radio" name="helper--identity-fraud" value="No">
+                    No
+                </label>
+            </div>
+
+
+            <div class="section--identity-fraud section--identity-fraud__yes toggle-controlled panel-indent validation-group" aria-describedby="identity-fraud__yes" tabindex="0" data-validation-type="required--one" data-validation-message="Please tell us why you think this person is committing identity fraud">
+                <label class="form-label legend" for="identity-fraud">Why do you think that?</label>
+                <textarea class="form-control" id="identity-fraud" rows="5" name="identity-fraud"></textarea>
+            </div>
+        </fieldset>
+        
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}

@@ -23,7 +23,7 @@ GOV.UK Reporting benefit fraud: The suspect's employment
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="reporting-income-suspect/" id="form__employment-suspect" class="js-check">
+    <form method="post" action="undeclared-income/" id="form__employment-suspect" class="js-check">
 
         <fieldset aria-live="polite">
             <legend>Employment status</legend>
@@ -132,6 +132,27 @@ GOV.UK Reporting benefit fraud: The suspect's employment
                     <label class="form-label" for="employment-other">Describe what you know about their employment</label>
                     <textarea id="employment-other" class="form-control" rows="5" name="employment-status--employment-other"></textarea>
                 </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Are they reporting all the money they earn?</legend>
+            <div class="validation-group  separate" data-validation-type="required--one" data-validation-message="Please tell us if they're reporting all their income">
+                <!-- employed-->
+                <label class="block-label" for="reporting-all-income__yes">
+                    <input id="reporting-all-income__yes" type="radio" name="helper--reporting-all-income" value="yes">
+                    Yes
+                </label>
+                <!-- self-employed-->
+                <label class="block-label" for="reporting-all-income__no">
+                    <input id="reporting-all-income__no" type="radio" name="helper--reporting-all-income" value="no">
+                    No
+                </label>
+                <!-- unknown -->
+                <label class="block-label" for="reporting-all-income__unknown">
+                    <input id="reporting-all-income__unknown" type="radio" name="helper--reporting-all-income" value="unknown">
+                    I don't know
+                </label>
             </div>
         </fieldset>
 
