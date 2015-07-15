@@ -761,6 +761,8 @@
             } else if (currentPage === 'employment-partner') {
                 routeData = JSON.parse(ValidationObject.storageGetItem('form__employment-prompt'));
                 return (routeData['form__employment-prompt']['employment'].indexOf('Suspect') !== -1) ? 'employment-suspect-then-partner' : 'employment-prompt';
+            } else if (['other-information', 'undeclared-income', 'identity-fraud', 'living-abroad', 'carers-benefits', 'disability-benefits', 'employment-prompt'].indexOf(currentPage) !== -1 && fraudTypes.fraudTypeSelected('workEarning')) {
+                return '/rcm/employment-suspect';
             } else {
                 return '/rcm/type-of-fraud';
             }
