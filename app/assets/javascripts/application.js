@@ -82,7 +82,7 @@
                         typeHTML = '',
                         suspect,
                         formJSON = ValidationObject.getSavedFormData(null);
-console.log(formJSON);
+
                     if (formJSON['form__identify-suspect']) {
                         suspect = formJSON['form__identify-suspect']['first-name'] + ' ' + formJSON['form__identify-suspect']['last-name'];
 
@@ -92,8 +92,8 @@ console.log(formJSON);
                         if (formJSON['form__living-abroad']['helper--living-abroad'] === 'Yes') {
                             typeHTML += '<li>claiming whilst living abroad</li> ';
                         };
-                        if (formJSON['form__disability-or-carers']['helper--disability-or-carers'] === 'Yes') {
-                            typeHTML += '<li>dishonestly claiming a disability or carers benefit</li> ';
+                        if (formJSON['form__disability']['helper--disability'] === 'Yes') {
+                            typeHTML += '<li>dishonestly claiming disability benefits</li> ';
                         };
                         if (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'Yes') {
                             typeHTML += '<li>committing identity fraud</li> ';
@@ -103,6 +103,9 @@ console.log(formJSON);
                         };
                         if (formJSON['form__undeclared-income']['helper--undeclared-income'] === 'Yes') {
                             typeHTML += '<li>has undeclared other income or savings</li> ';
+                        };
+                        if (formJSON['form__carers']['helper--carers'] === 'Yes') {
+                            typeHTML += '<li>dishonestly claiming carers benefit</li> ';
                         };
                         if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
                             typeHTML += '<li>living with a partner but saying they live alone</li> ';

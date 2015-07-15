@@ -236,16 +236,19 @@ NB: If this question is reintroduced, the following 2 sets may beed to be added 
         <fieldset aria-live="polite">
             <legend>Does this person work?</legend>
 
-            <div class="validation-group inline" data-validation-type="required--one" data-validation-message="Please tell us if the suspect is working" >
+            <div class="validation-group separate" data-validation-type="required--one" data-validation-message="Please tell us if the suspect is working" >
 
-                <label class="block-label" for="employment-partner-yes">
-                    <input id="employment-partner-yes" type="radio" name="employment" value="Yes">
+                <label class="block-label" for="employment-partner__yes">
+                    <input id="employment-partner__yes" type="radio" name="employment" value="Yes">
                     <span aria-hidden="true">Yes</span><span class="a11y">Yes, this person works</span>
                 </label>
-
-                <label class="block-label" for="employment-partner-no">
-                    <input id="employment-partner-no" type="radio" name="employment" value="No">
+                <label class="block-label" for="employment-partner__no">
+                    <input id="employment-partner__no" type="radio" name="employment" value="No">
                     <span aria-hidden="true">No</span><span class="a11y"> No, this person doesn't work</span>
+                </label>
+                <label class="block-label" for="employment-partner__unsure">
+                    <input id="employment-partner__unsure" type="radio" name="employment" value="Unsure">
+                    <span aria-hidden="true">Don't know</span><span class="a11y"> I don't know if this person works</span>
                 </label>
 
             </div>

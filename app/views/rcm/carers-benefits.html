@@ -1,0 +1,67 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Dishonestly claiming a disability or carers benefit
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="back-link"><a href="type-of-fraud" class="previousPage">Back</a></div>
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Section 3 of 4</span>
+        Providing care
+    </h1>
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="living-arrangement/" id="form__carers" class="js-check">
+
+        <fieldset aria-live="polite">
+            <legend>Are they dishonestly claiming benefits for caring for someone?</legend>
+
+            <div class="validation-group separate toggle-control" data-toggle-target="section--carers" data-validation-type="required--one" data-validation-message="Please tell us if you think this person is dishonestly claiming carers benefit">
+                <label class="block-label" for="carers__yes">
+                    <input id="carers__yes" type="radio" class="toggle-section toggle--focus" name="helper--carers" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="carers__no">
+                    <input id="carers__no" type="radio" name="helper--carers" value="No">
+                    No
+                </label>
+                <label class="block-label" for="carers__unsure">
+                    <input id="carers__unsure" type="radio" name="helper--carers" value="Unsure">
+                    Don't know
+                </label>
+            </div>
+
+
+            <div class="section--carers section--carers__yes toggle-controlled panel-indent validation-group" aria-describedby="carers__yes" tabindex="0" data-validation-type="required--one" data-validation-message="Please give us the details">
+                <label class="form-label legend" for="carers">What are the details?</label>
+                <textarea class="form-control" id="carers" rows="5" name="carers"></textarea>
+            </div>
+        </fieldset>
+
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}

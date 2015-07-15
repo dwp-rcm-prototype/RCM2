@@ -1,0 +1,63 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: Dishonestly claiming a disability benefit
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="back-link"><a href="type-of-fraud" class="previousPage">Back</a></div>
+
+    <h1 class="heading-large">
+        <span class="heading-secondary">Section 1 of 4</span>
+        About this person
+    </h1>
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="identity-fraud/" id="form__disability" class="js-check">
+
+        <fieldset aria-live="polite">
+            <legend>Are they dishonestly claiming disability benefits?</legend>
+
+            <div class="validation-group inline toggle-control" data-toggle-target="section--disability" data-validation-type="required--one" data-validation-message="Please tell us if you think this person is dishonestly claiming disability benefit">
+                <label class="block-label" for="disability__yes">
+                    <input id="disability__yes" type="radio" class="toggle-section toggle--focus" name="helper--disability" value="Yes">
+                    Yes
+                </label>
+                <label class="block-label" for="disability__no">
+                    <input id="disability__no" type="radio" name="helper--disability" value="No">
+                    No
+                </label>
+            </div>
+
+
+            <div class="section--disability section--disability__yes toggle-controlled panel-indent validation-group" aria-describedby="disability__yes" tabindex="0" data-validation-type="required--one" data-validation-message="Please tell us why you think they're dishonestly claiming this benefit">
+                <label class="form-label legend" for="disability">Why do you think that?</label>
+                <textarea class="form-control" id="disability" rows="5" name="disability"></textarea>
+            </div>
+        </fieldset>
+
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+</main>
+
+
+
+
+
+
+{{/content}}
+
+{{/layout}}
