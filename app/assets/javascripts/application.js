@@ -98,7 +98,7 @@
                         if (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'Yes') {
                             typeHTML += '<li>committing identity fraud</li> ';
                         };
-                        if (formJSON['form__reporting-income'] && formJSON['form__reporting-income']['reporting-earnings-suspect'] === 'No') {
+                        if (formJSON['form__employment-suspect'] && formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'No') {
                             typeHTML += '<li>not reporting the money they earn</li> ';
                         };
                         if (formJSON['form__undeclared-income']['helper--undeclared-income'] === 'Yes') {
