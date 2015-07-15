@@ -98,7 +98,6 @@
                         if (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'Yes') {
                             typeHTML += '<li>is committing identity fraud</li> ';
                         };
-
                         if (formJSON['form__employment-suspect'] && formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'No') {
                             typeHTML += '<li>is not reporting the money they earn</li> ';
                         };
@@ -107,9 +106,6 @@
                         };
                         if (formJSON['form__carers']['helper--carers'] === 'Yes') {
                             typeHTML += '<li>is dishonestly claiming carers benefit</li> ';
-                        };
-                        if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
-                            typeHTML += '<li>is living with a partner but saying they live alone</li> ';
                         };
                         if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
                             typeHTML += '<li>is living with a partner but saying they live alone</li> ';
@@ -808,37 +804,34 @@
         };
 
     var pageSetup = function () {
-        //$('a.previousPage.js-routed').on('click', function (e) {
-        //    e.preventDefault();
-        //
-        //    var myRoute = ValidationObject.storageGetItem('fraud-type');
-        //    if (myRoute != null && myRoute != '') {
-        //        var cpIndex, newPage,
-        //            employment = ValidationObject.storageGetItem('employment'),
-        //            routes = [],
-        //            currentPage = document.location.href.replace();
-        //
-        //        routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
-        //        routes['livingWithPartner'] = ['other-information', 'identify-partner'];
-        //        routes['workEarning+livingWithPartner'] = [];
-        //        routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
-        //        routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
-        //        routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
-        //
-        //        currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
-        //        currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
-        //
-        //        if (myRoute === 'workEarning+livingWithPartner') {
-        //            cpIndex = routes[myRoute][employment].indexOf(currentPage);
-        //            newPage = routes[myRoute][employment][cpIndex + 1];
-        //        } else {
-        //            cpIndex = routes[myRoute].indexOf(currentPage);
-        //            newPage = routes[myRoute][cpIndex + 1];
-        //        }
-        //
-        //        document.location.href = newPage;
-        //    }
-        //});
+        $('a.previousPage.js-routed').on('click', function (e) {
+            e.preventDefault();
+            var routeData,
+                newPage = 'javascript:history.back()',
+                currentPage = document.location.href;
+            currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+            currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
+
+
+            switch (currentPage) {
+                case 'undeclared-income':
+                    routeData = JSON.parse(ValidationObject.storageGetItem('form__employment-prompt'));
+                    newPage = (routeData['form__employment-prompt']['employment'] === 'Yes') ? 'employment-suspect' : 'employment-prompt';
+                    break;
+                case 'other-information':
+                    routeData = JSON.parse(ValidationObject.storageGetItem('form__living-arrangement'));
+                    if (routeData['form__living-arrangement']['living-together'] === 'Yes') {
+                        routeData = JSON.parse(ValidationObject.storageGetItem('form__identify-partner'));
+                        newPage = (routeData['form__identify-partner']['employment'] === 'Yes') ? 'employment-partner' : 'identify-partner';
+                    } else {
+                        newPage = 'living-arrangement';
+                    }
+                    break;
+            }
+
+            document.location.href = newPage;
+
+        });
     };
 
     $(document).ready(function () {
