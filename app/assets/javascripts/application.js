@@ -86,39 +86,46 @@
                     if (formJSON['form__identify-suspect']) {
                         suspect = formJSON['form__identify-suspect']['first-name'] + ' ' + formJSON['form__identify-suspect']['last-name'];
 
-                        reviewHtml = '<p>You\'re telling us that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' is</p>';
+                        reviewHtml = '<p>You\'re telling us that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
 
 
                         if (formJSON['form__living-abroad']['helper--living-abroad'] === 'Yes') {
-                            typeHTML += '<li>claiming whilst living abroad</li> ';
+                            typeHTML += '<li>is claiming whilst living abroad</li> ';
                         };
                         if (formJSON['form__disability']['helper--disability'] === 'Yes') {
-                            typeHTML += '<li>dishonestly claiming disability benefits</li> ';
+                            typeHTML += '<li>is dishonestly claiming disability benefits</li> ';
                         };
                         if (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'Yes') {
-                            typeHTML += '<li>committing identity fraud</li> ';
+                            typeHTML += '<li>is committing identity fraud</li> ';
                         };
 
                         if (formJSON['form__employment-suspect'] && formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'No') {
-                            typeHTML += '<li>not reporting the money they earn</li> ';
+                            typeHTML += '<li>is not reporting the money they earn</li> ';
                         };
                         if (formJSON['form__undeclared-income'] && formJSON['form__undeclared-income']['helper--undeclared-income'] === 'Yes') {
                             typeHTML += '<li>has undeclared other income or savings</li> ';
                         };
                         if (formJSON['form__carers']['helper--carers'] === 'Yes') {
-                            typeHTML += '<li>dishonestly claiming carers benefit</li> ';
+                            typeHTML += '<li>is dishonestly claiming carers benefit</li> ';
                         };
                         if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
-                            typeHTML += '<li>living with a partner but saying they live alone</li> ';
+                            typeHTML += '<li>is living with a partner but saying they live alone</li> ';
+                        };
+                        if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
+                            typeHTML += '<li>is living with a partner but saying they live alone</li> ';
                         };
 
 
                         if (typeHTML !== '') {
                             reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
                         } else {
-                            reviewHtml = 'You haven\'t identified any fraudulent activities. ' +
-                            'If you want, you can click on the \'back\' button at the top to step back through the form and review your answers.';;
+                            if (formJSON['form__other-information']['other-information'] !== '') {
+                                reviewHtml = 'You haven\'t identified any fraudulent activities, but we will review what you wrote on the Additional Information page. ';
+                            } else {
+                                reviewHtml = 'You haven\'t identified any fraudulent activities. ';
+                            }
                         }
+                        reviewHtml += 'If you want, you can click on the \'back\' button at the top to step back through the form and review your answers.';
 
                     } else {
                         reviewHtml = '<strong>We\'re really sorry but something seems to have go wrong.</strong><br>' +
@@ -598,7 +605,7 @@
                         if (document.forms[rcm.formID].elements['living-together'][0].checked) {
                             document.location.href = '/rcm/identify-partner';
                         } else {
-                            document.location.href = '/rcm/review';
+                            document.location.href = '/rcm/other-information';
                         }
                         break;
 
@@ -608,7 +615,7 @@
                         if (document.forms[rcm.formID].elements['employment'][0].checked) {
                             document.location.href = '/rcm/employment-partner';
                         } else {
-                            document.location.href = '/rcm/review';
+                            document.location.href = '/rcm/other-information';
                         }
                         break;
 
