@@ -98,10 +98,11 @@
                         if (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'Yes') {
                             typeHTML += '<li>committing identity fraud</li> ';
                         };
+
                         if (formJSON['form__employment-suspect'] && formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'No') {
                             typeHTML += '<li>not reporting the money they earn</li> ';
                         };
-                        if (formJSON['form__undeclared-income']['helper--undeclared-income'] === 'Yes') {
+                        if (formJSON['form__undeclared-income'] && formJSON['form__undeclared-income']['helper--undeclared-income'] === 'Yes') {
                             typeHTML += '<li>has undeclared other income or savings</li> ';
                         };
                         if (formJSON['form__carers']['helper--carers'] === 'Yes') {
@@ -587,7 +588,7 @@
                         if (document.forms[rcm.formID].elements['employment'][0].checked) {
                             document.location.href = '/rcm/employment-suspect';
                         } else {
-                            document.location.href = '/rcm/living-arrangement';
+                            document.location.href = '/rcm/undeclared-income';
                         }
 
                         break;
