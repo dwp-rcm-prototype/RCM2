@@ -119,7 +119,7 @@
                         if (typeHTML !== '') {
                             reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
                         } else {
-                            if (formJSON['form__other-information']['other-information'] !== '') {
+                            if (formJSON['form__other-information']['additional-information'] !== '') {
                                 reviewHtml = 'You haven\'t identified any fraudulent activities, but we will review what you wrote on the Additional Information page. ';
                             } else {
                                 reviewHtml = 'You haven\'t identified any fraudulent activities. ';
