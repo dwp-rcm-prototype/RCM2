@@ -10,400 +10,839 @@
         };
     }
 
+    var hasLocalStorage = function () {
+
+        try {
+            localStorage.setItem('x', 'x');
+            localStorage.removeItem('x');
+            return true;
+        } catch(e) {
+            return false;
+        }
+    };
+
     var rcm,
         ValidationObject = {
 
-        settings: {
-            form: '',
-            submitButton: '',
-            inputFields: ['input[type="text"]', 'input[type="number"]', 'input[type="tel"]', 'input[type="email"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
-            allFields: '',
-            validationMessage: '',
-            errorCount: 0,
-            errorMessages: '',
-            threeStrikesCount: 0,
-            messageTemplate :   '<div class="validation-message error-summary" role="group" tabindex="-1" aria-labelledby="error-summary-heading">' +
-                                    '<h3 class="heading-medium error-summary-heading" id="error-summary-heading">' +
-                                    'Unable to submit the form.' +
-                                    '</h3>' +
-                                    '<p>[customMessage]</p>' +
-                                    '[errorMessages]' +
-                                '</div>'
+            settings: {
+                form: '',
+                submitButton: '',
+                inputFields: ['input[type="text"]', 'input[type="number"]', 'input[type="tel"]', 'input[type="email"]', 'input[type="checkbox"]', 'input[type="radio"]', 'select', 'textarea'],
+                allFields: '',
+                validationMessage: '',
+                errorCount: 0,
+                errorMessages: '',
+                threeStrikesCount: 0,
+                submitErrorMessage: 'There\'s been an error talking to the server. Please wait a moment and try again.',
+                messageTemplate :   '<div class="error-summary" id="error-summary" role="alert" tabindex="-1" aria-labelledby="error-summary-heading">' +
+                                        '<h2 class="heading-medium error-summary-heading" id="error-summary-heading">' +
+                                            'Unable to submit the form.' +
+                                        '</h2>' +
+                                        '<p>[customMessage]</p>' +
+                                        '[errorMessages]' +
+                                    '</div>',
+                formErrorMessages: [],
+                formErrorMessage: '',
+                localStorage: hasLocalStorage(),
+                userDataStorage: document.body.addBehavior,
+                userDataObj: {}
+            },
 
-},
+            init: function () {
 
-        init: function (formClassName) {
-            rcm = this.settings;
-            rcm.submitButton = 'form.' + formClassName + ' input[type="submit"]';
-            this.disableHTML5validation(formClassName);
-            this.bindUIActions();
+                rcm = this.settings;
+                rcm.form = $('form.js-check');
+                rcm.formID = rcm.form.attr('id');
+                rcm.submitButton = $('form#' + rcm.formID + ' input#submit');
 
-            var i = 0;
-            $('form.' + formClassName).each(function() {
-                $(this).find('.validation-group').each(function() {
+                this.disableHTML5validation();
+                this.bindUIActions();
+
+                // load the form validation error messages
+                $.getScript('/public/javascripts/formValidationMessages.js', function(data){
+                    rcm.formErrorMessages = initFormErrorMessages();
+                });
+
+                var i = 0;
+                rcm.form.find('.validation-group').each(function() {
                     $(this).attr('id', 'validation-group--' + i);
                     i += 1;
                 });
-            });
-        },
-
-        reset: function () {
-            rcm.errorCount = 0;
-            rcm.errorMessages = '';
-            $(rcm.form).removeClass('invalid').parent().find('div.validation-message').remove();
-            // remove all valids and invalids?
-        },
-
-        bindUIActions: function () {
-            $(rcm.submitButton).on("click", function (e) {
-                //e.preventDefault();
-                rcm.form = $(this).parents('form');
-                ValidationObject.validateForm(e);
-            });
-
-            // display-none-js is a class that should only work to hide information when javascript is enabled
-            $('.display-none-js').hide();
-            $('.display-block-js').show();
 
 
-            // generic toggle functionality
-            $('.toggle-section').on('click', function () {
-                var sections = $(this).parents('.form-group').attr('data-target'),
-                    sectionOn = $(this).parents('.form-group').attr('data-target') + '__' + $(this).val().toLowerCase();
-                $('.' + sections).hide();
-                $('.' + sectionOn).show();
-            });
+                if (!rcm.localStorage && rcm.userDataStorage) {
+                    rcm.userDataObj = document.getElementById('IEuserData');
+                    if (rcm.userDataObj) {
+                        rcm.userDataObj.load('rcmData');
+                    }
+                }
+
+                if(rcm.formID === 'form__review') {
+                    var reviewHtml,
+                        typeHTML = '',
+                        suspect,
+                        formJSON = ValidationObject.getSavedFormData(null);
+
+                    if (formJSON['form__identify-suspect']) {
+                        suspect = formJSON['form__identify-suspect']['first-name'] + ' ' + formJSON['form__identify-suspect']['last-name'];
+
+                        reviewHtml = '<p>You\'re telling us that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
 
 
+                        if (formJSON['form__living-abroad']['helper--living-abroad'] === 'Yes') {
+                            typeHTML += '<li>is claiming whilst living abroad</li> ';
+                        };
+                        if (formJSON['form__disability']['helper--disability'] === 'Yes') {
+                            typeHTML += '<li>is dishonestly claiming disability benefits</li> ';
+                        };
+                        if (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'Yes') {
+                            typeHTML += '<li>is committing identity fraud</li> ';
+                        };
+                        if (formJSON['form__employment-suspect'] && formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'No') {
+                            typeHTML += '<li>is not reporting the money they earn</li> ';
+                        };
+                        if (formJSON['form__undeclared-income'] && formJSON['form__undeclared-income']['helper--undeclared-income'] === 'Yes') {
+                            typeHTML += '<li>has undeclared other income or savings</li> ';
+                        };
+                        if (formJSON['form__carers']['helper--carers'] === 'Yes') {
+                            typeHTML += '<li>is dishonestly claiming carers benefit</li> ';
+                        };
+                        if (formJSON['form__living-arrangement']['living-together'] === 'Yes') {
+                            typeHTML += '<li>is living with a partner but saying they live alone</li> ';
+                        };
 
-        },
 
-        disableHTML5validation: function (formClassName) {
-            // disable html5 form checking (if we have js)
-            if (!$('html').hasClass('lte-ie8')) { // we can't have attr('novalidate) for IE7 - see https://www.google.co.uk/search?q=jquery%20ie7%20member%20not%20found - but this line is not required for IE8 and less anyway.
-                $('form.' + formClassName).attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function () {
-                    $(this).attr('type', 'text');
+                        if (typeHTML !== '') {
+                            reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
+                        } else {
+                            if (formJSON['form__other-information']['additional-information'] !== '') {
+                                reviewHtml = 'You haven\'t identified any fraudulent activities, but we will review what you wrote on the Additional Information page. ';
+                            } else {
+                                reviewHtml = 'You haven\'t identified any fraudulent activities. ';
+                            }
+                        }
+                        reviewHtml += 'If you want, you can click on the \'back\' button at the top to step back through the form and review your answers.';
+
+                    } else {
+                        reviewHtml = '<strong>We\'re really sorry but something seems to have go wrong.</strong><br>' +
+                                    'Please <a href="identify-suspect">return to the first page</a> and fill in any missing information.';
+                    }
+                    document.getElementById('review-text').innerHTML = reviewHtml;
+                }
+            },
+
+            reset: function () {
+                rcm.errorCount = 0;
+                rcm.errorMessages = '';
+                $(rcm.form).removeClass('invalid').parent().find('div.error-summary').remove();
+                // remove all valids and invalids?
+            },
+
+            bindUIActions: function () {
+
+                rcm.submitButton.on("click", function (e) {
+                    //e.preventDefault();
+                    ValidationObject.validateForm(e);
                 });
-            }
-        },
+
+                // toggle-controlled is a class that should only work to hide information when javascript is enabled
+                $('.toggle-controlled').hide();
+                $('.display-block-js').show();
+
+                $('.button-get-started, .clear-data').on('click', function() {
+                    ValidationObject.clearData();
+                });
 
 
-        validateForm: function (e) {
+                // generic toggle functionality
+                $('.toggle-control input[type="radio"]').on('click', function () {
+                    var sections = $(this).parents('.toggle-control').attr('data-toggle-target'),
+                        sectionOn = $(this).parents('.toggle-control').attr('data-toggle-target') + '__' + $(this).val().toLowerCase(),
+                        sectionFocus = ($(this).hasClass('toggle--focus')) ? true : false;
+                    $('.' + sections).hide();
+                    if (sectionFocus) {
+                        $('.' + sectionOn).show().focus().blur(); // focus but then remove the blue box
+                    } else {
+                        $('.' + sectionOn).show();
+                    }
+                });
+            },
 
-            //e.preventDefault();
+            disableHTML5validation: function () {
+                // disable html5 form checking (if we have js)
+                if (!$('html').hasClass('lte-ie8')) { // we can't have attr('novalidate) for IE7 - see https://www.google.co.uk/search?q=jquery%20ie7%20member%20not%20found - but this line is not required for IE8 and less anyway.
+                    rcm.form.attr('novalidate', 'novalidate').find('input[type="number"], input[type="tel"], input[type="email"]').each(function () {
+                        $(this).attr('type', 'text');
+                    });
+                }
+            },
 
-            ValidationObject.reset();
-
-            // loop each validation-group
-            $(rcm.form).find('.validation-group').removeClass('invalid valid').each(function () {
-                ValidationObject.validateGroup(this);
-            });
-
-            if (rcm.errorMessages !== '') {
+            displayMessageAndBlockSubmit: function (e, message) {
                 e.preventDefault();
-                $(rcm.form).prepend(rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem(s)').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>'));
-                $("html, body").animate({scrollTop:$('form').position().top - 20}, '500', 'swing');
+                $('h1').prepend(message);
+                $("html, body").animate({scrollTop:$('#error-summary').position().top}, '500', 'swing');
+                //$("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
+                $('#error-summary').focus();
 
-            } else {
-                ValidationObject.validateFormSets(e);
-            }
+                $('#error-summary a').click(function(e){
+                    $(this).blur();
+                    e.preventDefault();
+                    var target = $(this).attr('href');
+                    target = target.substr(target.indexOf('#'), target.length); // remove the whole path if included (e.g. in IE6)
+                    $('html, body').animate({
+                        scrollTop: $(target).offset().top
+                    }, 500);
+                });
+            },
 
-            ValidationObject.postProcessor(e);
+            fieldValid: function (el) {
+                if (!$(el).is(':visible')) {
+                    return null;
+                }
 
-        },
+                var inputType = (el.tagName.toLowerCase() === 'textarea') ? 'textarea' : $(el).attr('type');
+
+                switch (inputType) {
+                    case 'radio':
+                    case 'checkbox':
+                        return (el.checked) ? el.name : null;
+                    case 'text':
+                    case 'number':
+                    case 'email':
+                    case 'tel':
+                    case 'textarea':
+                        var regexObj, result, tooltip, defaultTooltip,
+                            value = el.value,
+                            pattern = $(el).attr('data-pattern');
+
+                        pattern = (pattern != null) ? pattern : $(el).attr('pattern');
 
 
+                        if (pattern == null) {
+//                            return (value !== '') ? el.name : null;
+                            if (value !== '') {
+                                $(el).removeClass('empty');
+                                return el.name;
+                            } else {
+                                $(el).addClass('empty');
+                                return null;
+                            }
+                        } else {
 
-        fieldValid: function (el) {
-            if (!$(el).is(':visible')) {
-                return null;
-            }
+                            $(el).removeClass('invalid empty').parent().find('.error-message').remove();
 
-            var inputType = (el.tagName.toLowerCase() === 'textarea') ? 'textarea' : $(el).attr('type');
-
-            switch (inputType) {
-            case 'radio':
-            case 'checkbox':
-                return (el.checked) ? el.name : null;
-            case 'text':
-            case 'number':
-            case 'email':
-            case 'tel':
-            case 'textarea':
-                var regexObj, result, tooltip, defaultTooltip,
-                    value = el.value,
-                    pattern = $(el).attr('data-pattern');
-
-                pattern = (pattern != null) ? pattern : $(el).attr('pattern');
-
-                if (pattern == null) {
-                    return (value !== '') ? el.name : null;
-                } else {
-
-                    /*if ($(el).next('p.sticky').get(0) != null) {
-                        defaultTooltip = $(el).next('p.sticky').attr('data-default-text');
-                        $(el).removeClass('invalid').next('p.sticky').html(defaultTooltip);
-                    } else {
-                        $(el).removeClass('invalid').next('p.form-hint.display-block').remove();
-                    }*/
-                    $(el).removeClass('invalid').parent().find('.error-message').remove();
-
-                    regexObj = new RegExp(pattern, "gi");
-                    result = regexObj.test(value);
-                    if (result) {
-                        return el.name;
-                    } else {
-                        if ($(el).val() !== '') {
-
-                            tooltip = $(el).attr('data-field-error');
-                            if (tooltip != null) {
-                                //if ($(el).next('p.sticky').get(0) != null) {
-                                //    $(el).next('p.sticky').html(tooltip);
-                                //} else {
-                                    //$(el).after('<p class="form-hint display-block">' + tooltip + '</p>');
-                                $(el).parent().find('label').prepend('<span class="error-message" aria-hidden="true">' + tooltip + '</span>');
-                                //}
+                            regexObj = new RegExp(pattern, "gi");
+                            result = regexObj.test(value);
+                            if (result) {
+                                return el.name;
+                            } else {
+                                if ($(el).val() === '') {
+                                    $(el).addClass('empty');
+                                } else {
+                                    tooltip = $(el).attr('data-field-error');
+                                    if (tooltip != null) {
+                                        if ($(el).prev('label') !== null) {
+                                            $(el).addClass('invalid').prev('label').append('<span class="error-message">' + tooltip + '</span>');
+                                        } else {
+                                            $(el).addClass('invalid').parent().find('label').append('<span class="error-message">' + tooltip + '</span>');
+                                        }
+                                        //}
+                                    } else {
+                                        $(el).addClass('invalid');
+                                    }
+                                }
+                                return null;
                             }
                         }
+                        break;
+                    default:
                         return null;
-                    }
+
                 }
-                break;
-            default:
-                return null;
+            },
 
-            }
-        },
+            invalidateElement: function (el) {
+                var id = $(el).attr('id');
+                if (id === null) { id = $(el).parents('.validation-group').attr('id')};
+                $(el).addClass('invalid');
 
-        invalidateElement: function (el) {
-            var id = $(el).attr('id');
-            if (id === null) { id = $(el).parents('.validation-group').attr('id')};
-            $(el).addClass('invalid');
-            rcm.errorMessages += '<li><a href="#' + id + '">' + rcm.validationMessage + '</a></li>';
-            rcm.errorCount += 1;
-        },
+                rcm.errorMessages += '<li><a href="#' + id + '">' + rcm.validationMessage + '</a></li>';
+                rcm.errorCount += 1;
+            },
 
-        validateGroup: function (el) {
+            validateGroups:function(e) {
+                var groupsOK  = true;
+                $(rcm.form).find('.validation-group').removeClass('invalid valid').each(function () {
+                    if (!ValidationObject.validateGroup(this)) {
+                        groupsOK = false;
+                    };
+                });
+                return groupsOK;
+            },
 
-            if ($(el).is(':visible')) {
+            validateGroup: function (el) {
 
-                rcm.validationMessage = $(el).attr('data-validation-message');
+                var groupOK = true;
+                if ($(el).is(':visible')) {
 
-                var fields, setOK, setsOK, sets,
-                    validationType = $(el).attr('data-validation-type'),
-                    typesToCheck = ['required--one-or-more', 'required--one', 'required--all', 'not-required--one-or-more', 'not-required--one'],
-                    fieldsWithValidValue = [],
-                    allFields = [];
+                    rcm.validationMessage = $(el).attr('data-validation-message');
+
+                    var fields, setOK, setsOK, sets,
+                        validationType = $(el).attr('data-validation-type'),
+                        typesToCheck = ['required--one-or-more', 'required--one', 'required--valid-or-empty', 'required--all', 'optional--one-or-more', 'optional--one'],
+                        fieldsWithValidValue = [],
+                        allFields = [];
 
 
-                if (typesToCheck.indexOf(validationType) !== -1) {
-
-                    fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
-                        return ValidationObject.fieldValid(this);
-                    }).get());
-                }
-
-                switch (validationType) {
-                // it's not required, so don't display error messages. But when there is valid data, mark it as such
-                case 'not-required--one-or-more':
-                case 'not-required--one':
-                    if (fieldsWithValidValue.length > 0) {
-                        $(el).addClass('valid');
+                    if (typesToCheck.indexOf(validationType) !== -1) {
+                        fieldsWithValidValue = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
+                            return ValidationObject.fieldValid(this); // RE: What if a field is required but doesn't have a pattern. It should show red, but does it?
+                        }).get());
                     }
-                    break;
-                case 'required--one-or-more':
-                case 'required--one':
-                    if (fieldsWithValidValue.length === 0) {
-                        ValidationObject.invalidateElement(el);
-                    } else {
-                        $(el).addClass('valid');
-                    }
-                    break;
 
-                case 'required--all':
-                    allFields = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
-                        return this.name;
-                    }).get());
-
-                    if (allFields.length > fieldsWithValidValue.length) {
-                        ValidationObject.invalidateElement(el);
-                    } else {
-                        $(el).addClass('valid');
-                    }
-                    break;
-
-                case 'required--set':
-
-                    setsOK = false;
-                    sets = $(el).attr('data-validation-set').split('|');
-
-                    for (var s = 0, sl = sets.length; s < sl; s += 1) {
-
-                        fields = sets[s].split(',');
-                        setOK = true;
-                        for (var f = 0, fl = fields.length; f < fl; f += 1) {
-                            if (!ValidationObject.fieldValid($(el).find('input[name="' + fields[f] + '"]').get(0))) {
-                                setOK = false;
-                                //don't break - keep checking the fields
+                    switch (validationType) {
+                        // it's not required, so don't display error messages. But when there is valid data, mark it as such
+                        case 'optional--one-or-more':
+                        case 'optional--one':
+                            if (fieldsWithValidValue.length > 0) {
+                                $(el).addClass('valid');
                             }
-                        }
-                        if (setOK) {
-                            setsOK = true;
-                            $(el).addClass('valid');
                             break;
-                        }
-                    }
-                    if (!setsOK) {
-                        ValidationObject.invalidateElement(el);
-                    }
-                    break;
-                default:
-                        // nothing
-                    break;
-                }
-            }
-        },
-
-
-
-
-        validateFormSets: function (e) {
-            var groups, groupOK, setsOK, sets,
-                formValidationType,
-                formErrorMessage,
-                formErrorMessages = [];
-
-            // move to external data file
-            formErrorMessages['fraud-suspect'] = '<p>Please make sure you enter at least</p>' +
-                '<ul class="list-bullet error-summary-list">' +
-                '<li>A name, approximate age (or date of birth) and an address</li>' +
-                '<li>A name, approximate age (or date of birth) and some additional info</li>' +
-                '<li>A National insurance number and an approximate age (or date of birth)</li>' +
-                '<li>A National insurance number and an address</li>' +
-                '</ol>';
-            formErrorMessages['fraud-suspect__3strikes'] = '<p>Having trouble? Call us on 0800 854 440.<br>' +
-                'Otherwise please make sure you enter at least</p>' +
-                '<ul class="list-bullet error-summary-list">' +
-                '<li>A name, approximate age (or date of birth) and either an address or some additional info</li>' +
-                '<li>A National insurance number and either an approximate age (or date of birth) or an address</li>' +
-                '</ul>';
-
-
-            // all the validate-groups have been checked - now check if the form requirements (sets) have been met
-
-            formValidationType = $(rcm.form).attr('data-form-validation-type');
-
-            if (formValidationType !== null && formValidationType !== '') {
-                switch (formValidationType) {
-                case 'required--set':
-                    setsOK = false;
-                    sets = $(rcm.form).attr('data-form-validation-set').split('|');
-
-                    for (var s = 0, sl = sets.length; s < sl; s += 1) {
-                        groups = sets[s].split(',');
-                        groupOK = true;
-
-                        for (var f = 0, fl = groups.length; f < fl; f += 1) {
-                            if (!$('[data-validation-id="' + groups[f] + '"]').hasClass('valid')) {
+                        case 'required--valid-or-empty':
+                            if (fieldsWithValidValue.length === 0 && $(el).find('input').val() !== '') {
+                                ValidationObject.invalidateElement(el);
                                 groupOK = false;
-                                break;
+                            } else {
+                                $(el).addClass('valid');
+                            }
+                            break;
+                        case 'required--one-or-more':
+                        case 'required--one':
+                            if (fieldsWithValidValue.length === 0) {
+                                ValidationObject.invalidateElement(el);
+                                groupOK = false;
+                            } else {
+                                $(el).addClass('valid');
+                            }
+                            break;
+
+                        case 'required--all':
+                            allFields = $.unique($(el).find(rcm.inputFields.join(',')).map(function () {
+                                return this.name;
+                            }).get());
+
+                            if (allFields.length > fieldsWithValidValue.length) {
+                                ValidationObject.invalidateElement(el);
+                                groupOK = false;
+                            } else {
+                                $(el).addClass('valid');
+                            }
+                            break;
+
+                        case 'required--set':
+
+                            setsOK = false;
+                            sets = $(el).attr('data-validation-sets').split('|');
+
+                            for (var s = 0, sl = sets.length; s < sl; s += 1) {
+
+                                fields = sets[s].split(',');
+                                setOK = true;
+                                for (var f = 0, fl = fields.length; f < fl; f += 1) {
+                                    if (!ValidationObject.fieldValid($(el).find('input[name="' + fields[f] + '"]').get(0))) {
+                                        setOK = false;
+                                        //don't break - keep checking the fields
+                                    }
+                                }
+                                if (setOK) {
+                                    setsOK = true;
+                                    $(el).addClass('valid');
+                                    break;
+                                }
+                            }
+                            if (!setsOK) {
+                                ValidationObject.invalidateElement(el);
+                                groupOK = false;
+                            }
+                            break;
+                        default:
+                            // nothing
+                            break;
+                    }
+                }
+
+                return groupOK;
+            },
+
+            validateFormSets: function (e) { // Called by validateForm. Checks if the form requirements (sets) have been met
+
+
+                var groups, groupOK, setsOK, sets, formValidationType,
+                    formErrorMessages = [];
+
+                // Load the messages:
+
+                formValidationType = $(rcm.form).attr('data-form-validation-type');
+
+                if (formValidationType !== null && formValidationType !== '') {
+                    switch (formValidationType) {
+                        case 'required--set':
+                            setsOK = false;
+                            sets = $(rcm.form).attr('data-form-validation-sets').split('|');
+
+                            for (var s = 0, sl = sets.length; s < sl; s += 1) {
+                                groups = sets[s].split(',');
+                                groupOK = true;
+
+                                for (var f = 0, fl = groups.length; f < fl; f += 1) {
+                                    if (!$('[data-form-validation-id="' + groups[f] + '"]').hasClass('valid')) {
+                                        groupOK = false;
+                                        break;
+                                    }
+                                }
+                                if (groupOK) {
+                                    setsOK = true;
+                                    break;
+                                }
+                            }
+                            if (!setsOK) {
+                                return false; // tell the function validateForm that this test failed
+                            }
+
+                            break;
+                    }
+                }
+                return true; // tell the function validateForm that this test passed
+            },
+
+            getFormData: function(fromLocalStorage) {
+
+                var formData, jsonData, elName, elValue, target, el, inSub, subName, inSubSub, subSubName, formID, values;
+
+                inSub = false;
+                subName = '';
+                inSubSub = false;
+                subSubName = '';
+                formID = rcm.formID;
+
+                formData = (fromLocalStorage === true) ? false: true;
+                jsonData = (formData) ? {} : ValidationObject.getSavedFormData(formID);
+
+                if (formData) {
+                    jsonData[formID] = {};
+                    values = jsonData[formID];
+                }
+
+                if ((!formData && jsonData[formID]) || formData) { //
+
+                    for (var i = 0, il = document.forms[formID].elements.length; i < il; i += 1) {
+
+                        el = document.forms[formID].elements[i];
+                        elName = (el.name === null || el.name === '' || el.name === undefined) ? null : el.name;
+
+                        if (elName !== null) {
+
+                            if (inSubSub && elName.indexOf(subSubName + '--') !== 0) {
+                                inSubSub = false;
+                                subSubName = '';
+                            }
+                            if (inSub && (elName.indexOf(subName + '--') !== 0 && elName.indexOf('helper--' + subName + '--') !== 0)) {
+                                inSub = false;
+                                subName = '';
+                            }
+
+                            if (formData) {
+                                elValue = el.value;
+                            } else {
+                                if (inSubSub) {
+                                    elValue = jsonData[formID][subName + '--data'][subSubName + '--data'][elName];
+                                } else if (inSub) {
+                                    elValue = jsonData[formID][subName + '--data'][elName];
+                                } else {
+                                    elValue = jsonData[formID][elName];
+                                }
+                            }
+
+                            if (elName !== '' && ['INPUT', 'TEXTAREA'].indexOf(el.tagName) !== -1) {
+
+                                if (formData) {
+                                    target = (inSubSub) ? values[subName + '--data'][subSubName + '--data'] : ((inSub) ? values[subName + '--data'] : values);
+                                }
+
+                                switch (el.type) {
+                                    case 'radio':
+                                        if (formData) {
+                                            if (el.checked) {
+                                                target[elName] = elValue;
+                                            }
+                                        } else {
+                                            if (el.value === elValue) {
+                                                $(el).trigger('click');
+                                            }
+                                        }
+                                        break;
+                                    case 'checkbox':
+                                        if (formData) {
+                                            if (el.checked) {
+                                                if (target[elName] != null) {
+                                                    target[elName][target[elName].length] = elValue;
+                                                } else {
+                                                    target[elName] = [];
+                                                    target[elName][0] = elValue;
+                                                }
+                                            }
+                                        } else {
+                                           if (elValue.indexOf(el.value) !== -1) {
+                                                el.checked = true;
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        if (formData) {
+                                            target[elName] = elValue;
+                                        } else {
+                                            el.value = elValue;
+                                        }
+                                        break;
+                                }
                             }
                         }
-                        if (groupOK) {
-                            setsOK = true;
-                            break;
+
+                        if (elName !== null && elName.indexOf('helper--') === 0) {
+
+                            if (inSub) {
+                                inSubSub = true;
+                                subSubName = elName.replace('helper--', '');
+                                if (formData) {
+                                    values[subName + '--data'][subSubName + '--data'] = {};
+                                }
+                            } else {
+                                inSub = true;
+                                subName = elName.replace('helper--', '');
+                                if (formData) {
+                                    values[subName + '--data'] = {};
+                                }
+                            }
                         }
                     }
-                    if (!setsOK) {
-                        e.preventDefault();
-                        var messageIdentifier = $(rcm.form).attr('data-form-validation-message').replace('$message--', '');
-                        formErrorMessage = formErrorMessages[messageIdentifier];
-                        rcm.threeStrikesCount += 1;
-                        if (rcm.threeStrikesCount >= 3) {
-                            formErrorMessage = (formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : formErrorMessages[messageIdentifier + '__3strikes'];
+                }
+
+                if (formData) {
+                    return jsonData;
+                }
+            },
+
+            getSavedFormData: function(formID) {
+
+                var tmpJSON, tmpValue,
+                    formJSON = {},
+                    formIDsString = (formID === null) ? ValidationObject.storageGetItem('formIDs') : formID,
+                    formIDs;
+
+                if (formIDsString != null) {
+                    formIDs = formIDsString.split(',');
+
+
+                    for (var i = 0, il = formIDs.length; i < il; i += 1) {
+                        tmpValue = ValidationObject.storageGetItem(formIDs[i]);
+
+                        if (tmpValue !== null) {
+                            tmpJSON = JSON.parse(tmpValue);
+                            formJSON[formIDs[i]] = tmpJSON[formIDs[i]];
                         }
-                        //$(rcm.form).addClass('invalid').find('input[type="submit"]').before('<div class="validation-message">' + formErrorMessage + '</div>');
-                        //$(rcm.form).addClass('invalid').before('<div class="validation-message">' + formErrorMessage + '</div>');
-                        $(rcm.form).addClass('invalid').before(rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
-                        $("html, body").animate({scrollTop:$('h1').position().top}, '500', 'swing');
+                    }
+                }
+                return formJSON;
+            },
+
+            postProcessor: function (e) {
+                var selected;
+
+                switch (rcm.formID) {
+                    //case 'form__fraud-type' : // redirect based on user input
+                    //
+                    //    var partnerSelected,
+                    //        partnerOptions = ['livingWithPartner'];
+                    //
+                    //    // reset the route cookie
+                    //    ValidationObject.storageRemoveItem('fraud-type');
+                    //
+                    //    selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
+                    //        return this.value;
+                    //    }).get();
+                    //    // store the choices in a cookie
+                    //    ValidationObject.storageSetItem('fraud-type', selected.join('+'));
+                    //
+                    //    partnerSelected = $.grep(selected, function (n) {
+                    //        return (partnerOptions.indexOf(n) !== -1);
+                    //    });
+                    //
+                    //    if (partnerSelected.length === 0) {
+                    //        e.preventDefault();
+                    //        document.location.href = '/rcm/employment-suspect';
+                    //    }
+                    //    break;
+
+                    case 'form__employment-prompt': // redirect based on user input
+
+
+                        e.preventDefault();
+
+                        if (document.forms[rcm.formID].elements['employment'][0].checked) {
+                            document.location.href = '/rcm/employment-suspect';
+                        } else {
+                            document.location.href = '/rcm/undeclared-income';
+                        }
+
+                        break;
+                    case 'form__living-arrangement' :
+                        e.preventDefault();
+
+                        if (document.forms[rcm.formID].elements['living-together'][0].checked) {
+                            document.location.href = '/rcm/identify-partner';
+                        } else {
+                            document.location.href = '/rcm/other-information';
+                        }
+                        break;
+
+                    case 'form__identify-partner' :
+                        e.preventDefault();
+
+                        if (document.forms[rcm.formID].elements['employment'][0].checked) {
+                            document.location.href = '/rcm/employment-partner';
+                        } else {
+                            document.location.href = '/rcm/other-information';
+                        }
+                        break;
+
+                    case 'form__review':
+
+                        /* final submit
+                        1. collect data; form JSON
+                        2. Use Ajax to submit data
+                        3. if result = ok: proceed
+                        4. if false: display error message & try again
+                        */
+
+                        e.preventDefault();
+
+                        var formData,
+                            ms,
+                            time = new Date(),
+                            formJSON = ValidationObject.getSavedFormData(null);
+
+                        formData = {
+                            "caller": "RCM",
+                            "timestamp": Date(),
+                            "values": formJSON
+                        };
+
+                        ms = time.getTime();
+
+                        $('#submit-cover').show();
+                        //console.log('Submitting data. formData = ');
+                        //console.log(JSON.stringify(formData));
+
+                        // NB install this plugin if you need to post directly to a different domain/ port: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
+                        $.support.cors = true; // for IE7
+                        $.ajax({
+                            type: "POST",
+                            url: "/submitEvidence",
+                            dataType: 'text',
+                            data: JSON.stringify(formData),
+                            crossDomain: true
+                        }).done(function(returnData) {
+                            if (returnData !== 'Error connecting to server: Error: getaddrinfo ENOTFOUND') {
+                                ValidationObject.clearData();
+                                time = new Date();
+                                ms = time.getTime() - ms;
+                                // make sure that at least 2 seconds pass so that it looks like the system really has been busy
+                                setTimeout(function () {
+                                    $('#submit-cover .clock').remove();
+                                    document.location.href = document.forms[rcm.formID].action;
+                                }, 500 - ms);
+                            } else {
+
+                                $('#submit-cover').hide();
+                                ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                            $('#submit-cover').hide();
+                            ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', rcm.submitErrorMessage));
+                        });
 
                         return false;
-                    }
-
-                    break;
+                        break;
                 }
-            }
-        },
+            },
 
-        postProcessor: function (e) {
-            var redirectsSelected,
-                selected,
-                redirects = ['disabilityCarers', 'abroad', 'idFraud', 'savingsCapital'];
+            storageRemoveItem: function (key) {
+                if (rcm.localStorage) {
+                    sessionStorage.removeItem(key);
+                } else if (rcm.userDataStorage) {
 
-            switch ($(rcm.form).attr('id')) {
-                case 'form__fraud-type' : // redirect to new or old website based on user input
+                    var timestamp = new Date(); // set the data to expire in an hour
+                    timestamp.setMinutes(timestamp.getMinutes() + 60);
+                    var expirationDate = timestamp.toUTCString();
+                    rcm.userDataObj.expires = expirationDate;
 
-                    // reset the route cookie
-                    docCookies.removeItem('fraud-type');
+                    rcm.userDataObj.removeAttribute(key);
+                    rcm.userDataObj.save('rcmData');
 
-                    selected = $(rcm.form).find('input[type="checkbox"][name="fraud-type"]:checked').map(function () {
-                        return this.value;
-                    }).get();
+                 } /*else {
+                    docCookies.removeItem(key);
+                }*/
+            },
 
-                    redirectsSelected = $.grep(selected, function (n) {
-                        return (redirects.indexOf(n) !== -1);
-                    });
-                    if (redirectsSelected.length > 0) {
-                        e.preventDefault();
-                        document.location.href = 'https://secure.dwp.gov.uk/benefitfraud/';
-                    } else {
-                        // store the choices in a cookie
-                        docCookies.setItem('fraud-type', selected.join('+'));
+            storageSetItem: function (key, value) {
+                if (rcm.localStorage) {
+                    sessionStorage.setItem(key, value);
+                } else if (rcm.userDataStorage) {
+
+
+                    var timestamp = new Date(); // set the data to expire in an hour
+                    timestamp.setMinutes(timestamp.getMinutes() + 60);
+                    var expirationDate = timestamp.toUTCString();
+                    rcm.userDataObj.expires = expirationDate;
+
+                    rcm.userDataObj.setAttribute(key, value);
+                    rcm.userDataObj.save('rcmData');
+
+                } /*else {
+                    docCookies.setItem(key, value);
+                } */
+            },
+
+            storageGetItem: function (key) {
+                if (rcm.localStorage) {
+                    return sessionStorage.getItem(key);
+                } else if (rcm.userDataStorage) {
+
+                    return rcm.userDataObj.getAttribute(key);
+                 } /*else {
+                    return docCookies.getItem(key);
+                }*/
+            },
+
+            storeData: function () {
+
+                var formJSON = ValidationObject.getFormData(),
+                    formIDsString = ValidationObject.storageGetItem('formIDs'),
+                    formIDs;
+
+
+                formIDs = (formIDsString == null) ? [] : formIDsString.split(',');
+                if (formIDs.indexOf(rcm.formID) === -1) {
+                    formIDs.push(rcm.formID);
+                    ValidationObject.storageSetItem('formIDs', formIDs.join(','));
+                }
+                var jsonString = JSON.stringify(formJSON);
+                ValidationObject.storageSetItem(rcm.formID, jsonString);
+            },
+
+            validateForm: function (e) {
+
+                // e.preventDefault();
+
+                // initialise the validation object
+                ValidationObject.reset();
+
+                // 1, Validate the validation groups
+                if (!ValidationObject.validateGroups()) {
+
+                    var message = rcm.messageTemplate.replace('[customMessage]', 'Please check the following problem or problems').replace('[errorMessages]', '<ul class="list-bullet error-summary-list">' + rcm.errorMessages + '</ul>');
+                    ValidationObject.displayMessageAndBlockSubmit(e, message);
+
+                    e.preventDefault();
+                    return;
+                }
+
+                // 2. Validate the form sets
+                if (!ValidationObject.validateFormSets()) {
+
+                    var messageIdentifier = $(rcm.form).attr('data-form-validation-message').replace('$message--', '');
+                    var formErrorMessage = rcm.formErrorMessages[messageIdentifier];
+
+                    rcm.threeStrikesCount += 1;
+                    if (rcm.threeStrikesCount >= 3) {
+                        formErrorMessage = (rcm.formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : rcm.formErrorMessages[messageIdentifier + '__3strikes'];
                     }
-                    break;
+                    $(rcm.form).addClass('invalid');
+                    ValidationObject.displayMessageAndBlockSubmit(e, rcm.messageTemplate.replace('<p>[customMessage]</p>', '').replace('[errorMessages]', formErrorMessage));
 
+                    return;
+                }
+
+
+                // 3. store data client-side
+                ValidationObject.storeData();
+
+                // 4. anything else?
+                ValidationObject.postProcessor(e);
+            },
+
+            clearData: function () {
+
+                var formIDsString = ValidationObject.storageGetItem('formIDs'),
+                    keys;
+
+
+                // form__fraud-type,form__identify-partner,form__employment-prompt,form__employment-suspect,form__other-information,form__identify-suspect
+
+
+                keys = (formIDsString == null) ? [] : formIDsString.split(',');
+                keys.push('fraud-type');
+                keys.push('formIDs');
+
+                for (var k = 0, kl = keys.length; k < kl; k += 1) {
+                    ValidationObject.storageRemoveItem(keys[k]);
+                }
+                return false;
             }
-        }
 
-    };
+        };
 
     var pageSetup = function () {
-
-        $('a.previousPage').on('click', function (e) {
+        $('a.previousPage.js-routed').on('click', function (e) {
             e.preventDefault();
-            window.history.back();
-        });
-
-        // implement how user choices affect their journey
-
-
-        var myRoute = docCookies.getItem('fraud-type');
-
-        if (myRoute !== null && myRoute !== '') {
-            var cpIndex, newPage,
-                routes = [],
-                currentPage = document.location.href.replace();
-
-            routes['workEarning'] = ['identify-suspect', 'employment-suspect', 'vehicle', 'other-information', 'complete'];
-            routes['livingWithPartner'] = ['identify-suspect', 'identify-partner', 'vehicle', 'other-information', 'complete'];
-            routes['workEarning+livingWithPartner'] = ['identify-suspect', 'identify-partner', 'employment-prompt','vehicle', 'other-information', 'complete'];
-
+            var routeData,
+                newPage = 'javascript:history.back()',
+                currentPage = document.location.href;
             currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
-            cpIndex = routes[myRoute].indexOf(currentPage);
-            newPage = routes[myRoute][cpIndex + 1];
-
-            $('form.js-routed').each(function() {
-                $(this).attr('action', newPage + '/');
-            });
+            currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
 
-        }
+            switch (currentPage) {
+                case 'undeclared-income':
+                    routeData = JSON.parse(ValidationObject.storageGetItem('form__employment-prompt'));
+                    newPage = (routeData['form__employment-prompt']['employment'] === 'Yes') ? 'employment-suspect' : 'employment-prompt';
+                    break;
+                case 'other-information':
+                    routeData = JSON.parse(ValidationObject.storageGetItem('form__living-arrangement'));
+                    if (routeData['form__living-arrangement']['living-together'] === 'Yes') {
+                        routeData = JSON.parse(ValidationObject.storageGetItem('form__identify-partner'));
+                        newPage = (routeData['form__identify-partner']['employment'] === 'Yes') ? 'employment-partner' : 'identify-partner';
+                    } else {
+                        newPage = 'living-arrangement';
+                    }
+                    break;
+            }
 
+            document.location.href = newPage;
+
+        });
     };
 
     $(document).ready(function () {
         pageSetup();
-        ValidationObject.init('js-check');
+        ValidationObject.init();
+        ValidationObject.getFormData(true);
+
+
+        var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
+        new GOVUK.SelectionButtons($blockLabels);
+
     });
 
 

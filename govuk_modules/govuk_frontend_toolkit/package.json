@@ -14,9 +14,27 @@
   "bugs": {
     "url": "https://github.com/alphagov/govuk_frontend_toolkit/issues"
   },
-  "readme": "# GOV.UK frontend toolkit npm package\n\nThis is an npm package for [the GOV.UK frontend toolkit][toolkit].\nIt bundles up the toolkit and publishes [govuk_frontend_toolkit on the npmjs registry][npmjs]\nso that you can install it as a dependency in your JavaScript application.\n\n[toolkit]: https://github.com/alphagov/govuk_frontend_toolkit\n[npmjs]: https://www.npmjs.org/package/govuk_frontend_toolkit\n\n## Installing\n\nTo include the toolkit in your project run:\n\n```\nnpm install --save govuk_frontend_toolkit\n```\n\nThis will install the toolkit inside your node_modules and will add the package to you package.json.\n\n## Updating this package\n\nThis package is updated automatically by a job on GDS' continuous integration server whenever\nthe `VERSION.txt` file in the toolkit changes.\n\nAll development of the toolkit should happen [upstream][toolkit] and changes will then become\navailable in this package.\n\n## Licence\n\n[MIT License](LICENCE)\n",
-  "readmeFilename": "README.md",
+  "gitHead": "61bddafbaa537f2200527be1c484fa8cfd6e24b6",
   "homepage": "https://github.com/alphagov/govuk_frontend_toolkit_npm",
   "_id": "govuk_frontend_toolkit@3.4.2",
-  "_from": "govuk_frontend_toolkit@~3.4.1"
+  "scripts": {},
+  "_shasum": "495e9fb2d6c42d2cd9476a7474f602f9f5e073fb",
+  "_from": "govuk_frontend_toolkit@>=3.4.1 <3.5.0",
+  "_npmVersion": "1.4.28",
+  "_npmUser": {
+    "name": "alphagov",
+    "email": "govuk-dev@digital.cabinet-office.gov.uk"
+  },
+  "maintainers": [
+    {
+      "name": "alphagov",
+      "email": "govuk-dev@digital.cabinet-office.gov.uk"
+    }
+  ],
+  "dist": {
+    "shasum": "495e9fb2d6c42d2cd9476a7474f602f9f5e073fb",
+    "tarball": "http://registry.npmjs.org/govuk_frontend_toolkit/-/govuk_frontend_toolkit-3.4.2.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/govuk_frontend_toolkit/-/govuk_frontend_toolkit-3.4.2.tgz"
 }
