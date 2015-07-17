@@ -131,6 +131,46 @@
                 }
             },
 
+            otherInformation: function () {
+              rcm = this.settings;
+              if(rcm.formID === 'form__other-information') {
+                var formJSON = ValidationObject.getSavedFormData(null);
+                if ((formJSON['form__living-abroad']['helper--living-abroad'] === 'No') &&
+                (formJSON['form__disability']['helper--disability'] === 'No') &&
+                (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'No'))
+
+                {
+                  if (formJSON['form__employment-prompt']['employment'] === 'Yes') {
+
+                    if (((formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'Yes') || (formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'Unknown')) &&
+                    (formJSON['form__undeclared-income'] && formJSON['form__undeclared-income']['helper--undeclared-income'] === 'No') &&
+                    (formJSON['form__carers']['helper--carers'] === 'No') &&
+                    (formJSON['form__living-arrangement']['living-together'] === 'No'))
+
+                    {
+                      document.getElementById('otherInformation').innerHTML = 'What do you want to report?';
+                    }
+                    else {
+                        document.getElementById('otherInformation').innerHTML = 'What else do you want to say about the situation you’re reporting?';
+                    }
+                  }
+                  else {
+                    if ((formJSON['form__undeclared-income'] && formJSON['form__undeclared-income']['helper--undeclared-income'] === 'No') &&
+                    (formJSON['form__carers']['helper--carers'] === 'No') &&
+                    (formJSON['form__living-arrangement']['living-together'] === 'No'))
+
+                    {
+                        document.getElementById('otherInformation').innerHTML = 'What do you want to report?';
+                    }
+                    else {
+                        document.getElementById('otherInformation').innerHTML = 'What else do you want to say about the situation you’re reporting?';
+                    }
+                  }
+
+                }
+              }
+            },
+
             reset: function () {
                 rcm.errorCount = 0;
                 rcm.errorMessages = '';
@@ -597,34 +637,6 @@
 
                         break;
 
-                    case 'form__living-arrangement':
-
-                        e.preventDefault();
-                          if (document.forms[rcm.formID].elements['living-together'][0].checked) {
-                              document.location.href = '/rcm/identify-partner';
-                            }
-                            else {
-
-                              rcm = this.settings;
-                              var formJSON = ValidationObject.getSavedFormData(null);
-                              if ((formJSON['form__living-abroad']['helper--living-abroad'] === 'No') &&
-                              (formJSON['form__disability']['helper--disability'] === 'No') &&
-                              (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'No') &&
-                              ((formJSON['form__employment-prompt']) &&
-                                ((formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'Yes') || (formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'Unknown'))) &&
-
-                              (formJSON['form__undeclared-income'] && formJSON['form__undeclared-income']['helper--undeclared-income'] === 'No') &&
-                              (formJSON['form__carers']['helper--carers'] === 'No') &&
-                              (formJSON['form__living-arrangement']['living-together'] === 'No'))
-                              {
-                                document.location.href = '/rcm/other-information-prompt';
-                              }
-                              else {
-                                  document.location.href = '/rcm/other-information';
-                              }
-                          }
-                        break;
-
                     case 'form__living-arrangement' :
                         e.preventDefault();
 
@@ -868,6 +880,7 @@
         pageSetup();
         ValidationObject.init();
         ValidationObject.getFormData(true);
+        ValidationObject.otherInformation();
 
         var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
         new GOVUK.SelectionButtons($blockLabels);
