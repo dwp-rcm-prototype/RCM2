@@ -86,7 +86,7 @@
                     if (formJSON['form__identify-suspect']) {
                         suspect = formJSON['form__identify-suspect']['first-name'] + ' ' + formJSON['form__identify-suspect']['last-name'];
 
-                        reviewHtml = '<p>You\'re telling us that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
+                        reviewHtml = '<p>You\'re saying that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
 
 
                         if (formJSON['form__living-abroad']['helper--living-abroad'] === 'Yes') {
@@ -116,12 +116,12 @@
                             reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
                         } else {
                             if (formJSON['form__other-information']['additional-information'] !== '') {
-                                reviewHtml = 'You haven\'t identified any fraudulent activities, but we will review what you wrote on the Additional Information page. ';
+                                reviewHtml = formJSON['form__other-information']['additional-information'] + '<br><br>';
                             } else {
                                 reviewHtml = 'You haven\'t identified any fraudulent activities. ';
                             }
                         }
-                        reviewHtml += 'If you want, you can click on the \'back\' button at the top to step back through the form and review your answers.';
+                        reviewHtml += 'If you want you can click \'back\' and review your answers.';
 
                     } else {
                         reviewHtml = '<strong>We\'re really sorry but something seems to have go wrong.</strong><br>' +
@@ -592,9 +592,39 @@
                             document.location.href = '/rcm/employment-suspect';
                         } else {
                             document.location.href = '/rcm/undeclared-income';
+                            ValidationObject.storageRemoveItem('form__employment-suspect');
                         }
 
                         break;
+
+                    case 'form__living-arrangement':
+
+                        e.preventDefault();
+                          if (document.forms[rcm.formID].elements['living-together'][0].checked) {
+                              document.location.href = '/rcm/identify-partner';
+                            }
+                            else {
+
+                              rcm = this.settings;
+                              var formJSON = ValidationObject.getSavedFormData(null);
+                              if ((formJSON['form__living-abroad']['helper--living-abroad'] === 'No') &&
+                              (formJSON['form__disability']['helper--disability'] === 'No') &&
+                              (formJSON['form__identity-fraud']['helper--identity-fraud'] === 'No') &&
+                              ((formJSON['form__employment-prompt']) &&
+                                ((formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'Yes') || (formJSON['form__employment-suspect']['helper--reporting-all-income'] === 'Unknown'))) &&
+
+                              (formJSON['form__undeclared-income'] && formJSON['form__undeclared-income']['helper--undeclared-income'] === 'No') &&
+                              (formJSON['form__carers']['helper--carers'] === 'No') &&
+                              (formJSON['form__living-arrangement']['living-together'] === 'No'))
+                              {
+                                document.location.href = '/rcm/other-information-prompt';
+                              }
+                              else {
+                                  document.location.href = '/rcm/other-information';
+                              }
+                          }
+                        break;
+
                     case 'form__living-arrangement' :
                         e.preventDefault();
 
@@ -838,7 +868,6 @@
         pageSetup();
         ValidationObject.init();
         ValidationObject.getFormData(true);
-
 
         var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
         new GOVUK.SelectionButtons($blockLabels);
