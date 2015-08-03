@@ -22,7 +22,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="type-of-fraud/" id="form__identify-suspect" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="name,dob,address" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="type-of-fraud/" id="form__identify-suspect" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="address|name,age,address|name,dob,address|" data-form-validation-message="$message--fraud-suspect">
 
 <!-- NAME -->
 
@@ -123,7 +123,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
         </fieldset>
 
 <!-- NATIONAL INSURANCE NUMBER -->
-
+<!--
         <fieldset class="hide" aria-live="polite">
             <legend>Do you know their National Insurance number?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--nino" data-validation-type="optional--one" data-validation-message="Please tell us if you know this person's national insurance number" >
@@ -148,7 +148,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
         </fieldset>
 
 <!-- ADDITIONAL INFO -->
-
+<!--
         <fieldset class="hide" aria-live="polite">
             <legend>Do you know their telephone number?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--telephone" data-validation-type="optional--one" data-validation-message="Please tell us if you know their telephone number" >
@@ -188,7 +188,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
                 <label class="form-label" for="email--email">Email address </label>
                 <input class="form-control" name="email--email" id="email--email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address" autocomplete="off">
             </div>
-        </fieldset>
+        </fieldset>-->
         <!--
         NB: If this question is reintroduced, the following 2 sets may beed to be added back to data-form-validation-set: name,age,social-media|name,dob,social-media
                 <fieldset>
