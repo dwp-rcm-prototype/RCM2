@@ -747,7 +747,7 @@
                 currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
-                var formAction = validationObject.getNextPage(fraudTypes, currentPage);
+                var formAction = ValidationObject.getNextPage(fraudTypes, currentPage);
                 console.log('currentPage = ' + currentPage);
                 console.log('formAction = ' + formAction)
                 $('form#' + rcm.formID).attr('action', formAction + '/');
