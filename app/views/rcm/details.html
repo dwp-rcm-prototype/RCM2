@@ -1,0 +1,72 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: What type of fraud
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-link"><a href="identify-suspect/" class="previousPage">Back</a></div>
+
+    <h1 class="heading-large">
+        What information do you have about the person?
+    </h1>
+
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="identify-suspect/" id="form__details" class="js-check">
+
+        <div class="validation-group" data-validation-type="required--one-or-more" data-validation-message="Please select as many as you can" >
+
+            <fieldset>
+                <legend>
+Select as many as you can
+                </legend>
+
+                <label class="block-label" for="theirName">
+                    <input id="theirName" name="details" type="checkbox" value="theirName">
+                    Their name
+                </label>
+                <label class="block-label" for="address">
+                    <input id="address" name="details" type="checkbox" value="address">
+                    Address
+                </label>
+
+                <label class="block-label" for="dobApproximateAge">
+                    <input id="dobApproximateAge" name="details" type="checkbox" value="dobApproximateAge">
+                    Date of birth / approximate age
+                </label>
+                <label class="block-label" for="phoneNumber">
+                    <input id="phoneNumber" name="details" type="checkbox" value="phoneNumber">
+                    Phone number
+                </label>
+                <label class="block-label" for="NINumber">
+                    <input id="NINumber" name="details" type="checkbox" value="NINumber">
+                    National insurance number
+                </label>
+                <label class="block-label" for="emailAddress">
+                    <input id="emailAddress" name="details" type="checkbox" value="emailAddress">
+                    Email address
+                </label>
+
+            </fieldset>
+        </div>
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+
+</main>
+
+{{/content}}
+
+{{/layout}}

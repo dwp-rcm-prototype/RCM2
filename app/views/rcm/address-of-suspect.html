@@ -1,0 +1,55 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: What type of fraud
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-link"><a href="identify-suspect/" class="previousPage">Back</a></div>
+
+    <h1 class="heading-large">
+        Do you also know the address of the person?
+    </h1>
+    <h2 class="heading-medium">
+        You need more information to make a report.
+    </h2>
+
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="sorry/" id="form__details" class="js-check">
+
+        <div class="validation-group" data-validation-type="required--one-or-more" data-validation-message="Please select as many as you can" >
+
+            <fieldset>
+
+                <label class="block-label" for="address-yes">
+                    <input id="address-yes" name="details-address" type="checkbox" value="address-yes">
+                    Yes
+                </label>
+                <label class="block-label" for="address-no">
+                    <input id="address-no" name="details-address" type="checkbox" value="address-no">
+                    No
+                </label>
+
+            </fieldset>
+        </div>
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+
+</main>
+
+{{/content}}
+
+{{/layout}}
