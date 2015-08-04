@@ -25,6 +25,13 @@ fieldset.invalid {
     }
 }
 
+body.js-enabled form#form__identify-suspect fieldset {
+  display: none;
+}
+
+body form#form__identify-suspect fieldset.show {
+  display: block;
+}
 
 .validation-message {
     font-size: 19px;

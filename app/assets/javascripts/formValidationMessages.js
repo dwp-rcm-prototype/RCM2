@@ -10,6 +10,9 @@ function initFormErrorMessages() {
     '<li>A National insurance number and an address</li>' +
     '</ol>';
 
+    messages['details'] = '' +
+    '<p>Please select as many as you can</p>';
+
     messages['fraud-suspect__3strikes'] = '' +
     '<p>' +
     'Having trouble? Call us on 0800 854 440.<br>' +

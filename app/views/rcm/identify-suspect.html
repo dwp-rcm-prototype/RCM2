@@ -14,7 +14,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
         </div>
     </div>
 
-    <div class="back-link"><a href="report-benefit-fraud/" class="previousPage">Back</a></div>
+    <div class="back-link"><a href="details/" class="previousPage">Back</a></div>
 
     <h1 class="heading-large">
         Who do you want to report?
@@ -26,7 +26,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
 <!-- NAME -->
 
-        <fieldset aria-live="polite">
+        <fieldset aria-live="polite" id="theirName">
             <legend class="a11y">Suspect's name</legend>
 
             <div class="validation-group" data-form-validation-id="name" data-validation-type="required--one" data-validation-message="Please enter the suspect's name">
@@ -35,7 +35,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
             </div>
 
-            <div class="validation-group toggle-control" data-toggle-target="section--alternative-name" data-validation-type="optional--one" data-validation-message="Please tell us if you know this person by another name" >
+            <div class="validation-group toggle-control theirName" data-toggle-target="section--alternative-name" data-validation-type="optional--one" data-validation-message="Please tell us if you know this person by another name" >
                 <p class="legend">Do you know this person by another name?<br>
                     <span class="form-hint">For example nickname, professional name or maiden name</span>
                 </p>
@@ -59,7 +59,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
 <!-- AGE -->
 
-        <fieldset aria-live="polite">
+        <fieldset aria-live="polite" id="dobApproximateAge">
             <legend>Do you know their date of birth?</legend>
             <div class="validation-group inline toggle-control" data-toggle-target="section--dob" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's date of birth" >
 
@@ -101,7 +101,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
 <!-- ADDRESS -->
 
-        <fieldset aria-live="polite">
+        <fieldset aria-live="polite" id="address">
             <legend>Full address</legend>
 
             <div class="section--address section--address__yes validation-group" aria-describedby="address__yes" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
@@ -124,23 +124,10 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
 <!-- NATIONAL INSURANCE NUMBER -->
 
-        <fieldset class="hide" aria-live="polite">
-            <legend>Do you know their National Insurance number?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--nino" data-validation-type="optional--one" data-validation-message="Please tell us if you know this person's national insurance number" >
-
-                <label class="block-label" for="nino__yes">
-                    <input id="nino__yes" type="radio" class="toggle-section" name="helper--nino" value="Yes">
-                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know the National Insurance number</span>
-                </label>
-                <label class="block-label" for="nino__no">
-                    <input id="nino__no" type="radio" class="toggle-section" name="helper--nino" value="No">
-                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know the National Insurance number</span>
-                </label>
-            </div>
-
-            <div class="section--nino section--nino__yes toggle-controlled panel-indent validation-group" aria-describedby="nino__yes" data-form-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the National Insurance number">
+        <fieldset aria-live="polite" id="NINumber">
+            <legend>Please enter their National Insurance number</legend>
+            <div class="section--nino validation-group" aria-describedby="nino" data-form-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the National Insurance number">
                 <label class="form-label" for="nino--ni-number">
-                    Please enter their National Insurance number
                     <span class="form-hint">For example QQ123456C</span>
                 </label>
                 <input type="text" class="form-control" id="nino--ni-number" name="nino--ni-number" data-pattern="^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{1}[A-CEGHJ-NPR-TW-Z]{1}[0-9]{6}[A-D]{0,1}$" data-field-error="Please enter a valid National Insurance number." maxlength="9" autocomplete="off">
@@ -149,43 +136,19 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
 <!-- ADDITIONAL INFO -->
 
-        <fieldset class="hide" aria-live="polite">
-            <legend>Do you know their telephone number?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--telephone" data-validation-type="optional--one" data-validation-message="Please tell us if you know their telephone number" >
-
-                <label class="block-label" for="telephone__yes">
-                    <input type="radio" id="telephone__yes" class="toggle-section" name="helper--telephone" value="Yes">
-                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know their telephone number</span>
-                </label>
-                <label class="block-label" for="telephone__no">
-                    <input type="radio" id="telephone__no" class="toggle-section" name="helper--telephone" value="No">
-                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know their telephone number</span>
-                </label>
-            </div>
-            <div class="section--telephone section--telephone__yes toggle-controlled panel-indent validation-group" aria-describedby="telephone__yes" data-form-validation-id="telephone" data-validation-type="required--one-or-more" data-validation-message="Please enter at least one telephone number">
+        <fieldset aria-live="polite" id="phoneNumber">
+            <legend>Please enter their telephone number?</legend>
+            <div class="section--telephone validation-group" aria-describedby="telephone" data-form-validation-id="telephone" data-validation-type="required--one" data-validation-message="Please enter a telephone number">
                 <label class="form-label" for="telephone--number">Telephone number</label>
                 <input class="form-control" name="telephone--number" id="telephone--number" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number" autocomplete="off">
             </div>
-
         </fieldset>
 
 
-        <fieldset class="hide" aria-live="polite">
-            <legend>Do you know their email address?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--email" data-validation-type="optional--one" data-validation-message="Please tell us if you know their email address" >
-
-                <label class="block-label" for="email__yes">
-                    <input type="radio" id="email__yes" class="toggle-section" name="helper--email" value="Yes">
-                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know their email address</span>
-                </label>
-                <label class="block-label" for="email__no">
-                    <input type="radio" id="email__no" class="toggle-section" name="helper--email" value="No">
-                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know their email address</span>
-                </label>
-            </div>
-            <div class="section--email section--email__yes toggle-controlled panel-indent validation-group" aria-describedby="email__yes" data-form-validation-id="email" data-validation-type="required--one" data-validation-message="Please enter their email address">
-
-                <label class="form-label" for="email--email">Email address </label>
+        <fieldset aria-live="polite" id="emailAddress">
+            <legend>Please enter their email address?</legend>
+            <div class="section--email validation-group" aria-describedby="email" data-form-validation-id="email" data-validation-type="required--one" data-validation-message="Please enter their email address">
+                <label class="form-label" for="email--email">Email address</label>
                 <input class="form-control" name="email--email" id="email--email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address" autocomplete="off">
             </div>
         </fieldset>

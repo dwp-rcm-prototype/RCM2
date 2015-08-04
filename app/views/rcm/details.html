@@ -23,15 +23,13 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="identify-suspect/" id="form__details" class="js-check">
+    <form method="post" action="identify-suspect/" id="form__details" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="theirName, phoneNumber, emailAddress"  data-form-validation-message="$message--details">
+        <div class="validation-group" data-validation-type="required--three-or-more" data-validation-message="ccc">
 
-        <div class="validation-group" data-validation-type="required--one-or-more" data-validation-message="Please select as many as you can" >
-
-            <fieldset>
+            <fieldset aria-live="polite">
                 <legend>
 Select as many as you can
                 </legend>
-
                 <label class="block-label" for="theirName">
                     <input id="theirName" name="details" type="checkbox" value="theirName">
                     Their name

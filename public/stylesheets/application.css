@@ -1055,6 +1055,12 @@ fieldset.invalid, fieldset.invalid:focus, .validation-group.invalid fieldset.emp
     padding-left: 32px;
     margin-left: -36px; } }
 
+body.js-enabled form#form__identify-suspect fieldset {
+  display: none; }
+
+body form#form__identify-suspect fieldset.show {
+  display: block; }
+
 .validation-message, .error-summary {
   font-size: 19px;
   clear: both;
