@@ -114,10 +114,10 @@
                     if (formJSON['form__fraud-type']['fraud-type']['livingWithPartner'] != false) {
                         typeHTML += '<li>is living with a partner but saying they live alone</li> ';
                     };
-                    if (formJSON['form__fraud-type']['fraud-type']['unsure'] != false) {
+                    /*if (formJSON['form__fraud-type']['fraud-type']['unsure'] != false) {
                         typeHTML = '';
                     };
-
+*/
                     if (typeHTML !== '') {
                         reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
                         if (formJSON['form__other-information']['additional-information'] !== '') {
