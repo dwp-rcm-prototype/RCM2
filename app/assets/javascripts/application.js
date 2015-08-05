@@ -84,6 +84,60 @@
                 }
 
             }
+
+            if(rcm.formID === 'form__review') {
+                var reviewHtml,
+                    typeHTML = '',
+                    suspect,
+                    formJSON = ValidationObject.getSavedFormData(null);
+
+                if (formJSON['form__identify-suspect']) {
+                    suspect = formJSON['form__identify-suspect']['name'];
+
+                    reviewHtml = '<p>You\'re saying that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
+
+                    if (formJSON['form__fraud-type']['fraud-type']['livingAbroad'] != false) {
+                        typeHTML += '<li>is claiming whilst living abroad</li> ';
+                    };
+                    if (formJSON['form__fraud-type']['fraud-type']['disabilityCarers'] != false) {
+                        typeHTML += '<li>is dishonestly claiming disability benefits</li> ';
+                    };
+                    if (formJSON['form__fraud-type']['fraud-type']['identityFraud'] != false) {
+                        typeHTML += '<li>is committing identity fraud</li> ';
+                    };
+                    if (formJSON['form__fraud-type']['fraud-type']['workEarning'] != false) {
+                        typeHTML += '<li>is not reporting the money they earn</li> ';
+                    };
+                    if (formJSON['form__fraud-type']['fraud-type']['undeclaredIncome'] != false) {
+                        typeHTML += '<li>has undeclared other income or savings</li> ';
+                    };
+                    if (formJSON['form__fraud-type']['fraud-type']['livingWithPartner'] != false) {
+                        typeHTML += '<li>is living with a partner but saying they live alone</li> ';
+                    };
+                    if (formJSON['form__fraud-type']['fraud-type']['unsure'] != false) {
+                        typeHTML = '';
+                    };
+
+                    if (typeHTML !== '') {
+                        reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
+                        if (formJSON['form__other-information']['additional-information'] !== '') {
+                            reviewHtml += 'Additional information:<br>' + formJSON['form__other-information']['additional-information'] + '<br><br>';
+                        }
+                    } else {
+                        if ((formJSON['form__other-information']['additional-information'] !== '') && (formJSON['form__fraud-type']['fraud-type']['unsure'] != false)) {
+                            reviewHtml += 'Additional information:<br>' + formJSON['form__other-information']['additional-information'] + '<br><br>';
+                        } else {
+                            reviewHtml = 'You haven\'t identified any fraudulent activities. ';
+                        }
+                    }
+                    reviewHtml += 'If you want you can click \'back\' and review your answers.';
+
+                } else {
+                    reviewHtml = '<strong>We\'re really sorry but something seems to have go wrong.</strong><br>' +
+                                'Please <a href="/rcm">return to the first page</a> and fill in any missing information.';
+                }
+                document.getElementById('review-text').innerHTML = reviewHtml;
+            }
         },
 
         reset: function () {
@@ -576,7 +630,7 @@
 
                     break;
 
-                case 'form__other-information':
+                case 'form__review':
                     /* final submit
                     1. collect data; form JSON
                     2. Use Ajax to submit data
