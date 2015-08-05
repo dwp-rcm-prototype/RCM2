@@ -22,20 +22,20 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="type-of-fraud/" id="form__identify-suspect" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="address|name,age,address|name,dob,address|" data-form-validation-message="$message--fraud-suspect">
+    <form method="post" action="type-of-fraud/" id="form__identify-suspect" class="js-check">
 
 <!-- NAME -->
 
         <fieldset aria-live="polite" id="theirName">
             <legend class="a11y">Suspect's name</legend>
 
-            <div class="validation-group" data-form-validation-id="name" data-validation-type="required--one" data-validation-message="Please enter the suspect's name">
+            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please enter the suspect's name">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" autocomplete="off">
 
             </div>
 
-            <div class="validation-group toggle-control theirName" data-toggle-target="section--alternative-name" data-validation-type="optional--one" data-validation-message="Please tell us if you know this person by another name" >
+            <div class="validation-group toggle-control theirName" data-toggle-target="section--alternative-name" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
                 <p class="legend">Do you know this person by another name?<br>
                     <span class="form-hint">For example nickname, professional name or maiden name</span>
                 </p>
@@ -50,7 +50,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
             </div>
 
-            <div class="section--alternative-name section--alternative-name__yes toggle-controlled panel-indent validation-group" aria-describedby="alternative-name__yes" data-form-validation-id="alternative-name" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name.">
+            <div class="section--alternative-name section--alternative-name__yes toggle-controlled panel-indent validation-group" aria-describedby="alternative-name__yes" data-validation-type="required--one-or-more" data-validation-message="Please supply this other name.">
                 <label class="form-label" for="alternative-name">Name</label>
                 <input type="text" class="form-control" id="alternative-name" name="alternative-name" autocomplete="off">
 
@@ -73,7 +73,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
                 </label>
             </div>
 
-            <div class="section--dob section--dob__yes toggle-controlled panel-indent validation-group form-date" aria-describedby="dob__yes" data-form-validation-id="dob" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
+            <div class="section--dob section--dob__yes toggle-controlled panel-indent validation-group form-date" aria-describedby="dob__yes" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
                 <p class="form-label">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
 
                 <div class="form-group">
@@ -92,7 +92,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
                 </div>
             </div>
 
-            <div class="section--dob section--dob__no toggle-controlled panel-indent validation-group" aria-describedby="dob__no" data-form-validation-id="age" data-validation-type="required--valid-or-empty" data-validation-message="Please enter the approximate age">
+            <div class="section--dob section--dob__no toggle-controlled panel-indent validation-group" aria-describedby="dob__no" data-validation-type="required--valid-or-empty" data-validation-message="Please enter the approximate age">
                 <label class="form-label" for="dob-approx">Enter their approximate age</label>
                 <input class="form-control required" id="dob-approx" name="dob--approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)" autocomplete="off">
             </div>
@@ -104,7 +104,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
         <fieldset aria-live="polite" id="address">
             <legend>Full address</legend>
 
-            <div class="section--address section--address__yes validation-group" aria-describedby="address__yes" data-form-validation-id="address" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
+            <div class="section--address section--address__yes validation-group" aria-describedby="address__yes" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
                 <label class="form-label" for="address">Building name or number</label>
                 <input type="text" class="form-control" id="address" name="address--line-1" autocomplete="off">
 
@@ -126,7 +126,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
         <fieldset aria-live="polite" id="NINumber">
             <legend>Please enter their National Insurance number</legend>
-            <div class="section--nino validation-group" aria-describedby="nino" data-form-validation-id="nino" data-validation-type="required--one" data-validation-message="Please enter the National Insurance number">
+            <div class="section--nino validation-group" aria-describedby="nino" data-validation-type="required--one" data-validation-message="Please enter the National Insurance number">
                 <label class="form-label" for="nino--ni-number">
                     <span class="form-hint">For example QQ123456C</span>
                 </label>
@@ -138,7 +138,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
         <fieldset aria-live="polite" id="phoneNumber">
             <legend>Please enter their telephone number?</legend>
-            <div class="section--telephone validation-group" aria-describedby="telephone" data-form-validation-id="telephone" data-validation-type="required--one" data-validation-message="Please enter a telephone number">
+            <div class="section--telephone validation-group" aria-describedby="telephone" data-validation-type="required--one" data-validation-message="Please enter a telephone number">
                 <label class="form-label" for="telephone--number">Telephone number</label>
                 <input class="form-control" name="telephone--number" id="telephone--number" type="tel" data-pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$" data-field-error="Please enter a valid mobile number" autocomplete="off">
             </div>
@@ -147,7 +147,7 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
         <fieldset aria-live="polite" id="emailAddress">
             <legend>Please enter their email address?</legend>
-            <div class="section--email validation-group" aria-describedby="email" data-form-validation-id="email" data-validation-type="required--one" data-validation-message="Please enter their email address">
+            <div class="section--email validation-group" aria-describedby="email" data-validation-type="required--one" data-validation-message="Please enter their email address">
                 <label class="form-label" for="email--email">Email address</label>
                 <input class="form-control" name="email--email" id="email--email" type="email" data-pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" data-field-error="Please enter a valid email address" autocomplete="off">
             </div>

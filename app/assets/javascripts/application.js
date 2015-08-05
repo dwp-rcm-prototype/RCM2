@@ -161,7 +161,6 @@
                 case 'radio':
                 case 'checkbox':
                     return (el.checked) ? el.name : null;
-                    //alert(el.name);
                 case 'text':
                 case 'number':
                 case 'email':
@@ -245,7 +244,7 @@
 
                 var fields, setOK, setsOK, sets,
                     validationType = $(el).attr('data-validation-type'),
-                    typesToCheck = ['required--one-or-more', 'required--three-or-more', 'required--one', 'required--valid-or-empty', 'required--all', 'optional--one-or-more', 'optional--one'],
+                    typesToCheck = ['required--one-or-more', 'required--one', 'required--valid-or-empty', 'required--all', 'optional--one-or-more', 'optional--one'],
                     fieldsWithValidValue = [],
                     allFields = [],
                     checkBoxFields = [];
@@ -256,13 +255,15 @@
                         return ValidationObject.fieldValid(this); // RE: What if a field is required but doesn't have a pattern. It should show red, but does it?
                     }).get());
                 }
-
-                if (typesToCheck.indexOf(validationType) == 1) {
+                if ($('body').find('#form__details').length) {
                     checkBoxFields = $.unique($(el).find(rcm.checkBoxes.join(',')).map(function () {
                       return $(this).val();
                   }).get());
                   fieldsWithValidValue = checkBoxFields;
-                }
+                  for (var i = 0, l = fieldsWithValidValue.length; i < l; i++) {
+                    $('#' + fieldsWithValidValue[i]).addClass('valid');
+                  }
+                };
 
                 switch (validationType) {
                     // it's not required, so don't display error messages. But when there is valid data, mark it as such
@@ -283,14 +284,6 @@
                     case 'required--one-or-more':
                     case 'required--one':
                         if (fieldsWithValidValue.length === 0) {
-                            ValidationObject.invalidateElement(el);
-                            groupOK = false;
-                        } else {
-                            $(el).addClass('valid');
-                        }
-                        break;
-                    case 'required--three-or-more':
-                        if (fieldsWithValidValue.length < 3) {
                             ValidationObject.invalidateElement(el);
                             groupOK = false;
                         } else {
@@ -319,7 +312,6 @@
                             fields = sets[s].split(',');
                             setOK = true;
                             for (var f = 0, fl = fields.length; f < fl; f += 1) {
-
                                 if (!ValidationObject.fieldValid($(el).find('input[name="' + fields[f] + '"]').get(0))) {
                                     setOK = false;
                                     //don't break - keep checking the fields
@@ -327,7 +319,6 @@
                                 }
                             }
 
-                            alert(setsOK);
                             if (setOK) {
                                 setsOK = true;
                                 $(el).addClass('valid');
@@ -350,7 +341,6 @@
 
         validateFormSets: function (e) { // Called by validateForm. Checks if the form requirements (sets) have been met
 
-
             var groups, groupOK, setsOK, sets, formValidationType,
                 formErrorMessages = [];
 
@@ -369,6 +359,7 @@
                             groupOK = true;
 
                             for (var f = 0, fl = groups.length; f < fl; f += 1) {
+
                                 if (!$('[data-form-validation-id="' + groups[f] + '"]').hasClass('valid')) {
                                     groupOK = false;
                                     break;
@@ -723,11 +714,10 @@
 
             // 2. Validate the form sets
             if (!ValidationObject.validateFormSets()) {
-
                 var messageIdentifier = $(rcm.form).attr('data-form-validation-message').replace('$message--', '');
                 var formErrorMessage = rcm.formErrorMessages[messageIdentifier];
 
-                rcm.threeStrikesCount += 1;
+                //rcm.threeStrikesCount += 1;
                 if (rcm.threeStrikesCount >= 3) {
                     formErrorMessage = (rcm.formErrorMessages[messageIdentifier + '__3strikes'] === null) ? formErrorMessage : rcm.formErrorMessages[messageIdentifier + '__3strikes'];
                 }

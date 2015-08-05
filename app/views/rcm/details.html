@@ -23,36 +23,36 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="identify-suspect/" id="form__details" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="theirName, phoneNumber, emailAddress"  data-form-validation-message="$message--details">
-        <div class="validation-group" data-validation-type="required--three-or-more" data-validation-message="ccc">
+    <form method="post" action="identify-suspect/" id="form__details" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="NINumber,theirName|NINumber,dobApproximateAge|NINumber,dobApproximateAge|NINumber,address|theirName,dobApproximateAge,address|theirName,dobApproximateAge,address|theirName,dobApproximateAge,telephone|theirName,dobApproximateAge,telephone|theirName,dobApproximateAge,emailAddress|theirName,dobApproximateAge,emailAddress|theirName,dobApproximateAge,address,emailAddress,telephone,NINumber"  data-form-validation-message="$message--details">
+        <div class="validation-group">
 
             <fieldset aria-live="polite">
                 <legend>
 Select as many as you can
                 </legend>
                 <label class="block-label" for="theirName">
-                    <input id="theirName" name="details" type="checkbox" value="theirName">
+                    <input id="theirName" name="details" type="checkbox" value="theirName" data-form-validation-id="theirName">
                     Their name
                 </label>
                 <label class="block-label" for="address">
-                    <input id="address" name="details" type="checkbox" value="address">
+                    <input id="address" name="details" type="checkbox" value="address" data-form-validation-id="address">
                     Address
                 </label>
 
                 <label class="block-label" for="dobApproximateAge">
-                    <input id="dobApproximateAge" name="details" type="checkbox" value="dobApproximateAge">
+                    <input id="dobApproximateAge" name="details" type="checkbox" value="dobApproximateAge" data-form-validation-id="dobApproximateAge">
                     Date of birth / approximate age
                 </label>
                 <label class="block-label" for="phoneNumber">
-                    <input id="phoneNumber" name="details" type="checkbox" value="phoneNumber">
+                    <input id="phoneNumber" name="details" type="checkbox" value="phoneNumber" data-form-validation-id="phoneNumber">
                     Phone number
                 </label>
                 <label class="block-label" for="NINumber">
-                    <input id="NINumber" name="details" type="checkbox" value="NINumber">
+                    <input id="NINumber" name="details" type="checkbox" value="NINumber" data-form-validation-id="NINumber">
                     National insurance number
                 </label>
                 <label class="block-label" for="emailAddress">
-                    <input id="emailAddress" name="details" type="checkbox" value="emailAddress">
+                    <input id="emailAddress" name="details" type="checkbox" value="emailAddress" data-form-validation-id="emailAddress">
                     Email address
                 </label>
 
