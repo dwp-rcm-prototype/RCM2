@@ -654,7 +654,7 @@
 
                     ms = time.getTime();
 
-                    $('#submit-cover').show();
+                    //$('#submit-cover').show();
                     //console.log('Submitting data. formData = ');
                     //console.log(JSON.stringify(formData));
 
@@ -675,7 +675,7 @@
                             setTimeout(function () {
                                 $('#submit-cover .clock').remove();
                                 document.location.href = document.forms[rcm.formID].action;
-                            }, 500 - ms);
+                            }, 0 - ms);
                         } else {
 
                             $('#submit-cover').hide();
@@ -853,26 +853,35 @@
                 var cpIndex, newPage,
                     employment = ValidationObject.storageGetItem('employment'),
                     routes = [],
+                    routesArr = {},
                     currentPage = document.location.href.replace();
 
-                routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
+            /*    routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
                 routes['livingWithPartner'] = ['other-information', 'identify-partner'];
                 routes['workEarning+livingWithPartner'] = [];
                 routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
+                routes['identityFraud'] = ['other-information', 'identity-fraud'];
+*/
+
+                routesArr = {identityFraud: 'identity-fraud', workEarning: 'employment-suspect', undeclaredIncome: 'undeclared-income'};
 
                 currentPage = String(currentPage.substr(currentPage.lastIndexOf('/') + 1));
 
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
-                if (myRoute === 'workEarning+livingWithPartner') {
+                /*if (myRoute === 'workEarning+livingWithPartner') {
                     cpIndex = routes[myRoute][employment].indexOf(currentPage);
                     newPage = routes[myRoute][employment][cpIndex + 1];
                 } else {
+                  alert(myRoute);
                     cpIndex = routes[myRoute].indexOf(currentPage);
                     newPage = routes[myRoute][cpIndex + 1];
                 }
+                */
+                alert(routesArr[0]);
+
 
                 document.location.href = newPage;
             }
