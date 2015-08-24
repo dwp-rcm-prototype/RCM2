@@ -865,7 +865,7 @@
 
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
-                /*if (myRoute === 'workEarning+livingWithPartner') {
+                if (myRoute === 'workEarning+livingWithPartner') {
                     cpIndex = routes[myRoute][employment].indexOf(currentPage);
                     newPage = routes[myRoute][employment][cpIndex + 1];
                 } else {
@@ -873,10 +873,6 @@
                     cpIndex = routes[myRoute].indexOf(currentPage);
                     newPage = routes[myRoute][cpIndex + 1];
                 }
-                */
-                alert(routesArr[0]);
-
-
                 document.location.href = newPage;
             }
         });
