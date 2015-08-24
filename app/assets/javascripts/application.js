@@ -853,7 +853,6 @@
                 var cpIndex, newPage,
                     employment = ValidationObject.storageGetItem('employment'),
                     routes = [],
-                    routesArr = {},
                     currentPage = document.location.href.replace();
 
                 routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
@@ -862,11 +861,8 @@
                 routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
-                routes['identityFraud'] = ['other-information', 'identity-fraud'];
 
-                routesArr = {identityFraud: 'identity-fraud', workEarning: 'employment-suspect', undeclaredIncome: 'undeclared-income'};
-
-                currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+                currentPage = String(currentPage.substr(currentPage.lastIndexOf('/') + 1));
 
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
@@ -877,8 +873,6 @@
                     cpIndex = routes[myRoute].indexOf(currentPage);
                     newPage = routes[myRoute][cpIndex + 1];
                 }
-                
-
 
                 document.location.href = newPage;
             }
