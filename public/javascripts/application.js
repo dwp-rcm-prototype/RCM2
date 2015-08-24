@@ -856,18 +856,17 @@
                     routesArr = {},
                     currentPage = document.location.href.replace();
 
-            /*    routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
+                routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
                 routes['livingWithPartner'] = ['other-information', 'identify-partner'];
                 routes['workEarning+livingWithPartner'] = [];
                 routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
                 routes['identityFraud'] = ['other-information', 'identity-fraud'];
-*/
 
                 routesArr = {identityFraud: 'identity-fraud', workEarning: 'employment-suspect', undeclaredIncome: 'undeclared-income'};
 
-                currentPage = String(currentPage.substr(currentPage.lastIndexOf('/') + 1));
+                currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
 
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
