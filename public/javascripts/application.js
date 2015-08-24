@@ -654,7 +654,7 @@
 
                     ms = time.getTime();
 
-                    //$('#submit-cover').show();
+                    $('#submit-cover').show();
                     //console.log('Submitting data. formData = ');
                     //console.log(JSON.stringify(formData));
 
@@ -675,7 +675,7 @@
                             setTimeout(function () {
                                 $('#submit-cover .clock').remove();
                                 document.location.href = document.forms[rcm.formID].action;
-                            }, 0 - ms);
+                            }, 500 - ms);
                         } else {
 
                             $('#submit-cover').hide();
