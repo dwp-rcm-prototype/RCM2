@@ -895,8 +895,9 @@
                 }*/
 
 
-
-                document.location.href = newPage;
+                if(newPage != undefined) {
+                  document.location.href = newPage;
+                }
             }
         });
     };
