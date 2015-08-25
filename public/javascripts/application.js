@@ -93,7 +93,8 @@
                     fraudTypeData = formJSON['form__fraud-type']['fraud-type'];
 
                 if (formJSON['form__identify-suspect']) {
-                    suspect = formJSON['form__identify-suspect']['name'];
+                    suspect = formJSON['form__identify-suspect']['firstname'];
+                    suspect += ' ' + formJSON['form__identify-suspect']['lastname'];
 
                     reviewHtml = '<p>You\'re saying that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
 
