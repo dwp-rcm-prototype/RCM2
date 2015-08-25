@@ -99,25 +99,25 @@
                     reviewHtml = '<p>You\'re saying that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
 
                     if ($.inArray('livingAbroad', fraudTypeData) > -1) {
-                        typeHTML += '<li>is claiming whilst living abroad</li> ';
+                        typeHTML += '<li>Claiming benefits but not living in the UK</li> ';
                     };
                     if ($.inArray('disabilityCarers', fraudTypeData) > -1) {
-                        typeHTML += '<li>is dishonestly claiming disability benefits</li> ';
+                        typeHTML += '<li>Dishonestly claiming disability or carers benefit</li> ';
                     };
                     if ($.inArray('identityFraud', fraudTypeData) > -1) {
-                        typeHTML += '<li>is committing identity fraud</li> ';
+                        typeHTML += '<li>Using someone else’s identity</li> ';
                     };
                     if ($.inArray('workEarning', fraudTypeData) > -1) {
-                        typeHTML += '<li>is not reporting the money they earn</li> ';
+                        typeHTML += '<li>Working but claiming unemployment benefit</li> ';
                     };
                     if ($.inArray('undeclaredIncome', fraudTypeData) > -1) {
-                        typeHTML += '<li>has undeclared other income or savings</li> ';
+                        typeHTML += '<li>Not declaring savings or other income</li> ';
                     };
                     if ($.inArray('livingWithPartner', fraudTypeData) > -1) {
-                        typeHTML += '<li>is living with a partner but saying they live alone</li> ';
+                        typeHTML += '<li>Living with a partner but saying they live alone</li> ';
                     };
                     if ($.inArray('unsure', fraudTypeData) > -1) {
-                        typeHTML = '';
+                        typeHTML = 'I’m not sure';
                     };
 
                     if (typeHTML !== '') {
@@ -849,7 +849,7 @@
             e.preventDefault();
 
             var myRoute = ValidationObject.storageGetItem('fraud-type');
-
+            myRoute = myRoute.split('+');
             if (myRoute != null && myRoute != '') {
                 var cpIndex, newPage,
                     employment = ValidationObject.storageGetItem('employment'),
@@ -866,19 +866,33 @@
                 routes['identityFraud'] = ['other-information', 'identity-fraud'];
 */
 
-                routesArr = {identityFraud: 'identity-fraud', workEarning: 'employment-suspect', undeclaredIncome: 'undeclared-income'};
-
                 currentPage = String(currentPage.substr(currentPage.lastIndexOf('/') + 1));
 
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
-                if (myRoute === 'workEarning+livingWithPartner') {
+              //  myRoute += 'other-information';
+
+                var myRouteLength = myRoute.length - 1;
+                var positionInArray = $.inArray(currentPage, myRoute);
+                //alert(positionInArray + ' ' + currentPage);
+
+                routesArr = {identityFraud: 'identity-fraud', workEarning: 'employment-suspect', undeclaredIncome: 'undeclared-income'};
+
+                if (currentPage == 'other-information') {
+                  var newRoute = myRoute[myRouteLength];
+                  newPage = (routesArr[newRoute]);
+                }
+                else {
+
+                }
+
+                /*if (myRoute === 'workEarning+livingWithPartner') {
                     cpIndex = routes[myRoute][employment].indexOf(currentPage);
                     newPage = routes[myRoute][employment][cpIndex + 1];
                 } else {
                     cpIndex = routes[myRoute].indexOf(currentPage);
                     newPage = routes[myRoute][cpIndex + 1];
-                }
+                }*/
 
 
 
