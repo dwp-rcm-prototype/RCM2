@@ -23,7 +23,7 @@ GOV.UK Reporting benefit fraud: What type of fraud
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="identify-suspect/" id="form__details" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="NINumber,theirName|NINumber,dobApproximateAge|NINumber,dobApproximateAge|NINumber,address|theirName,dobApproximateAge,address|theirName,dobApproximateAge,address|theirName,dobApproximateAge,telephone|theirName,dobApproximateAge,telephone|theirName,dobApproximateAge,emailAddress|theirName,dobApproximateAge,emailAddress|theirName,dobApproximateAge,address,emailAddress,telephone,NINumber"  data-form-validation-message="$message--details">
+    <form method="post" action="identify-suspect/" id="form__details" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="NINumber,theirName|NINumber,dob|NINumber,approximateAge|NINumber,address|theirName,dob,address|theirName,approximateAge,address|theirName,dob,telephone|theirName,approximateAge,telephone|theirName,dob,emailAddress|theirName,approximateAge,emailAddress|theirName,dob,approximateAge,address,emailAddress,telephone,NINumber"  data-form-validation-message="$message--details">
         <div class="validation-group">
 
             <fieldset aria-live="polite">
@@ -39,9 +39,14 @@ Select as many as you can
                     Address
                 </label>
 
-                <label class="block-label" for="dobApproximateAge">
-                    <input id="dobApproximateAge" name="details" type="checkbox" value="dobApproximateAge" data-form-validation-id="dobApproximateAge">
-                    Date of birth / approximate age
+                <label class="block-label" for="dob">
+                    <input id="dob" name="details" type="checkbox" value="dob" data-form-validation-id="dob">
+                    Date of birth
+                </label>
+
+                <label class="block-label" for="approximateAge">
+                    <input id="approximateAge" name="details" type="checkbox" value="approximateAge" data-form-validation-id="approximateAge">
+                    Approximate age
                 </label>
                 <label class="block-label" for="phoneNumber">
                     <input id="phoneNumber" name="details" type="checkbox" value="phoneNumber" data-form-validation-id="phoneNumber">

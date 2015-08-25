@@ -29,10 +29,15 @@ GOV.UK Reporting benefit fraud: Identify the suspect
         <fieldset aria-live="polite" id="theirName">
             <legend class="a11y">Suspect's name</legend>
 
-            <div class="validation-group" data-validation-type="required--one" data-validation-message="Please enter the suspect's name">
-                <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" autocomplete="off">
-
+            <div class="validation-group" data-validation-type="required--all" data-validation-message="Please enter the suspect's name">
+              <div class="form-group">
+                <label class="form-label" for="firstname">First name</label>
+                <input type="text" class="form-control" id="firstname" name="firstname" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="lastname">Last name</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" autocomplete="off">
+              </div>
             </div>
 
             <div class="validation-group toggle-control theirName" data-toggle-target="section--alternative-name" data-validation-type="required--one" data-validation-message="Please tell us if you know this person by another name" >
@@ -59,23 +64,10 @@ GOV.UK Reporting benefit fraud: Identify the suspect
 
 <!-- AGE -->
 
-        <fieldset aria-live="polite" id="dobApproximateAge">
-            <legend>Do you know their date of birth?</legend>
-            <div class="validation-group inline toggle-control" data-toggle-target="section--dob" data-validation-type="required--one" data-validation-message="Please tell us if you know this person's date of birth" >
-
-                <label class="block-label" for="dob__yes">
-                    <input id="dob__yes" class="toggle-section" type="radio" name="helper--dob" value="Yes">
-                    <span aria-hidden="true">Yes</span><span class="a11y"> Yes, I know the date of birth</span>
-                </label>
-                <label class="block-label" for="dob__no">
-                    <input id="dob__no" class="toggle-section" type="radio" name="helper--dob" value="No">
-                    <span aria-hidden="true">No</span><span class="a11y"> No, I don't know the date of birth</span>
-                </label>
-            </div>
-
-            <div class="section--dob section--dob__yes toggle-controlled panel-indent validation-group form-date" aria-describedby="dob__yes" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
+        <fieldset aria-live="polite" id="dob">
+            <legend>Date of birth</legend>
+            <div class="section--dob section--dob__yes validation-group form-date" aria-describedby="dob__yes" data-validation-type="required--all" data-validation-message="Please enter the full date of birth" >
                 <p class="form-label">Please enter it in this format: dd mm yyyy - for example: 31 3 1980</p>
-
                 <div class="form-group">
                     <input type="number" class="form-control" id="dob-day" name="dob--day" pattern="^([1-9]|0[1-9]|[12][0-9]|3[0-1])$" min="1" max="31" maxlength="2" autocomplete="off">
                     <label class="form-hint" for="dob-day"><span aria-hidden="true">Day</span><span class="a11y">Day of date of birth</span></label>
@@ -91,18 +83,20 @@ GOV.UK Reporting benefit fraud: Identify the suspect
                     <label class="form-hint" for="dob-year"><span aria-hidden="true">Year</span><span class="a11y">Year of date of birth</span></label>
                 </div>
             </div>
+        </fieldset>
 
-            <div class="section--dob section--dob__no toggle-controlled panel-indent validation-group" aria-describedby="dob__no" data-validation-type="required--valid-or-empty" data-validation-message="Please enter the approximate age">
+        <fieldset aria-live="polite" id="approximateAge">
+            <legend>Approximate age</legend>
+            <div class="section--dob section--dob__no validation-group" aria-describedby="dob__no" data-validation-type="required--all" data-validation-message="Please enter the approximate age">
                 <label class="form-label" for="dob-approx">Enter their approximate age</label>
                 <input class="form-control required" id="dob-approx" name="dob--approx" type="number" pattern="^(0[1-9][0-9]|[1-9][0-9]|1[0-1][0-9]|120)$" min="10" max="120" maxlength="3" data-field-error="Please enter a valid age (between 10 and 120)" autocomplete="off">
             </div>
-
         </fieldset>
 
 <!-- ADDRESS -->
 
         <fieldset aria-live="polite" id="address">
-            <legend>Full address</legend>
+            <legend>Address</legend>
 
             <div class="section--address section--address__yes validation-group" aria-describedby="address__yes" data-validation-type="required--set" data-validation-sets="address--line-1,address--postcode|address--line-2,address--town" data-validation-message="Please enter at least either number and postcode or street and town">
                 <label class="form-label" for="address">Building name or number</label>

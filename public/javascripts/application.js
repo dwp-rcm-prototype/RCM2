@@ -43,7 +43,7 @@
                 submitErrorMessage: 'There\'s been an error talking to the server. Please wait a moment and try again.',
                 messageTemplate :   '<div class="error-summary" id="error-summary" role="alert" tabindex="-1" aria-labelledby="error-summary-heading">' +
                                         '<h2 class="heading-medium error-summary-heading" id="error-summary-heading">' +
-                                            'Unable to submit the form.' +
+                                            'Unable to continue' +
                                         '</h2>' +
                                         '<p>[customMessage]</p>' +
                                         '[errorMessages]' +
@@ -89,35 +89,36 @@
                 var reviewHtml,
                     typeHTML = '',
                     suspect,
-                    formJSON = ValidationObject.getSavedFormData(null);
+                    formJSON = ValidationObject.getSavedFormData(null),
+                    fraudTypeData = formJSON['form__fraud-type']['fraud-type'];
 
                 if (formJSON['form__identify-suspect']) {
                     suspect = formJSON['form__identify-suspect']['name'];
 
                     reviewHtml = '<p>You\'re saying that ' + ((suspect === ' ') ? 'the suspect' : '<strong>' + suspect + '</strong>') + ' </p>';
 
-                    if (formJSON['form__fraud-type']['fraud-type']['livingAbroad'] != false) {
+                    if ($.inArray('livingAbroad', fraudTypeData) > -1) {
                         typeHTML += '<li>is claiming whilst living abroad</li> ';
                     };
-                    if (formJSON['form__fraud-type']['fraud-type']['disabilityCarers'] != false) {
+                    if ($.inArray('disabilityCarers', fraudTypeData) > -1) {
                         typeHTML += '<li>is dishonestly claiming disability benefits</li> ';
                     };
-                    if (formJSON['form__fraud-type']['fraud-type']['identityFraud'] != false) {
+                    if ($.inArray('identityFraud', fraudTypeData) > -1) {
                         typeHTML += '<li>is committing identity fraud</li> ';
                     };
-                    if (formJSON['form__fraud-type']['fraud-type']['workEarning'] != false) {
+                    if ($.inArray('workEarning', fraudTypeData) > -1) {
                         typeHTML += '<li>is not reporting the money they earn</li> ';
                     };
-                    if (formJSON['form__fraud-type']['fraud-type']['undeclaredIncome'] != false) {
+                    if ($.inArray('undeclaredIncome', fraudTypeData) > -1) {
                         typeHTML += '<li>has undeclared other income or savings</li> ';
                     };
-                    if (formJSON['form__fraud-type']['fraud-type']['livingWithPartner'] != false) {
+                    if ($.inArray('livingWithPartner', fraudTypeData) > -1) {
                         typeHTML += '<li>is living with a partner but saying they live alone</li> ';
                     };
-                    /*if (formJSON['form__fraud-type']['fraud-type']['unsure'] != false) {
+                    if ($.inArray('unsure', fraudTypeData) > -1) {
                         typeHTML = '';
                     };
-*/
+
                     if (typeHTML !== '') {
                         reviewHtml += '<ol class="list-bullet">' + typeHTML + '</ol>';
                         if (formJSON['form__other-information']['additional-information'] !== '') {
@@ -653,7 +654,7 @@
 
                     ms = time.getTime();
 
-                    $('#submit-cover').show();
+                    //$('#submit-cover').show();
                     //console.log('Submitting data. formData = ');
                     //console.log(JSON.stringify(formData));
 
@@ -674,7 +675,7 @@
                             setTimeout(function () {
                                 $('#submit-cover .clock').remove();
                                 document.location.href = document.forms[rcm.formID].action;
-                            }, 500 - ms);
+                            }, 0 - ms);
                         } else {
 
                             $('#submit-cover').hide();
@@ -847,20 +848,27 @@
             e.preventDefault();
 
             var myRoute = ValidationObject.storageGetItem('fraud-type');
+
             if (myRoute != null && myRoute != '') {
                 var cpIndex, newPage,
                     employment = ValidationObject.storageGetItem('employment'),
                     routes = [],
+                    routesArr = {},
                     currentPage = document.location.href.replace();
 
-                routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
+            /*    routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
                 routes['livingWithPartner'] = ['other-information', 'identify-partner'];
                 routes['workEarning+livingWithPartner'] = [];
                 routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
                 routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
+                routes['identityFraud'] = ['other-information', 'identity-fraud'];
+*/
 
-                currentPage = currentPage.substr(currentPage.lastIndexOf('/') + 1);
+                routesArr = {identityFraud: 'identity-fraud', workEarning: 'employment-suspect', undeclaredIncome: 'undeclared-income'};
+
+                currentPage = String(currentPage.substr(currentPage.lastIndexOf('/') + 1));
+
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
                 if (myRoute === 'workEarning+livingWithPartner') {
@@ -870,6 +878,8 @@
                     cpIndex = routes[myRoute].indexOf(currentPage);
                     newPage = routes[myRoute][cpIndex + 1];
                 }
+
+
 
                 document.location.href = newPage;
             }

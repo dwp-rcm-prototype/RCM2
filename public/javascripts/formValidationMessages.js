@@ -11,8 +11,7 @@ function initFormErrorMessages() {
     '</ol>';
 
     messages['details'] = '' +
-    '<p><strong>The details you can provide will not meet the minimum information required for the Department for Work and Pensions to carry out an investigation</strong></p>' +
-    '<p>Please select as many as you can</p>';
+    '<p><strong>You need to know more about the person. <br>Check that you have selected as many as you can.</strong></p>';
 
     messages['fraud-suspect__3strikes'] = '' +
     '<p>' +

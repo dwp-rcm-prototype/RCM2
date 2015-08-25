@@ -43,7 +43,7 @@
                 submitErrorMessage: 'There\'s been an error talking to the server. Please wait a moment and try again.',
                 messageTemplate :   '<div class="error-summary" id="error-summary" role="alert" tabindex="-1" aria-labelledby="error-summary-heading">' +
                                         '<h2 class="heading-medium error-summary-heading" id="error-summary-heading">' +
-                                            'Unable to submit the form.' +
+                                            'Unable to continue' +
                                         '</h2>' +
                                         '<p>[customMessage]</p>' +
                                         '[errorMessages]' +
@@ -878,7 +878,7 @@
                     cpIndex = routes[myRoute].indexOf(currentPage);
                     newPage = routes[myRoute][cpIndex + 1];
                 }
-                
+
 
 
                 document.location.href = newPage;
