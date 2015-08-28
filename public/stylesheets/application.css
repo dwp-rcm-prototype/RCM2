@@ -1130,6 +1130,9 @@ input.invalid:focus {
     outline: 0;
 }
 */
+.validation-group .form-group:last-child {
+  margin-bottom: 0; }
+
 .validation-group.valid .empty, .validation-group.valid .empty:focus {
   outline: 0; }
 

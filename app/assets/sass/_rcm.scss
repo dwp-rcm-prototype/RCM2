@@ -114,6 +114,9 @@ input.invalid:focus {
     outline: 0;
 }
 */
+.validation-group .form-group:last-child {
+  margin-bottom: 0;
+}
 .invalid:focus,
 .validation-group.invalid .empty,
 .validation-group.invalid .empty.focus,

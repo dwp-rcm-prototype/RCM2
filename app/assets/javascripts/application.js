@@ -108,7 +108,7 @@
                         typeHTML += '<li>Using someone else’s identity</li> ';
                     };
                     if ($.inArray('workEarning', fraudTypeData) > -1) {
-                        typeHTML += '<li>Working but claiming unemployment benefit</li> ';
+                        typeHTML += '<li>Working but claiming benefit</li> ';
                     };
                     if ($.inArray('undeclaredIncome', fraudTypeData) > -1) {
                         typeHTML += '<li>Not declaring savings or other income</li> ';
@@ -117,7 +117,7 @@
                         typeHTML += '<li>Living with a partner but saying they live alone</li> ';
                     };
                     if ($.inArray('unsure', fraudTypeData) > -1) {
-                        typeHTML = 'I’m not sure';
+                        typeHTML += '<li>I’m not sure</li>';
                     };
 
                     if (typeHTML !== '') {
@@ -855,46 +855,65 @@
                     employment = ValidationObject.storageGetItem('employment'),
                     routes = [],
                     routesArr = {},
+                    routesSuspectsArr = [{}],
+                    employmentPromptArr = [],
+                    newKey,
                     currentPage = document.location.href.replace();
-
-            /*    routes['workEarning'] = ['other-information', 'employment-suspect', 'type-of-fraud'];
-                routes['livingWithPartner'] = ['other-information', 'identify-partner'];
-                routes['workEarning+livingWithPartner'] = [];
-                routes['workEarning+livingWithPartner']['suspect'] = ['other-information', 'employment-suspect', 'employment-prompt', 'identify-partner'];
-                routes['workEarning+livingWithPartner']['partner'] = ['other-information', 'employment-partner', 'employment-prompt', 'identify-partner'];
-                routes['workEarning+livingWithPartner']['suspect+partner'] = ['other-information', 'employment-partner', 'employment-suspect-then-partner', 'employment-prompt', 'identify-partner'];
-                routes['identityFraud'] = ['other-information', 'identity-fraud'];
-*/
 
                 currentPage = String(currentPage.substr(currentPage.lastIndexOf('/') + 1));
 
                 currentPage = (currentPage.indexOf('#') === -1) ? currentPage : currentPage.substr(0, currentPage.indexOf('#'));
 
-              //  myRoute += 'other-information';
+                routesArr = {workEarning: 'employment-suspect', livingWithPartner: 'identify-partner', disabilityCarers: 'disability-or-carers-benefit', livingAbroad: 'living-abroad', identityFraud: 'identity-fraud', undeclaredIncome: 'undeclared-income', unsure: 'type-of-fraud'};
 
-                var myRouteLength = myRoute.length - 1;
-                var positionInArray = $.inArray(currentPage, myRoute);
-                //alert(positionInArray + ' ' + currentPage);
+                routesSuspectsArr = {suspect: 'employment-suspect', partner: 'employment-partner'};
 
-                routesArr = {identityFraud: 'identity-fraud', workEarning: 'employment-suspect', undeclaredIncome: 'undeclared-income'};
+                $.each(myRoute, function(key, value) {
+                  routes.push(routesArr[value]);
+                });
 
-                if (currentPage == 'other-information') {
-                  var newRoute = myRoute[myRouteLength];
-                  newPage = (routesArr[newRoute]);
-                }
-                else {
+                if (($.inArray('employment-suspect', routes) > -1) && ($.inArray('identify-partner', routes) > -1)) {
+                    var insertPos = ($.inArray('identify-partner', routes)) + 1;
 
-                }
+                    routes.splice(insertPos, 0, 'employment-prompt');
 
-                /*if (myRoute === 'workEarning+livingWithPartner') {
-                    cpIndex = routes[myRoute][employment].indexOf(currentPage);
-                    newPage = routes[myRoute][employment][cpIndex + 1];
-                } else {
-                    cpIndex = routes[myRoute].indexOf(currentPage);
-                    newPage = routes[myRoute][cpIndex + 1];
-                }*/
+                    var employmentPrompt = ValidationObject.storageGetItem('employment');
+                    employmentPrompt = employmentPrompt.split('+');
 
+                    if(employmentPrompt > ''){
+                      $.each(employmentPrompt, function(key, value) {
+                        employmentPromptArr.push(routesSuspectsArr[value]);
+                      });
 
+                      var insertPos = ($.inArray('employment-prompt', routes)) + 1;
+
+                      if (($.inArray('employment-suspect', employmentPromptArr) > -1) && ($.inArray('employment-partner', employmentPromptArr) > -1)) {
+                        routes.splice(insertPos, 0, 'employment-suspect-then-partner');
+                        insertPos++;
+                        routes.splice(insertPos, 0, 'employment-partner');
+                      }
+                      else {
+                        $.each(employmentPromptArr, function(key, value) {
+                          routes.splice(insertPos, 0, employmentPromptArr[value]);
+                          insertPos++;
+                        });
+                      };
+                    };
+                };
+
+                routes.push('other-information');
+
+                $.each(routes, function(key, value) {
+                  if(currentPage == value){
+                    newKey = key -1;
+                    if(routes[newKey] == 'type-of-fraud') {
+                      newKey = newKey -1;
+                    }
+                    return;
+                  }
+                });
+
+                newPage = (newKey < 0) ? 'type-of-fraud' : routes[newKey];
                 if(newPage != undefined) {
                   document.location.href = newPage;
                 }
