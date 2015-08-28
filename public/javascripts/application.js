@@ -895,7 +895,7 @@
                       }
                       else {
                         $.each(employmentPromptArr, function(key, value) {
-                          routes.splice(insertPos, 0, employmentPromptArr[value]);
+                          routes.splice(insertPos, 0, employmentPromptArr[key]);
                           insertPos++;
                         });
                       };
@@ -917,6 +917,9 @@
                 newPage = (newKey < 0) ? 'type-of-fraud' : routes[newKey];
                 if(newPage != undefined) {
                   document.location.href = newPage;
+                }
+                else {
+                  return false;
                 }
             }
         });
