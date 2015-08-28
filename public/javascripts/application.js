@@ -850,6 +850,7 @@
 
             var myRoute = ValidationObject.storageGetItem('fraud-type');
             myRoute = myRoute.split('+');
+
             if (myRoute != null && myRoute != '') {
                 var cpIndex, newPage,
                     employment = ValidationObject.storageGetItem('employment'),
@@ -873,8 +874,9 @@
                 });
 
                 if (($.inArray('employment-suspect', routes) > -1) && ($.inArray('identify-partner', routes) > -1)) {
-                    var insertPos = ($.inArray('identify-partner', routes)) + 1;
                     routes.shift();
+                    var insertPos = ($.inArray('identify-partner', routes)) + 1;
+
                     routes.splice(insertPos, 0, 'employment-prompt');
 
                     var employmentPrompt = ValidationObject.storageGetItem('employment');
@@ -913,6 +915,7 @@
                     return;
                   }
                 });
+                alert(routes);
                 newPage = (newKey < 0) ? 'type-of-fraud' : routes[newKey];
                 if(newPage != undefined) {
                   document.location.href = newPage;
