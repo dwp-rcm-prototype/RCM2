@@ -878,9 +878,10 @@
                     routes.splice(insertPos, 0, 'employment-prompt');
 
                     var employmentPrompt = ValidationObject.storageGetItem('employment');
-                    employmentPrompt = employmentPrompt.split('+');
+
 
                     if(employmentPrompt > ''){
+                      employmentPrompt = employmentPrompt.split('+');
                       $.each(employmentPrompt, function(key, value) {
                         employmentPromptArr.push(routesSuspectsArr[value]);
                       });
