@@ -874,7 +874,7 @@
 
                 if (($.inArray('employment-suspect', routes) > -1) && ($.inArray('identify-partner', routes) > -1)) {
                     var insertPos = ($.inArray('identify-partner', routes)) + 1;
-
+                    routes.shift();
                     routes.splice(insertPos, 0, 'employment-prompt');
 
                     var employmentPrompt = ValidationObject.storageGetItem('employment');
@@ -913,7 +913,6 @@
                     return;
                   }
                 });
-
                 newPage = (newKey < 0) ? 'type-of-fraud' : routes[newKey];
                 if(newPage != undefined) {
                   document.location.href = newPage;
