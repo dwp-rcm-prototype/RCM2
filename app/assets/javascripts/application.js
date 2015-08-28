@@ -915,7 +915,7 @@
                     return;
                   }
                 });
-                alert(routes);
+                
                 newPage = (newKey < 0) ? 'type-of-fraud' : routes[newKey];
                 if(newPage != undefined) {
                   document.location.href = newPage;
