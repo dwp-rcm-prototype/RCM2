@@ -14,12 +14,14 @@ GOV.UK Reporting benefit fraud
         </div>
     </div>
 
-    <h1 class="heading-large">Report benefit fraud</h1>
-    <p class="lede">Use this service to anonymously report someone you think is committing benefit fraud.</p>
-    <h2 class="heading-medium">What will happen to your report</h2>
-    <p>If you give enough information, the Department for Work and Pensions will investigate the person.</p>
-    <p>Action will only be taken if the person is found to have committed fraud.</p>
-
+    <h1 class="heading-large">Before you start</h1>
+    <p>To report someone you must give the following details:</p>
+    <ul class="list-bullet margin-bottom-big">
+        <li>full name</li>
+        <li>date of birth or an approximate age</li>
+        <li>full address including post code</li>
+    </ul>
+    <p>Without this information <abbr title="Department for Work and Pensions">DWP</abbr> can't identify or investigate the person</p>
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
@@ -31,7 +33,9 @@ GOV.UK Reporting benefit fraud
 
     </noscript>
     <div class="display-block-js">
-    <a class="button button-get-started" href="details">Start now</a>
+    <form action="/rcm/identify-suspect" method="get" class="js-check">
+        <input type="submit" class="button" value="I agree - start my report">
+    </form>
         </div>
 
 

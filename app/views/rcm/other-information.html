@@ -16,7 +16,7 @@ GOV.UK Reporting benefit fraud: The suspect's employment
 
     <div id="submit-cover"><div class="bg"></div><div class="clock"><p>Please wait while we're submitting your report</p></div></div>
 
-    <div class="back-link"><a href="{{previousPage}}#" class="previousPage">Back</a></div>
+    <div class="back-link"><a href="employment-prompt" class="previousPage js-routed">Back</a></div>
 
     <h1 class="heading-large">
         Additional information
@@ -24,30 +24,29 @@ GOV.UK Reporting benefit fraud: The suspect's employment
 
     <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
 
-    <form method="post" action="complete/" id="form__other-information" class="js-check">
+    <form method="post" action="review/" id="form__other-information" class="js-check margin-bottom-big">
 
          <fieldset>
-             <legend class="a11y">Anything else?</legend>
+             <legend class="a11y">Additional information</legend>
              <div class="validation-group">
-                <label class="form-label legend" for="additional-information">Do you have additional information about the person or the suspected fraud?</label>
+                <label class="form-label legend" for="additional-information">Do you have any more details about the person or why you think they're being dishonest?</label>
                 <textarea class="form-control" id="additional-information" rows="5" name="additional-information"></textarea>
             </div>
         </fieldset>
 
         <p>You've now answered all the questions and can submit your report.</p>
 
-        <input type="submit" id="submit" class="button" value="Send report" />
+        <input type="submit" id="submit" class="button" value="Continue" />
 
     </form>
-<!--
-    <p class="">
+<!-- See Jira RCM-494
+    <p>
         <span class="header-medium">Alternatively, you can</span>
-        <a href="/rcm/type-of-fraud" id="clear-form">clear the form and start again</a> or
-        <a href="/rcm/">exit without sending</a>.
-
+        <a href="/rcm/identify-suspect" class="clear-data">clear the form and start again</a> or
+        <a href="/rcm/" class="clear-data">exit without sending</a>.
     </p>
-
 -->
+
 </main>
 
 

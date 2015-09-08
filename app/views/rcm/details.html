@@ -1,0 +1,70 @@
+{{<layout}}
+
+{{$pageTitle}}
+GOV.UK Reporting benefit fraud: What type of fraud
+{{/pageTitle}}
+
+{{$content}}
+<main id="content" role="main" class="content">
+    <div class="outer-block">
+        <div class="inner-block">
+            <div class="phase-banner">
+                <p><strong class="phase-tag">Alpha</strong> <span>This is a new service – <a href="dummy">your feedback</a> will help us to improve it.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-link"><a href="identify-suspect/" class="previousPage">Back</a></div>
+
+    <h1 class="heading-large">
+        What information do you have about the person?
+    </h1>
+
+
+    <span id="IEuserData" name="IEuserData" class="IEuserData"></span>
+
+    <form method="post" action="identify-suspect/" id="form__details" class="js-check" data-form-validation-type="required--set" data-form-validation-sets="NINumber,theirName|NINumber,dobApproximateAge|NINumber,dobApproximateAge|NINumber,address|theirName,dobApproximateAge,address|theirName,dobApproximateAge,address|theirName,dobApproximateAge,telephone|theirName,dobApproximateAge,telephone|theirName,dobApproximateAge,emailAddress|theirName,dobApproximateAge,emailAddress|theirName,dobApproximateAge,address,emailAddress,telephone,NINumber"  data-form-validation-message="$message--details">
+        <div class="validation-group">
+
+            <fieldset aria-live="polite">
+                <legend>
+Select as many as you can
+                </legend>
+                <label class="block-label" for="theirName">
+                    <input id="theirName" name="details" type="checkbox" value="theirName" data-form-validation-id="theirName">
+                    Their name
+                </label>
+                <label class="block-label" for="address">
+                    <input id="address" name="details" type="checkbox" value="address" data-form-validation-id="address">
+                    Address
+                </label>
+
+                <label class="block-label" for="dobApproximateAge">
+                    <input id="dobApproximateAge" name="details" type="checkbox" value="dobApproximateAge" data-form-validation-id="dobApproximateAge">
+                    Date of birth / approximate age
+                </label>
+                <label class="block-label" for="phoneNumber">
+                    <input id="phoneNumber" name="details" type="checkbox" value="phoneNumber" data-form-validation-id="phoneNumber">
+                    Phone number
+                </label>
+                <label class="block-label" for="NINumber">
+                    <input id="NINumber" name="details" type="checkbox" value="NINumber" data-form-validation-id="NINumber">
+                    National insurance number
+                </label>
+                <label class="block-label" for="emailAddress">
+                    <input id="emailAddress" name="details" type="checkbox" value="emailAddress" data-form-validation-id="emailAddress">
+                    Email address
+                </label>
+
+            </fieldset>
+        </div>
+
+        <input id="submit" type="submit" class="button" value="Continue" />
+
+    </form>
+
+</main>
+
+{{/content}}
+
+{{/layout}}
